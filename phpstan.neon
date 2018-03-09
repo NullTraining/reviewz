@@ -1,0 +1,7 @@
+parameters:
+	bootstrap: tests/bootstrap.php
+	ignoreErrors:
+
+
+
+
