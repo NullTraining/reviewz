@@ -19,3 +19,20 @@
 ###> symfony/web-server-bundle ###
 .web-server-pid
 ###< symfony/web-server-bundle ###
+
+###> PHPStorm ###
+/.idea
+###< PHPStorm ###
+
+###> MacOSX ###
+.DS_Store
+###< MacOSX ###
+
+###> backup files from unix editors ###
+*~
+###< backup files from unix editors ###
+
+###> merge files ###
+*.orig
+###< merge files ###
+
