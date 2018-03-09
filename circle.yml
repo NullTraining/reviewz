@@ -55,3 +55,11 @@ workflows:
   build-and-deploy:
     jobs:
       - build
+
+
+notify:
+    webhooks:
+        - url: https://twistapp.com/integrations/circleci/from_circleci?install_id=44765&post_data_url=https%3A%2F%2Ftwistapp.com%2Fapi%2Fv2%2Fintegration_incoming%2Fpost_data%3Finstall_id%3D44765%26install_token%3D44765_0eb8032c0767c8ba1601c91a24702a55
+
+        
+
