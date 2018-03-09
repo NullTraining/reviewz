@@ -1,0 +1,57 @@
+version: 2
+
+jobs:
+  build:
+    docker:
+      - image: msvrtan/square:0.2.2
+        environment:
+          - APP_ENV=test
+          - APP_DEBUG=1
+          - APP_SECRET=123
+          - DATABASE_DRIVER=pdo_mysql
+          - DATABASE_SERVER_VERSION=5.7
+          - DATABASE_HOST=127.0.0.1
+          - DATABASE_PORT=3306
+          - DATABASE_NAME=reviewz_test
+          - DATABASE_USER=root
+          - DATABASE_PASSWORD=n0p455
+      - image: mysql:5.7
+        environment:
+          - MYSQL_ROOT_PASSWORD=n0p455
+          - MYSQL_DATABASE=reviewz_test
+          - MYSQL_USER=bob
+          - MYSQL_PASSWORD=n0p455
+    working_directory: /var/www
+    parallel: 1
+    steps:
+      - checkout
+
+      - restore_cache:
+          key: cache-v1-{{ checksum "composer.lock" }}
+
+      - run:
+          name: Composer install
+          command: composer install -n --prefer-dist
+
+      - run:
+          name: PHPSpec
+          command: ./vendor/bin/phpspec run
+
+      - run:
+          name: PHPStan
+          command: ./vendor/bin/phing phpstan
+
+      - run:
+          name: Code standards
+          command: ./vendor/bin/phing check-codestandards
+
+      - save_cache:
+          key: cache-v1-{{ checksum "composer.lock" }}
+          paths:
+            - ./vendor
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build
