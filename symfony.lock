@@ -122,6 +122,9 @@
     "pdepend/pdepend": {
         "version": "2.5.2"
     },
+    "phing/phing": {
+        "version": "2.16.1"
+    },
     "php-cs-fixer/diff": {
         "version": "v1.3.0"
     },
