@@ -35,4 +35,9 @@ class ClaimEntity
     {
         $this->approved = true;
     }
+
+    public function markAsRejected()
+    {
+        $this->approved = false;
+    }
 }

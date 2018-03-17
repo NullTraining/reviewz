@@ -54,4 +54,14 @@ class ClaimController
 
         return $claim;
     }
+
+    public function rejectPendingClaim(ClaimEntity $claim)
+    {
+        $claim->markAsRejected();
+
+        $this->entityManager->persist($claim);
+        $this->entityManager->flush();
+
+        return $claim;
+    }
 }
