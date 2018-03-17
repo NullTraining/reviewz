@@ -36,3 +36,7 @@
 *.orig
 ###< merge files ###
 
+
+###> phpunit/phpunit ###
+/phpunit.xml
+###< phpunit/phpunit ###
