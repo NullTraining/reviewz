@@ -80,4 +80,14 @@ class ClaimControllerSpec extends ObjectBehavior
 
         $this->shouldThrow(\Exception::class)->during('approvePendingClaim', [$pendingClaim]);
     }
+
+    public function it_allows_organizer_to_reject_pending_claim(EntityManager $entityManager, ClaimEntity $pendingClaim)
+    {
+        $pendingClaim->markAsRejected()->shouldBeCalled();
+
+        $entityManager->persist($pendingClaim)->shouldBeCalled();
+        $entityManager->flush()->shouldBeCalled();
+
+        $this->rejectPendingClaim($pendingClaim)->shouldReturn($pendingClaim);
+    }
 }
