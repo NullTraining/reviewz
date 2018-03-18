@@ -36,6 +36,8 @@
 *.orig
 ###< merge files ###
 
+###< Vagrant and VMs files ###
+/.vagrant
 
 ###> phpunit/phpunit ###
 /phpunit.xml
