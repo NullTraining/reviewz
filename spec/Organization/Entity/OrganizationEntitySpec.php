@@ -14,11 +14,16 @@ class OrganizationEntitySpec extends ObjectBehavior
 
     public function let()
     {
-        $this->beConstructedWith('Organization Title');
+        $this->beConstructedWith('Organization Title', 'Organization description.');
     }
 
     public function it_should_have_title_set()
     {
         $this->getTitle()->shouldReturn('Organization Title');
+    }
+
+    public function it_should_have_descrition_set()
+    {
+        $this->getDescription()->shouldReturn('Organization description.');
     }
 }
