@@ -4,6 +4,7 @@ namespace spec\Organization\Entity;
 
 use Organization\Entity\OrganizationEntity;
 use PhpSpec\ObjectBehavior;
+use User\Entity\UserEntity;
 
 class OrganizationEntitySpec extends ObjectBehavior
 {
@@ -12,9 +13,9 @@ class OrganizationEntitySpec extends ObjectBehavior
         $this->shouldHaveType(OrganizationEntity::class);
     }
 
-    public function let()
+    public function let(UserEntity $founder)
     {
-        $this->beConstructedWith('Organization Title', 'Organization description.');
+        $this->beConstructedWith('Organization Title', 'Organization description.', $founder);
     }
 
     public function it_should_have_title_set()
@@ -25,5 +26,10 @@ class OrganizationEntitySpec extends ObjectBehavior
     public function it_should_have_descrition_set()
     {
         $this->getDescription()->shouldReturn('Organization description.');
+    }
+
+    public function it_should_have_founder_set(UserEntity $founder)
+    {
+        $this->getFounder()->shouldReturn($founder);
     }
 }
