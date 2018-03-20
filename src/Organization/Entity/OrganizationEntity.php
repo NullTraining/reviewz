@@ -14,11 +14,16 @@ class OrganizationEntity
      * @var string
      */
     private $description;
+    /**
+     * @var \User\Entity\UserEntity
+     */
+    private $founder;
 
-    public function __construct(string $title, string $description)
+    public function __construct(string $title, string $description, UserEntity $founder)
     {
         $this->title       = $title;
         $this->description = $description;
+        $this->founder     = $founder;
     }
 
     /** @SuppressWarnings("PHPMD.UnusedFormalParameter") */
@@ -35,5 +40,10 @@ class OrganizationEntity
     public function getDescription(): string
     {
         return $this->description;
+    }
+
+    public function getFounder(): UserEntity
+    {
+        return $this->founder;
     }
 }
