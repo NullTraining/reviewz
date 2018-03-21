@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "34ffdd98a817865948395ac8f8904798",
+    "content-hash": "7a25e9c5b770b3bf7bcaa0f0c0e630e4",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -5173,6 +5173,56 @@
         }
     ],
     "packages-dev": [
+        {
+            "name": "ciaranmcnulty/phpspec-typehintedmethods",
+            "version": "3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ciaranmcnulty/phpspec-typehintedmethods.git",
+                "reference": "98b349d159e6daf13bb91b6edfc59d0df7f86a06"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ciaranmcnulty/phpspec-typehintedmethods/zipball/98b349d159e6daf13bb91b6edfc59d0df7f86a06",
+                "reference": "98b349d159e6daf13bb91b6edfc59d0df7f86a06",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.0",
+                "phpspec/phpspec": "^4.0",
+                "phpspec/prophecy": "^1.6"
+            },
+            "require-dev": {
+                "behat/behat": "~3.0",
+                "symfony/filesystem": "~3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Cjm\\PhpSpec\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ciaran McNulty",
+                    "email": "mail@ciaranmcnulty.com",
+                    "homepage": "http://ciaranmcnulty.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Extension for phpspec to enhance generated methods",
+            "homepage": "http://github.com/ciaranmcnulty/phpspec-typehintedmethods",
+            "keywords": [
+                "BDD",
+                "TDD",
+                "phpspec"
+            ],
+            "time": "2017-07-31T12:37:12+00:00"
+        },
         {
             "name": "composer/semver",
             "version": "1.4.2",
