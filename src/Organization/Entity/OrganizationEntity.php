@@ -3,6 +3,7 @@
 namespace Organization\Entity;
 
 use Event\Entity\EventEntity;
+use Geo\Entity\CityEntity;
 use User\Entity\UserEntity;
 
 class OrganizationEntity
@@ -24,13 +25,18 @@ class OrganizationEntity
 
     /** @var bool */
     private $approved;
+    /**
+     * @var CityEntity
+     */
+    private $hometown;
 
-    public function __construct(string $title, string $description, UserEntity $founder)
+    public function __construct(string $title, string $description, UserEntity $founder, CityEntity $hometown)
     {
         $this->title       = $title;
         $this->description = $description;
         $this->founder     = $founder;
         $this->members     = [];
+        $this->hometown    = $hometown;
     }
 
     /** @SuppressWarnings("PHPMD.UnusedFormalParameter") */
@@ -92,5 +98,10 @@ class OrganizationEntity
     public function addEvent(EventEntity $event)
     {
         //TODO:
+    }
+
+    public function getHometown()
+    {
+        return $this->hometown;
     }
 }
