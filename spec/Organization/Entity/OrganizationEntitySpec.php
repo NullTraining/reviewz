@@ -32,4 +32,10 @@ class OrganizationEntitySpec extends ObjectBehavior
     {
         $this->getFounder()->shouldReturn($founder);
     }
+
+    public function it_should_approve_organization()
+    {
+        $this->approve();
+        $this->isApproved()->shouldReturn(true);
+    }
 }
