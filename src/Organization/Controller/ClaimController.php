@@ -30,7 +30,7 @@ class ClaimController
     public function claim(TalkEntity $talk)
     {
         if (true === $talk->hasSpeaker()) {
-            return;
+            throw new \DomainException('Talk can not be claimed');
         }
 
         $claim = new ClaimEntity($talk, $this->currentUser);
