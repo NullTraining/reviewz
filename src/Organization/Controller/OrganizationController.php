@@ -3,6 +3,7 @@
 namespace Organization\Controller;
 
 use Doctrine\ORM\EntityManager;
+use Geo\Entity\CityEntity;
 use Organization\Entity\OrganizationEntity;
 use Organization\Repository\OrganizationRepository;
 use User\Entity\UserEntity;
@@ -30,9 +31,9 @@ class OrganizationController
         $this->organizationRepository = $organizationRepository;
     }
 
-    public function create(string $title, string $description): array
+    public function create(string $title, string $description, CityEntity $city): array
     {
-        $organization = new OrganizationEntity($title, $description, $this->currentUser);
+        $organization = new OrganizationEntity($title, $description, $this->currentUser, $city);
 
         $this->entityManager->persist($organization);
 
