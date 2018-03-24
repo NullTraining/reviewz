@@ -2,6 +2,7 @@
 
 namespace User\Entity;
 
+use Geo\Entity\CityEntity;
 use Organization\Entity\OrganizationEntity;
 
 class UserEntity
@@ -10,6 +11,15 @@ class UserEntity
      * @var OrganizationEntity[]
      */
     private $organizations;
+    /**
+     * @var \Geo\Entity\CityEntity
+     */
+    private $city;
+
+    public function __construct(CityEntity $city)
+    {
+        $this->city = $city;
+    }
 
     public function getName(): string
     {
@@ -26,5 +36,10 @@ class UserEntity
     public function getOrganizations(): array
     {
         return $this->organizations;
+    }
+
+    public function getCity(): CityEntity
+    {
+        return $this->city;
     }
 }
