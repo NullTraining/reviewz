@@ -3,6 +3,7 @@
 namespace spec\Organization\Controller;
 
 use Doctrine\ORM\EntityManager;
+use Geo\Entity\CityEntity;
 use Organization\Controller\OrganizationController;
 use Organization\Entity\OrganizationEntity;
 use Organization\Repository\OrganizationRepository;
@@ -25,13 +26,13 @@ class OrganizationControllerSpec extends ObjectBehavior
         $this->beConstructedWith($entityManager, $organizationRepository, $currentUser);
     }
 
-    public function it_should_create_new_organization(EntityManager $entityManager, UserEntity $currentUser)
+    public function it_should_create_new_organization(EntityManager $entityManager, UserEntity $currentUser, CityEntity $city)
     {
         $entityManager->persist(Argument::type(OrganizationEntity::class))->shouldBeCalled();
 
         $entityManager->flush()->shouldBeCalled();
 
-        $this->create('title', 'description')->shouldReturn([]);
+        $this->create('title', 'description', $city)->shouldReturn([]);
     }
 
     public function it_should_find_organization_based_on_title(
