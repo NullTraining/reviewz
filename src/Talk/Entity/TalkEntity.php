@@ -44,6 +44,11 @@ class TalkEntity
         $this->speaker = $speaker;
     }
 
+    public function hasSpeaker(): bool
+    {
+        //@TODO:
+    }
+
     public function getMeetup(): MeetupEntity
     {
         return $this->meetup;

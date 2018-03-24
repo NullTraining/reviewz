@@ -8,6 +8,7 @@ use Organization\Entity\ClaimEntity;
 use Organization\Entity\OrganizationEntity;
 use Organization\Repository\ClaimRepository;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Talk\Entity\TalkEntity;
 use User\Entity\UserEntity;
 
@@ -21,6 +22,25 @@ class ClaimControllerSpec extends ObjectBehavior
     public function it_is_initializable()
     {
         $this->shouldHaveType(ClaimController::class);
+    }
+
+    public function it_can_claim_talk_without_speaker(TalkEntity $talk, EntityManager $entityManager)
+    {
+        $talk->hasSpeaker()->shouldBeCalled()->willReturn(false);
+
+        $entityManager->persist(Argument::type(ClaimEntity::class))
+            ->shouldBeCalled();
+        $entityManager->flush()
+            ->shouldBeCalled();
+
+        $this->claim($talk);
+    }
+
+    public function it_cant_claim_talk_with_speaker(TalkEntity $talk)
+    {
+        $talk->hasSpeaker()->shouldBeCalled()->willReturn(true);
+
+        $this->claim($talk);
     }
 
     public function it_shows_all_pending_claims_to_organizer(

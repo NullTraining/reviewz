@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManager;
 use Organization\Entity\ClaimEntity;
 use Organization\Entity\OrganizationEntity;
 use Organization\Repository\ClaimRepository;
+use Talk\Entity\TalkEntity;
 use User\Entity\UserEntity;
 
 class ClaimController
@@ -24,6 +25,18 @@ class ClaimController
         $this->claimRepository = $claimRepository;
         $this->entityManager   = $entityManager;
         $this->currentUser     = $currentUser;
+    }
+
+    public function claim(TalkEntity $talk)
+    {
+        if (true === $talk->hasSpeaker()) {
+            return;
+        }
+
+        $claim = new ClaimEntity($talk, $this->currentUser);
+
+        $this->entityManager->persist($claim);
+        $this->entityManager->flush();
     }
 
     public function showPendingClaims(OrganizationEntity $organization)
