@@ -30,4 +30,16 @@ class RsvpController
         $this->entityManager->persist($meetup);
         $this->entityManager->flush();
     }
+
+    public function rsvpNo(MeetupEntity $meetup)
+    {
+        if (false === $meetup->getOrganization()->isMember($this->currentUser)) {
+            throw new \DomainException('User must be a member of organization to RSVP to a meetup');
+        }
+
+        $meetup->addNotComing($this->currentUser);
+
+        $this->entityManager->persist($meetup);
+        $this->entityManager->flush();
+    }
 }
