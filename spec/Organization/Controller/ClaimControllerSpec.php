@@ -40,7 +40,7 @@ class ClaimControllerSpec extends ObjectBehavior
     {
         $talk->hasSpeaker()->shouldBeCalled()->willReturn(true);
 
-        $this->claim($talk);
+        $this->shouldThrow(\DomainException::class)->duringClaim($talk);
     }
 
     public function it_shows_all_pending_claims_to_organizer(
