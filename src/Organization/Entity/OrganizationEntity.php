@@ -2,6 +2,7 @@
 
 namespace Organization\Entity;
 
+use Event\Entity\EventEntity;
 use User\Entity\UserEntity;
 
 class OrganizationEntity
@@ -69,5 +70,11 @@ class OrganizationEntity
     public function isApproved(): bool
     {
         return $this->approved;
+    }
+
+    /** @SuppressWarnings("PHPMD.UnusedFormalParameter") */
+    public function addEvent(EventEntity $event)
+    {
+        //TODO:
     }
 }
