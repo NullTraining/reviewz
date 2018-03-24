@@ -19,6 +19,8 @@ class OrganizationEntity
      * @var \User\Entity\UserEntity
      */
     private $founder;
+    /** @var UserEntity[] */
+    private $members;
 
     /** @var bool */
     private $approved;
@@ -55,6 +57,16 @@ class OrganizationEntity
     public function getFounder(): UserEntity
     {
         return $this->founder;
+    }
+
+    public function addMember(UserEntity $user): void
+    {
+        $this->members[] = $user;
+    }
+
+    public function getMembers(): array
+    {
+        return $this->members;
     }
 
     public function approve(): void

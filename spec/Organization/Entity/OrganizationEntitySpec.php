@@ -33,6 +33,12 @@ class OrganizationEntitySpec extends ObjectBehavior
         $this->getFounder()->shouldReturn($founder);
     }
 
+    public function it_should_have_user_as_one_of_members(UserEntity $user)
+    {
+        $this->addMember($user);
+        $this->getMembers()->shouldContain($user);
+    }
+
     public function it_should_approve_organization()
     {
         $this->approve();
