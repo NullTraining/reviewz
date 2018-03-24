@@ -2,12 +2,20 @@
 
 namespace spec\User\Entity;
 
+use Geo\Entity\CityEntity;
 use Organization\Entity\OrganizationEntity;
 use PhpSpec\ObjectBehavior;
 use User\Entity\UserEntity;
 
 class UserEntitySpec extends ObjectBehavior
 {
+    public function let(CityEntity $city)
+    {
+        $this->beConstructedWith(
+            $city
+        );
+    }
+
     public function it_is_initializable()
     {
         $this->shouldHaveType(UserEntity::class);
@@ -25,5 +33,10 @@ class UserEntitySpec extends ObjectBehavior
         $userOrganizations = $this->getOrganizations();
 
         $userOrganizations->shouldContain($organization);
+    }
+
+    public function it_exposes_city(CityEntity $city)
+    {
+        $this->getCity()->shouldReturn($city);
     }
 }
