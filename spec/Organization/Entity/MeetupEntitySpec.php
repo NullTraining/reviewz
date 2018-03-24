@@ -26,4 +26,11 @@ class MeetupEntitySpec extends ObjectBehavior
 
         $this->getNotComingList()->shouldReturn([$notComing]);
     }
+
+    public function it_will_add_user_to_maybe_coming_list(UserEntity $maybeComing)
+    {
+        $this->addMaybeComing($maybeComing);
+
+        $this->getMaybeComingList()->shouldReturn([$maybeComing]);
+    }
 }
