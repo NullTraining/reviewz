@@ -19,6 +19,9 @@ class OrganizationEntity
      */
     private $founder;
 
+    /** @var bool */
+    private $approved;
+
     public function __construct(string $title, string $description, UserEntity $founder)
     {
         $this->title       = $title;
@@ -45,5 +48,15 @@ class OrganizationEntity
     public function getFounder(): UserEntity
     {
         return $this->founder;
+    }
+
+    public function approve(): void
+    {
+        $this->approved = true;
+    }
+
+    public function isApproved(): bool
+    {
+        return $this->approved;
     }
 }
