@@ -7,7 +7,7 @@
     </target>
 
     <target name="all" depends="test,fix-codestandards,phpstan"/>
-    <target name="test" depends="phpspec,phpunit"/>
+    <target name="test" depends="phpspec,phpunit,behat"/>
 
     <target name="fix-codestandards" depends="phpcbf,php-cs-fixer-fix,phpmd,phpcs"/>
     <target name="check-codestandards" depends="php-cs-fixer-check,phpmd,phpcs"/>
@@ -20,6 +20,10 @@
 
     <target name="phpspec" description="Run phpspec">
         <exec command="./vendor/bin/phpspec run" passthru="true" checkreturn="true"/>
+    </target>
+
+    <target name="behat" description="Run behat">
+        <exec command="./vendor/bin/behat" passthru="true" checkreturn="true"/>
     </target>
 
     <target name="phpunit" description="Run phpunit">
