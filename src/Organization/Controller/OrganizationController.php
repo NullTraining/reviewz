@@ -49,4 +49,19 @@ class OrganizationController
         $this->entityManager->persist($organization);
         $this->entityManager->flush();
     }
+
+    public function addMemberToOrganization(OrganizationEntity $organization): bool
+    {
+        $organization->addMember($this->currentUser);
+        $this->entityManager->persist($organization);
+        $this->entityManager->flush();
+
+        return true;
+    }
+
+    public function listMembers(OrganizationEntity $organization): array
+    {
+        return $organization->getMembers();
+    }
+
 }
