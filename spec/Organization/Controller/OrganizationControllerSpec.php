@@ -5,6 +5,7 @@ namespace spec\Organization\Controller;
 use Doctrine\ORM\EntityManager;
 use Organization\Controller\OrganizationController;
 use Organization\Entity\OrganizationEntity;
+use Organization\Repository\OrganizationRepository;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use User\Entity\UserEntity;
@@ -16,9 +17,12 @@ class OrganizationControllerSpec extends ObjectBehavior
         $this->shouldHaveType(OrganizationController::class);
     }
 
-    public function let(EntityManager $entityManager, UserEntity $currentUser)
-    {
-        $this->beConstructedWith($entityManager, $currentUser);
+    public function let(
+        EntityManager $entityManager,
+        OrganizationRepository $organizationRepository,
+        UserEntity $currentUser
+    ) {
+        $this->beConstructedWith($entityManager, $organizationRepository, $currentUser);
     }
 
     public function it_should_create_new_organization(EntityManager $entityManager, UserEntity $currentUser)
@@ -28,6 +32,15 @@ class OrganizationControllerSpec extends ObjectBehavior
         $entityManager->flush()->shouldBeCalled();
 
         $this->create('title', 'description')->shouldReturn([]);
+    }
+
+    public function it_should_find_organization_based_on_title(
+        OrganizationRepository $organizationRepository,
+        OrganizationEntity $organizationEntity
+    ) {
+        $organizationRepository->findByTitle('Organization Title')->shouldBeCalled()->willReturn($organizationEntity);
+
+        $this->findByTitle('Organization Title')->shouldReturn($organizationEntity);
     }
 
     public function it_should_add_current_user_to_organization_as_a_member(
