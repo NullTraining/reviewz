@@ -78,4 +78,33 @@ class RsvpControllerSpec extends ObjectBehavior
 
         $this->shouldThrow(\DomainException::class)->duringRsvpNo($meetup);
     }
+
+    public function it_will_add_member_to_maybe_coming_list_when_they_rsvp_maybe(
+        MeetupEntity $meetup,
+        EntityManager $entityManager,
+        UserEntity $currentUser,
+        OrganizationEntity $organization
+    ) {
+        $meetup->getOrganization()->shouldBeCalled()->willReturn($organization);
+        $organization->isMember($currentUser)->shouldBeCalled()->willReturn(true);
+
+        $meetup->addMaybeComing($currentUser)
+            ->shouldBeCalled();
+
+        $entityManager->persist($meetup)->shouldBeCalled();
+        $entityManager->flush()->shouldBeCalled();
+
+        $this->rsvpMaybe($meetup);
+    }
+
+    public function it_will_not_allow_non_members_to_rsvp_maybe(
+        MeetupEntity $meetup,
+        UserEntity $currentUser,
+        OrganizationEntity $organization
+    ) {
+        $meetup->getOrganization()->shouldBeCalled()->willReturn($organization);
+        $organization->isMember($currentUser)->shouldBeCalled()->willReturn(false);
+
+        $this->shouldThrow(\DomainException::class)->duringRsvpMaybe($meetup);
+    }
 }
