@@ -2,6 +2,7 @@
 
 namespace spec\Organization\Entity;
 
+use Geo\Entity\CityEntity;
 use Organization\Entity\OrganizationEntity;
 use PhpSpec\ObjectBehavior;
 use User\Entity\UserEntity;
@@ -13,9 +14,14 @@ class OrganizationEntitySpec extends ObjectBehavior
         $this->shouldHaveType(OrganizationEntity::class);
     }
 
-    public function let(UserEntity $founder)
+    public function let(UserEntity $founder, CityEntity $city)
     {
-        $this->beConstructedWith('Organization Title', 'Organization description.', $founder);
+        $this->beConstructedWith('Organization Title', 'Organization description.', $founder, $city);
+    }
+
+    public function it_should_have_hometown_set(CityEntity $city)
+    {
+        $this->getHometown()->shouldReturn($city);
     }
 
     public function it_should_have_title_set()
