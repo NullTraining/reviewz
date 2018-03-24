@@ -38,4 +38,10 @@ class OrganizationEntitySpec extends ObjectBehavior
         $this->approve();
         $this->isApproved()->shouldReturn(true);
     }
+
+    public function it_should_disapprove_organization()
+    {
+        $this->disapprove();
+        $this->isApproved()->shouldReturn(false);
+    }
 }

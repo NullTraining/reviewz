@@ -55,6 +55,11 @@ class OrganizationEntity
         $this->approved = true;
     }
 
+    public function disapprove(): void
+    {
+        $this->approved = false;
+    }
+
     public function isApproved(): bool
     {
         return $this->approved;
