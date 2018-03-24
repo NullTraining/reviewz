@@ -98,11 +98,17 @@
             "ref": "81dee417d2cc60cd1c9d6208dff2ec22a1103e93"
         }
     },
+    "hamcrest/hamcrest-php": {
+        "version": "v2.0.0"
+    },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
     "jean85/pretty-package-versions": {
         "version": "1.1"
+    },
+    "mockery/mockery": {
+        "version": "1.0"
     },
     "monolog/monolog": {
         "version": "1.23.0"
