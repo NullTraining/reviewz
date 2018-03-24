@@ -8,6 +8,8 @@ class MeetupEntity
 {
     /** @var array|UserEntity[] */
     private $attendees = [];
+    /** @var array|UserEntity[] */
+    private $notComingList = [];
 
     public function getOrganization(): OrganizationEntity
     {
@@ -22,5 +24,15 @@ class MeetupEntity
     public function getAttendees(): array
     {
         return $this->attendees;
+    }
+
+    public function addNotComing(UserEntity $notComing)
+    {
+        $this->notComingList[] = $notComing;
+    }
+
+    public function getNotComingList(): array
+    {
+        return $this->notComingList;
     }
 }
