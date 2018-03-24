@@ -33,4 +33,20 @@ class OrganizationController
 
         return [];
     }
+
+    public function approveOrganization(OrganizationEntity $organization)
+    {
+        $organization->approve();
+
+        $this->entityManager->persist($organization);
+        $this->entityManager->flush();
+    }
+
+    public function disapproveOrganization(OrganizationEntity $organization)
+    {
+        $organization->disapprove();
+
+        $this->entityManager->persist($organization);
+        $this->entityManager->flush();
+    }
 }

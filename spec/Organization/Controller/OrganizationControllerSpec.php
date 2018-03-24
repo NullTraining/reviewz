@@ -29,4 +29,24 @@ class OrganizationControllerSpec extends ObjectBehavior
 
         $this->create('title', 'description')->shouldReturn([]);
     }
+
+    public function it_should_approve_organization(OrganizationEntity $organization, EntityManager $entityManager)
+    {
+        $organization->approve()->shouldBeCalled();
+
+        $entityManager->persist($organization)->shouldBeCalled();
+        $entityManager->flush()->shouldBeCalled();
+
+        $this->approveOrganization($organization);
+    }
+
+    public function it_should_disapprove_organization(OrganizationEntity $organization, EntityManager $entityManager)
+    {
+        $organization->disapprove()->shouldBeCalled();
+
+        $entityManager->persist($organization)->shouldBeCalled();
+        $entityManager->flush()->shouldBeCalled();
+
+        $this->disapproveOrganization($organization);
+    }
 }
