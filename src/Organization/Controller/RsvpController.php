@@ -4,6 +4,7 @@ namespace Organization\Controller;
 
 use Doctrine\ORM\EntityManager;
 use Organization\Entity\MeetupEntity;
+use Organization\Entity\OrganizationEntity;
 use User\Entity\UserEntity;
 
 class RsvpController
@@ -21,9 +22,7 @@ class RsvpController
 
     public function rsvpYes(MeetupEntity $meetup)
     {
-        if (false === $meetup->getOrganization()->isMember($this->currentUser)) {
-            throw new \DomainException('User must be a member of organization to RSVP to a meetup');
-        }
+        $this->guardUserIsMemberOfOrganization($meetup->getOrganization());
 
         $meetup->addAttendee($this->currentUser);
 
@@ -33,9 +32,7 @@ class RsvpController
 
     public function rsvpNo(MeetupEntity $meetup)
     {
-        if (false === $meetup->getOrganization()->isMember($this->currentUser)) {
-            throw new \DomainException('User must be a member of organization to RSVP to a meetup');
-        }
+        $this->guardUserIsMemberOfOrganization($meetup->getOrganization());
 
         $meetup->addNotComing($this->currentUser);
 
@@ -45,13 +42,18 @@ class RsvpController
 
     public function rsvpMaybe(MeetupEntity $meetup)
     {
-        if (false === $meetup->getOrganization()->isMember($this->currentUser)) {
-            throw new \DomainException('User must be a member of organization to RSVP to a meetup');
-        }
+        $this->guardUserIsMemberOfOrganization($meetup->getOrganization());
 
         $meetup->addMaybeComing($this->currentUser);
 
         $this->entityManager->persist($meetup);
         $this->entityManager->flush();
+    }
+
+    private function guardUserIsMemberOfOrganization(OrganizationEntity $organization)
+    {
+        if (false === $organization->isMember($this->currentUser)) {
+            throw new \DomainException('User must be a member of organization to RSVP to a meetup');
+        }
     }
 }
