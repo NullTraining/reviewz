@@ -39,6 +39,12 @@ class OrganizationEntitySpec extends ObjectBehavior
         $this->getMembers()->shouldContain($user);
     }
 
+    public function it_should_not_add_same_member(UserEntity $user)
+    {
+        $this->addMember($user);
+        $this->shouldThrow(\DomainException::class)->during('addMember', [$user]);
+    }
+
     public function it_should_approve_organization()
     {
         $this->approve();

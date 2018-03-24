@@ -30,6 +30,7 @@ class OrganizationEntity
         $this->title       = $title;
         $this->description = $description;
         $this->founder     = $founder;
+        $this->members     = [];
     }
 
     /** @SuppressWarnings("PHPMD.UnusedFormalParameter") */
@@ -61,6 +62,9 @@ class OrganizationEntity
 
     public function addMember(UserEntity $user): void
     {
+        if (in_array($user, $this->members)) {
+            throw new \DomainException('This user is allready a member of this organization');
+        }
         $this->members[] = $user;
     }
 
