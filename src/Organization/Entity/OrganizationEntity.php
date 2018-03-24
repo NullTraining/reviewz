@@ -32,6 +32,12 @@ class OrganizationEntity
         //@TODO;
     }
 
+    /** @SuppressWarnings("PHPMD.UnusedFormalParameter") */
+    public function isMember(UserEntity $user): bool
+    {
+        //@TODO;
+    }
+
     public function getTitle(): string
     {
         return $this->title;
