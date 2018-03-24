@@ -30,6 +30,31 @@ class OrganizationControllerSpec extends ObjectBehavior
         $this->create('title', 'description')->shouldReturn([]);
     }
 
+    public function it_should_add_current_user_to_organization_as_a_member(
+        OrganizationEntity $organization,
+        EntityManager $entityManager,
+        UserEntity $currentUser
+    ) {
+        $organization->addMember($currentUser)->shouldBeCalled();
+        $entityManager->persist($organization)->shouldBeCalled();
+        $entityManager->flush()->shouldBeCalled();
+
+        $this->addMemberToOrganization($organization)->shouldReturn(true);
+    }
+
+    public function it_should_return_current_user_as_one_of_the_members_of_organization(
+        OrganizationEntity $organization,
+        UserEntity $currentUser
+    ) {
+        $organization->addMember($currentUser)->shouldBeCalled();
+
+        $this->addMemberToOrganization($organization);
+
+        $organization->getMembers()->shouldBeCalled()->willReturn([$currentUser]);
+
+        $this->listMembers($organization)->shouldContain($currentUser);
+    }
+
     public function it_should_approve_organization(OrganizationEntity $organization, EntityManager $entityManager)
     {
         $organization->approve()->shouldBeCalled();
