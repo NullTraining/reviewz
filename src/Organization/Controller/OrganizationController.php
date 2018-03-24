@@ -4,6 +4,7 @@ namespace Organization\Controller;
 
 use Doctrine\ORM\EntityManager;
 use Organization\Entity\OrganizationEntity;
+use Organization\Repository\OrganizationRepository;
 use User\Entity\UserEntity;
 
 class OrganizationController
@@ -16,14 +17,20 @@ class OrganizationController
      * @var \User\Entity\UserEntity
      */
     private $currentUser;
+    /**
+     * @var \Organization\Repository\OrganizationRepository
+     */
+    private $organizationRepository;
 
-    public function __construct(EntityManager $entityManager, UserEntity $currentUser)
+    public function __construct(EntityManager $entityManager, OrganizationRepository $organizationRepository,
+        UserEntity $currentUser)
     {
-        $this->entityManager = $entityManager;
-        $this->currentUser   = $currentUser;
+        $this->entityManager          = $entityManager;
+        $this->currentUser            = $currentUser;
+        $this->organizationRepository = $organizationRepository;
     }
 
-    public function create(string $title, string $description)
+    public function create(string $title, string $description): array
     {
         $organization = new OrganizationEntity($title, $description, $this->currentUser);
 
@@ -64,4 +71,8 @@ class OrganizationController
         return $organization->getMembers();
     }
 
+    public function findByTitle(string $title)
+    {
+        return $this->organizationRepository->findByTitle($title);
+    }
 }
