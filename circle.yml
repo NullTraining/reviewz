@@ -38,6 +38,10 @@ jobs:
           command: ./vendor/bin/phpspec run
 
       - run:
+          name: Behat
+          command: ./vendor/bin/behat
+
+      - run:
           name: PHPStan
           command: ./vendor/bin/phing phpstan
 
