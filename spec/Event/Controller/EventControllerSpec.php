@@ -5,6 +5,7 @@ namespace spec\Event\Controller;
 use Doctrine\ORM\EntityManager;
 use Event\Controller\EventController;
 use Event\Entity\EventEntity;
+use Geo\Entity\LocationEntity;
 use Organization\Entity\OrganizationEntity;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -22,19 +23,28 @@ class EventControllerSpec extends ObjectBehavior
         $this->shouldHaveType(EventController::class);
     }
 
-    public function it_can_create_event_for_organization_if_user_is_organization_organizer(\DateTime $eventDate, EntityManager $entityManager, OrganizationEntity $organization, UserEntity $currentUser)
-    {
+    public function it_can_create_event_for_organization_if_user_is_organization_organizer(
+        \DateTime $eventDate,
+        LocationEntity $location,
+        EntityManager $entityManager,
+        OrganizationEntity $organization,
+        UserEntity $currentUser
+    ) {
         $organization->isOrganizer($currentUser)->willReturn(true);
         $organization->addEvent(Argument::type(EventEntity::class))->shouldBeCalled();
         $entityManager->persist($organization)->shouldBeCalled();
         $entityManager->persist(Argument::type(EventEntity::class))->shouldBeCalled();
         $entityManager->flush()->shouldBeCalled();
-        $this->create($eventDate, $organization, 'Event title', 'Event description')->shouldReturnAnInstanceOf(EventEntity::class);
+        $this->create($eventDate, $location, $organization, 'Event title', 'Event description')->shouldReturnAnInstanceOf(EventEntity::class);
     }
 
-    public function it_should_throw_exception_when_creating_event_for_organization_if_user_is_not_organization_organizer(\DateTime $eventDate, OrganizationEntity $organization, UserEntity $currentUser)
-    {
+    public function it_should_throw_exception_when_creating_event_for_organization_if_user_is_not_organization_organizer(
+        \DateTime $eventDate,
+        LocationEntity $location,
+        OrganizationEntity $organization,
+        UserEntity $currentUser
+    ) {
         $organization->isOrganizer($currentUser)->willReturn(false);
-        $this->shouldThrow(\DomainException::class)->duringCreate($eventDate, $organization, 'Event title', 'Event description');
+        $this->shouldThrow(\DomainException::class)->duringCreate($eventDate, $location, $organization, 'Event title', 'Event description');
     }
 }
