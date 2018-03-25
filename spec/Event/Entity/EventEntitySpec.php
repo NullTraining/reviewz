@@ -23,7 +23,7 @@ class EventEntitySpec extends ObjectBehavior
         $this->shouldHaveType(EventEntity::class);
     }
 
-    public function it_exposes_eventdate_title_and_description(\DateTime $eventDate, LocationEntity $location)
+    public function it_exposes_event_details(\DateTime $eventDate, LocationEntity $location)
     {
         $this->getEventDate()->shouldReturn($eventDate);
         $this->getTitle()->shouldReturn('Event title');
