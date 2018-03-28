@@ -2,13 +2,13 @@
 
 namespace Talk\Entity;
 
-use Organization\Entity\MeetupEntity;
+use Event\Entity\EventEntity;
 use Organization\Entity\OrganizationEntity;
 use User\Entity\UserEntity;
 
 class TalkEntity
 {
-    /** @var MeetupEntity */
+    /** @var EventEntity */
     private $meetup;
     /**
      * @var string
@@ -28,7 +28,7 @@ class TalkEntity
     private $speaker;
 
     public function __construct(
-        MeetupEntity $meetup,
+        EventEntity $meetup,
         string $title,
         string $description,
         string $speakerName
@@ -49,7 +49,7 @@ class TalkEntity
         //@TODO:
     }
 
-    public function getMeetup(): MeetupEntity
+    public function getMeetup(): EventEntity
     {
         return $this->meetup;
     }
