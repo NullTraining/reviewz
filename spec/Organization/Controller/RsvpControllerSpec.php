@@ -3,8 +3,8 @@
 namespace spec\Organization\Controller;
 
 use Doctrine\ORM\EntityManager;
+use Event\Entity\EventEntity;
 use Organization\Controller\RsvpController;
-use Organization\Entity\MeetupEntity;
 use Organization\Entity\OrganizationEntity;
 use PhpSpec\ObjectBehavior;
 use User\Entity\UserEntity;
@@ -22,7 +22,7 @@ class RsvpControllerSpec extends ObjectBehavior
     }
 
     public function it_will_add_member_to_attendee_list_when_they_rsvp_yes(
-        MeetupEntity $meetup,
+        EventEntity $meetup,
         EntityManager $entityManager,
         UserEntity $currentUser,
         OrganizationEntity $organization
@@ -40,7 +40,7 @@ class RsvpControllerSpec extends ObjectBehavior
     }
 
     public function it_will_not_allow_non_members_to_rsvp_yes(
-        MeetupEntity $meetup,
+        EventEntity $meetup,
         UserEntity $currentUser,
         OrganizationEntity $organization
     ) {
@@ -51,7 +51,7 @@ class RsvpControllerSpec extends ObjectBehavior
     }
 
     public function it_will_add_member_to_not_coming_list_when_they_rsvp_no(
-        MeetupEntity $meetup,
+        EventEntity $meetup,
         EntityManager $entityManager,
         UserEntity $currentUser,
         OrganizationEntity $organization
@@ -69,7 +69,7 @@ class RsvpControllerSpec extends ObjectBehavior
     }
 
     public function it_will_not_allow_non_members_to_rsvp_no(
-        MeetupEntity $meetup,
+        EventEntity $meetup,
         UserEntity $currentUser,
         OrganizationEntity $organization
     ) {
@@ -80,7 +80,7 @@ class RsvpControllerSpec extends ObjectBehavior
     }
 
     public function it_will_add_member_to_maybe_coming_list_when_they_rsvp_maybe(
-        MeetupEntity $meetup,
+        EventEntity $meetup,
         EntityManager $entityManager,
         UserEntity $currentUser,
         OrganizationEntity $organization
@@ -98,7 +98,7 @@ class RsvpControllerSpec extends ObjectBehavior
     }
 
     public function it_will_not_allow_non_members_to_rsvp_maybe(
-        MeetupEntity $meetup,
+        EventEntity $meetup,
         UserEntity $currentUser,
         OrganizationEntity $organization
     ) {

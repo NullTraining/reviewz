@@ -3,7 +3,7 @@
 namespace Organization\Controller;
 
 use Doctrine\ORM\EntityManager;
-use Organization\Entity\MeetupEntity;
+use Event\Entity\EventEntity;
 use Organization\Entity\OrganizationEntity;
 use User\Entity\UserEntity;
 
@@ -20,7 +20,7 @@ class RsvpController
         $this->currentUser   = $currentUser;
     }
 
-    public function rsvpYes(MeetupEntity $meetup)
+    public function rsvpYes(EventEntity $meetup)
     {
         $this->guardUserIsMemberOfOrganization($meetup->getOrganization());
 
@@ -30,7 +30,7 @@ class RsvpController
         $this->entityManager->flush();
     }
 
-    public function rsvpNo(MeetupEntity $meetup)
+    public function rsvpNo(EventEntity $meetup)
     {
         $this->guardUserIsMemberOfOrganization($meetup->getOrganization());
 
@@ -40,7 +40,7 @@ class RsvpController
         $this->entityManager->flush();
     }
 
-    public function rsvpMaybe(MeetupEntity $meetup)
+    public function rsvpMaybe(EventEntity $meetup)
     {
         $this->guardUserIsMemberOfOrganization($meetup->getOrganization());
 

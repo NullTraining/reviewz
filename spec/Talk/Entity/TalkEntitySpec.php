@@ -2,14 +2,14 @@
 
 namespace spec\Talk\Entity;
 
-use Organization\Entity\MeetupEntity;
+use Event\Entity\EventEntity;
 use PhpSpec\ObjectBehavior;
 use Talk\Entity\TalkEntity;
 use User\Entity\UserEntity;
 
 class TalkEntitySpec extends ObjectBehavior
 {
-    public function let(MeetupEntity $meetup)
+    public function let(EventEntity $meetup)
     {
         $this->beConstructedWith(
             $meetup,
@@ -24,7 +24,7 @@ class TalkEntitySpec extends ObjectBehavior
         $this->shouldHaveType(TalkEntity::class);
     }
 
-    public function it_exposes_meetup_it_belongs_to(MeetupEntity $meetup)
+    public function it_exposes_meetup_it_belongs_to(EventEntity $meetup)
     {
         $this->getMeetup()->shouldReturn($meetup);
     }
