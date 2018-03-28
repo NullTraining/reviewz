@@ -3,10 +3,10 @@
 namespace Event\Controller;
 
 use Doctrine\ORM\EntityManager;
+use DomainException;
 use Event\Entity\EventEntity;
 use Organization\Entity\OrganizationEntity;
 use User\Entity\UserEntity;
-use Zend\EventManager\Exception\DomainException;
 
 class EventController
 {
