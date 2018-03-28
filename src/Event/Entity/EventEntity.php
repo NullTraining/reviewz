@@ -3,6 +3,8 @@
 namespace Event\Entity;
 
 use Geo\Entity\LocationEntity;
+use Organization\Entity\OrganizationEntity;
+use User\Entity\UserEntity;
 
 class EventEntity
 {
@@ -14,6 +16,12 @@ class EventEntity
     private $eventDate;
     /** @var LocationEntity */
     private $location;
+    /** @var array|UserEntity[] */
+    private $attendees = [];
+    /** @var array|UserEntity[] */
+    private $notComingList = [];
+    /** @var array|UserEntity[] */
+    private $maybeComingList = [];
 
     /**
      * EventEntity constructor.
@@ -61,5 +69,40 @@ class EventEntity
     public function getLocation(): LocationEntity
     {
         return $this->location;
+    }
+
+    public function getOrganization(): OrganizationEntity
+    {
+        //@TODO;
+    }
+
+    public function addAttendee(UserEntity $attendee)
+    {
+        $this->attendees[] = $attendee;
+    }
+
+    public function getAttendees(): array
+    {
+        return $this->attendees;
+    }
+
+    public function addNotComing(UserEntity $notComing)
+    {
+        $this->notComingList[] = $notComing;
+    }
+
+    public function getNotComingList(): array
+    {
+        return $this->notComingList;
+    }
+
+    public function addMaybeComing(UserEntity $maybeComing)
+    {
+        $this->maybeComingList[] = $maybeComing;
+    }
+
+    public function getMaybeComingList(): array
+    {
+        return $this->maybeComingList;
     }
 }
