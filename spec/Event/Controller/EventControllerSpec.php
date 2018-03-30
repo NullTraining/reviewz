@@ -47,4 +47,24 @@ class EventControllerSpec extends ObjectBehavior
         $organization->isOrganizer($currentUser)->willReturn(false);
         $this->shouldThrow(\DomainException::class)->duringCreate($eventDate, $location, $organization, 'Event title', 'Event description');
     }
+
+    public function it_should_confirm_user_attended_event(EntityManager $entityManager, EventEntity $event, UserEntity $attendee)
+    {
+        $entityManager->persist($event)->shouldBeCalled();
+        $entityManager->flush()->shouldBeCalled();
+
+        $this->confirmUserAttendedEvent($event, $attendee);
+    }
+
+    public function it_should_throw_exception_when_trying_to_confirm_same_attendee_twice(
+        EntityManager $entityManager,
+        EventEntity $event,
+        UserEntity $attendee
+    ) {
+        $event->confirmUserAttended($attendee)->shouldBeCalled();
+
+        $event->confirmUserAttended($attendee)->shouldBeCalled()->willThrow(\DomainException::class);
+
+        $this->shouldThrow(\DomainException::class)->during('confirmUserAttendedEvent', [$event, $attendee]);
+    }
 }
