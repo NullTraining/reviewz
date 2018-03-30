@@ -2,6 +2,7 @@
 
 namespace Event\Entity;
 
+use DomainException;
 use Geo\Entity\LocationEntity;
 use Organization\Entity\OrganizationEntity;
 use User\Entity\UserEntity;
@@ -22,6 +23,8 @@ class EventEntity
     private $notComingList = [];
     /** @var array|UserEntity[] */
     private $maybeComingList = [];
+    /** @var array|UserEntity[] */
+    private $confirmedAttendees = [];
 
     /**
      * EventEntity constructor.
@@ -104,5 +107,18 @@ class EventEntity
     public function getMaybeComingList(): array
     {
         return $this->maybeComingList;
+    }
+
+    public function confirmUserAttended(UserEntity $attendee): void
+    {
+        if (in_array($attendee, $this->confirmedAttendees, true)) {
+            throw new DomainException('User already marked as confirmed attendee.');
+        }
+        $this->confirmedAttendees[] = $attendee;
+    }
+
+    public function getConfirmedAttendees(): array
+    {
+        return $this->confirmedAttendees;
     }
 }

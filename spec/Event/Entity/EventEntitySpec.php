@@ -2,6 +2,7 @@
 
 namespace spec\Event\Entity;
 
+use DomainException;
 use Event\Entity\EventEntity;
 use Geo\Entity\LocationEntity;
 use PhpSpec\ObjectBehavior;
@@ -51,5 +52,18 @@ class EventEntitySpec extends ObjectBehavior
         $this->addMaybeComing($maybeComing);
 
         $this->getMaybeComingList()->shouldReturn([$maybeComing]);
+    }
+
+    public function it_should_add_user_to_confirmed_attendees_list(UserEntity $attendee)
+    {
+        $this->confirmUserAttended($attendee);
+
+        $this->getConfirmedAttendees()->shouldContain($attendee);
+    }
+
+    public function it_should_raise_exception_when_trying_to_confirm_same_attendee_twice(UserEntity $attendee)
+    {
+        $this->confirmUserAttended($attendee);
+        $this->shouldThrow(DomainException::class)->during('confirmUserAttended', [$attendee]);
     }
 }
