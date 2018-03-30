@@ -37,4 +37,16 @@ class EventController
 
         return $event;
     }
+
+    public function confirmUserAttendedEvent(EventEntity $event, UserEntity $attendee): void
+    {
+        try {
+            $event->confirmUserAttended($attendee);
+
+            $this->entityManager->persist($event);
+            $this->entityManager->flush();
+        } catch (DomainException $ex) {
+            throw $ex;
+        }
+    }
 }
