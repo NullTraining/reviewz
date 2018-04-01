@@ -91,8 +91,16 @@ class EventEntity
         return $this->organization;
     }
 
-    public function addAttendee(UserEntity $attendee)
+    /**
+     * @param \User\Entity\UserEntity $attendee
+     *
+     * @throws \DomainException
+     */
+    public function addAttendee(UserEntity $attendee): void
     {
+        if (\in_array($attendee, $this->attendees, true)) {
+            throw new DomainException('User already added to list of attendees.');
+        }
         $this->attendees[] = $attendee;
 
         if (true === $this->isNotComing($attendee)) {

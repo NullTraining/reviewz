@@ -53,6 +53,12 @@ class EventEntitySpec extends ObjectBehavior
         $this->getAttendees()->shouldReturn([$attendee]);
     }
 
+    public function it_should_raise_exception_when_trying_to_add_same_user_as_attendee_twice(UserEntity $user)
+    {
+        $this->addAttendee($user);
+        $this->shouldThrow(DomainException::class)->during('addAttendee', [$user]);
+    }
+
     public function it_will_add_user_to_not_coming_list(UserEntity $notComing)
     {
         $this->addNotComing($notComing);
