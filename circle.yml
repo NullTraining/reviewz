@@ -20,7 +20,7 @@ jobs:
       - checkout
 
       - restore_cache:
-          key: cache-v1-{{ checksum "composer.lock" }}
+          key: cache-v2-{{ checksum "composer.lock" }}
 
       - run:
           name: Composer install
@@ -43,7 +43,7 @@ jobs:
           command: ./vendor/bin/phing check-codestandards
 
       - save_cache:
-          key: cache-v1-{{ checksum "composer.lock" }}
+          key: cache-v2-{{ checksum "composer.lock" }}
           paths:
             - ./vendor
 
