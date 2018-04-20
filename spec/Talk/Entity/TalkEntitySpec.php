@@ -41,4 +41,26 @@ class TalkEntitySpec extends ObjectBehavior
 
         $this->getSpeakerName()->shouldReturn('John Travolta');
     }
+
+    public function it_exposes_talk_title()
+    {
+        $this->getTitle()->shouldReturn('Title of the talk');
+    }
+
+    public function it_can_change_talk_title()
+    {
+        $this->changeTitle('New title for old talk');
+        $this->getTitle()->shouldReturn('New title for old talk');
+    }
+
+    public function it_exposes_talk_description()
+    {
+        $this->getDescription()->shouldReturn('Very very long text');
+    }
+
+    public function it_can_change_talk_description()
+    {
+        $this->changeDescription('A bit shorter long text');
+        $this->getDescription()->shouldReturn('A bit shorter long text');
+    }
 }

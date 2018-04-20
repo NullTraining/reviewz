@@ -109,4 +109,24 @@ class TalkEntity
 
         return $this->speakerName;
     }
+
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    public function changeTitle(string $talkTitle): void
+    {
+        $this->title = $talkTitle;
+    }
+
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    public function changeDescription(string $talkDescription): void
+    {
+        $this->description = $talkDescription;
+    }
 }
