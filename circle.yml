@@ -3,7 +3,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: msvrtan/square:0.2.2
+      - image: circleci/php:7.1-cli-node
         environment:
           - APP_ENV=test
           - APP_DEBUG=1
