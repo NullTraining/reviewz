@@ -1,7 +1,7 @@
 version: 2
 
 jobs:
-  build:
+  phpspec:
     docker:
       - image: msvrtan/square:0.2.2
         environment:
@@ -24,28 +24,89 @@ jobs:
           name: PHPSpec
           command: ./vendor/bin/phpspec run
 
-      - run:
-          name: Behat
-          command: ./vendor/bin/behat --strict --no-interaction
-
-      - run:
-          name: PHPStan
-          command: ./vendor/bin/phing phpstan
-
-      - run:
-          name: Code standards
-          command: ./vendor/bin/phing check-codestandards
-
       - save_cache:
           key: cache-v1-{{ checksum "composer.lock" }}
           paths:
             - ./vendor
 
+  behat:
+    docker:
+      - image: msvrtan/square:0.2.2
+        environment:
+          - APP_ENV=test
+          - APP_DEBUG=1
+          - APP_SECRET=123
+    working_directory: /var/www
+    parallel: 1
+    steps:
+      - checkout
+
+      - restore_cache:
+          key: cache-v1-{{ checksum "composer.lock" }}
+
+      - run:
+          name: Composer install
+          command: composer install -n --prefer-dist
+
+      - run:
+          name: Behat
+          command: ./vendor/bin/behat --strict --no-interaction
+
+  phpstan:
+    docker:
+      - image: msvrtan/square:0.2.2
+        environment:
+          - APP_ENV=test
+          - APP_DEBUG=1
+          - APP_SECRET=123
+    working_directory: /var/www
+    parallel: 1
+    steps:
+      - checkout
+
+      - restore_cache:
+          key: cache-v1-{{ checksum "composer.lock" }}
+
+      - run:
+          name: Composer install
+          command: composer install -n --prefer-dist
+
+      - run:
+          name: PHPStan
+          command: ./vendor/bin/phing phpstan
+
+  code_standards:
+    docker:
+      - image: msvrtan/square:0.2.2
+        environment:
+          - APP_ENV=test
+          - APP_DEBUG=1
+          - APP_SECRET=123
+    working_directory: /var/www
+    parallel: 1
+    steps:
+      - checkout
+
+      - restore_cache:
+          key: cache-v1-{{ checksum "composer.lock" }}
+
+      - run:
+          name: Composer install
+          command: composer install -n --prefer-dist
+
+      - run:
+          name: Code standards
+          command: ./vendor/bin/phing check-codestandards
+
+
 workflows:
   version: 2
   build-and-deploy:
     jobs:
-      - build
+      - phpspec
+      - behat
+      - phpstan
+      - code_standards
 
 
 notify:
