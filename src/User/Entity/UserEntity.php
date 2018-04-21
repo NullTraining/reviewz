@@ -26,6 +26,10 @@ class UserEntity
     /**
      * @var string
      */
+    private $phoneNumber;
+    /**
+     * @var string
+     */
     private $password;
     /**
      * @var \Geo\Entity\CityEntity
@@ -72,5 +76,13 @@ class UserEntity
     public function getCity(): CityEntity
     {
         return $this->city;
+    }
+
+    /**
+     * @param string $phoneNumber
+     */
+    public function setPhoneNumber(string $phoneNumber)
+    {
+        $this->phoneNumber = $phoneNumber;
     }
 }
