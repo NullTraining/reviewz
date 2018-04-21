@@ -55,4 +55,12 @@ class DomainContext implements Context
     {
         Assert::eq($this->user, $this->organization->getFounder());
     }
+
+    /**
+     * @Then :name is organizer of :orgName organization
+     */
+    public function isOrganizerOfOrganization()
+    {
+        Assert::true($this->organization->isOrganizer($this->user));
+    }
 }
