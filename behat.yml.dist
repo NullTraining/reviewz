@@ -3,6 +3,8 @@ default:
         organization:
             contexts:
                 - Organization\Behat\OrganizationDomainContext
+            filters:
+                tags: "@organization"
         user:
             contexts:
                 - User\Behat\UserDomainContext
