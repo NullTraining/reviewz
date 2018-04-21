@@ -29,7 +29,10 @@ class DomainContext implements Context
      * @When I create :orgName organization with description :orgDescription in :cityName, :countryName
      */
     public function iCreateOrganizationWithDescriptionIn(
-        string $orgName, string $orgDescription, string $cityName, string $countryName
+        string $orgName,
+        string $orgDescription,
+        string $cityName,
+        string $countryName
     ) {
         $country  = new CountryEntity('TODO:xx', $countryName);
         $homeTown = new CityEntity($cityName, $country);
@@ -43,5 +46,13 @@ class DomainContext implements Context
     public function thereIsNewOrganization(string $orgName)
     {
         Assert::eq($orgName, $this->organization->getTitle());
+    }
+
+    /**
+     * @Then :name is founder of :orgName organization
+     */
+    public function isFounderOfOrganization()
+    {
+        Assert::eq($this->user, $this->organization->getFounder());
     }
 }
