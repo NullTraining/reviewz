@@ -30,6 +30,11 @@ class OrganizationEntity
      */
     private $hometown;
 
+    /**
+     * @var EventEntity[]
+     */
+    private $events;
+
     public function __construct(string $title, string $description, UserEntity $founder, CityEntity $hometown)
     {
         $this->title       = $title;
@@ -37,6 +42,7 @@ class OrganizationEntity
         $this->founder     = $founder;
         $this->members     = [];
         $this->hometown    = $hometown;
+        $this->events      = [];
     }
 
     public function isOrganizer(UserEntity $user): bool
@@ -100,11 +106,16 @@ class OrganizationEntity
     /** @SuppressWarnings("PHPMD.UnusedFormalParameter") */
     public function addEvent(EventEntity $event)
     {
-        //TODO:
+        $this->events[] = $event;
     }
 
     public function getHometown()
     {
         return $this->hometown;
+    }
+
+    public function getEvents(): array
+    {
+        return $this->events;
     }
 }

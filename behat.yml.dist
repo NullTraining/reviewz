@@ -10,3 +10,8 @@ default:
                 - User\Behat\UserDomainContext
             filters:
                 tags: "@user"
+        event:
+            contexts:
+                - Event\Behat\EventDomainContext
+            filters:
+                tags: "@event"
