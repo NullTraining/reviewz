@@ -8,17 +8,48 @@ use Organization\Entity\OrganizationEntity;
 class UserEntity
 {
     /**
-     * @var OrganizationEntity[]
+     * @var string
      */
-    private $organizations;
+    private $username;
+    /**
+     * @var string
+     */
+    private $firstName;
+    /**
+     * @var string
+     */
+    private $lastName;
+    /**
+     * @var string
+     */
+    private $email;
+    /**
+     * @var string
+     */
+    private $password;
     /**
      * @var \Geo\Entity\CityEntity
      */
     private $city;
+    /**
+     * @var OrganizationEntity[]
+     */
+    private $organizations;
 
-    public function __construct(CityEntity $city)
-    {
-        $this->city = $city;
+    public function __construct(
+        string $username,
+        string $firstName,
+        string $lastName,
+        string $email,
+        string $password,
+        CityEntity $city
+    ) {
+        $this->username  = $username;
+        $this->firstName = $firstName;
+        $this->lastName  = $lastName;
+        $this->email     = $email;
+        $this->password  = $password;
+        $this->city      = $city;
     }
 
     public function getName(): string

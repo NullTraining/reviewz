@@ -11,9 +11,7 @@ class UserEntitySpec extends ObjectBehavior
 {
     public function let(CityEntity $city)
     {
-        $this->beConstructedWith(
-            $city
-        );
+        $this->beConstructedWith('alexsmith', 'Alex', 'Smith', 'alex.smith@example.com', 'abc123', $city);
     }
 
     public function it_is_initializable()
