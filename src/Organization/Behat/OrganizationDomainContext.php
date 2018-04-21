@@ -54,6 +54,22 @@ class OrganizationDomainContext implements Context
     }
 
     /**
+     * @When I approve :orgName organization
+     */
+    public function iApproveOrganization()
+    {
+        $this->organization->approve();
+    }
+
+    /**
+     * @When I reject :orgName organization
+     */
+    public function iRejectOrganization()
+    {
+        $this->organization->disapprove();
+    }
+
+    /**
      * @Then there is new :orgName organization
      */
     public function thereIsNewOrganization(string $orgName)
@@ -78,18 +94,18 @@ class OrganizationDomainContext implements Context
     }
 
     /**
-     * @When I approve :orgName organization
-     */
-    public function iApproveOrganization()
-    {
-        $this->organization->approve();
-    }
-
-    /**
      * @Then :orgName organization is approved
      */
     public function organizationIsApproved()
     {
         Assert::true($this->organization->isApproved());
+    }
+
+    /**
+     * @Then :orgName organization is rejected
+     */
+    public function organizationIsRejected()
+    {
+        Assert::false($this->organization->isApproved());
     }
 }
