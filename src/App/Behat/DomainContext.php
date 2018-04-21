@@ -3,6 +3,7 @@
 namespace App\Behat;
 
 use Behat\Behat\Context\Context;
+use Behat\Behat\Tester\Exception\PendingException;
 use Geo\Entity\CityEntity;
 use Geo\Entity\CountryEntity;
 use Mockery\MockInterface;
@@ -26,6 +27,20 @@ class DomainContext implements Context
     }
 
     /**
+     * @Given new :orgName organization was created
+     */
+    public function newOrganizationWasCreated($orgName)
+    {
+
+        $this->organization = new OrganizationEntity(
+            $orgName,
+            '',
+            \Mockery::mock(UserEntity::class),
+            \Mockery::mock(CityEntity::class)
+        );
+    }
+
+    /**
      * @When I create :orgName organization with description :orgDescription in :cityName, :countryName
      */
     public function iCreateOrganizationWithDescriptionIn(
@@ -34,7 +49,7 @@ class DomainContext implements Context
         string $cityName,
         string $countryName
     ) {
-        $country  = new CountryEntity('TODO:xx', $countryName);
+        $country = new CountryEntity('TODO:xx', $countryName);
         $homeTown = new CityEntity($cityName, $country);
 
         $this->organization = new OrganizationEntity($orgName, $orgDescription, $this->user, $homeTown);
@@ -62,5 +77,21 @@ class DomainContext implements Context
     public function isOrganizerOfOrganization()
     {
         Assert::true($this->organization->isOrganizer($this->user));
+    }
+
+    /**
+     * @When I approve :orgName organization
+     */
+    public function iApproveOrganization($arg1)
+    {
+        $this->organization->approve();
+    }
+
+    /**
+     * @Then :orgName organization is approved
+     */
+    public function organizationIsApproved()
+    {
+        Assert::true($this->organization->isApproved());
     }
 }
