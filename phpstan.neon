@@ -1,6 +1,7 @@
 parameters:
 	bootstrap: tests/bootstrap.php
 	ignoreErrors:
+	    - '#Parameter \#3 \$founder of class Organization\\Entity\\OrganizationEntity constructor expects User\\Entity\\UserEntity, Mockery\\MockInterface|User\\Entity\\UserEntity given.#'
 
 
 
