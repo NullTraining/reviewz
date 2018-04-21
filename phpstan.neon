@@ -3,7 +3,7 @@ parameters:
 	ignoreErrors:
 	    - '#Parameter \#3 \$founder of class Organization\\Entity\\OrganizationEntity constructor expects User\\Entity\\UserEntity, Mockery\\MockInterface|User\\Entity\\UserEntity given.#'
 	    - '#Parameter \#4 \$hometown of class Organization\\Entity\\OrganizationEntity constructor expects Geo\\Entity\\CityEntity, Mockery\\MockInterface given.#'
-
-
+	    - '#Parameter \#6 \$city of class User\\Entity\\UserEntity constructor expects Geo\\Entity\\CityEntity, Mockery\\MockInterface given.#'
+	    - '#Parameter \#2 \$city of class Geo\\Entity\\LocationEntity constructor expects Geo\\Entity\\CityEntity, Mockery\\MockInterface given.#'
 
 
