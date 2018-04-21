@@ -39,6 +39,35 @@ class TalkEntity
         $this->speakerName = $speakerName;
     }
 
+    /**
+     * @param string $title
+     */
+    public function changeTitle(string $title): void
+    {
+        $this->title = $title;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    public function changeDescription(string $description): void
+    {
+        $this->description = $description;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
     public function setSpeaker(UserEntity $speaker)
     {
         $this->speaker = $speaker;
