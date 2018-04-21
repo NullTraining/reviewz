@@ -21,11 +21,17 @@ class ClaimEntity
         $this->speaker = $speaker;
     }
 
+    /**
+     * @return TalkEntity
+     */
     public function getTalk(): TalkEntity
     {
         return $this->talk;
     }
 
+    /**
+     * @return UserEntity
+     */
     public function getSpeaker(): UserEntity
     {
         return $this->speaker;

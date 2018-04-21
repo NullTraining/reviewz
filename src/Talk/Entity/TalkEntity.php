@@ -27,6 +27,14 @@ class TalkEntity
      */
     private $speaker;
 
+    /**
+     * TalkEntity constructor.
+     *
+     * @param EventEntity $meetup
+     * @param string      $title
+     * @param string      $description
+     * @param string      $speakerName
+     */
     public function __construct(
         EventEntity $meetup,
         string $title,
@@ -39,6 +47,9 @@ class TalkEntity
         $this->speakerName = $speakerName;
     }
 
+    /**
+     * @param UserEntity $speaker
+     */
     public function setSpeaker(UserEntity $speaker)
     {
         $this->speaker = $speaker;
@@ -49,16 +60,25 @@ class TalkEntity
         //@TODO:
     }
 
+    /**
+     * @return EventEntity
+     */
     public function getMeetup(): EventEntity
     {
         return $this->meetup;
     }
 
+    /**
+     * @return OrganizationEntity
+     */
     public function getOrganization(): OrganizationEntity
     {
         //@TODO
     }
 
+    /**
+     * @return string
+     */
     public function getSpeakerName()
     {
         if (null !== $this->speaker) {

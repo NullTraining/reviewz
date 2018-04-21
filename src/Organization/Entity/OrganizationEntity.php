@@ -20,7 +20,9 @@ class OrganizationEntity
      * @var \User\Entity\UserEntity
      */
     private $founder;
-    /** @var UserEntity[] */
+    /**
+     * @var UserEntity[]
+     */
     private $members;
 
     /** @var bool */
@@ -30,6 +32,14 @@ class OrganizationEntity
      */
     private $hometown;
 
+    /**
+     * OrganizationEntity constructor.
+     *
+     * @param string     $title
+     * @param string     $description
+     * @param UserEntity $founder
+     * @param CityEntity $hometown
+     */
     public function __construct(string $title, string $description, UserEntity $founder, CityEntity $hometown)
     {
         $this->title       = $title;
@@ -39,6 +49,11 @@ class OrganizationEntity
         $this->hometown    = $hometown;
     }
 
+    /**
+     * @param UserEntity $user
+     *
+     * @return bool
+     */
     public function isOrganizer(UserEntity $user): bool
     {
         if ($user == $this->founder) {
@@ -54,21 +69,33 @@ class OrganizationEntity
         //@TODO;
     }
 
+    /**
+     * @return string
+     */
     public function getTitle(): string
     {
         return $this->title;
     }
 
+    /**
+     * @return string
+     */
     public function getDescription(): string
     {
         return $this->description;
     }
 
+    /**
+     * @return UserEntity
+     */
     public function getFounder(): UserEntity
     {
         return $this->founder;
     }
 
+    /**
+     * @param UserEntity $user
+     */
     public function addMember(UserEntity $user): void
     {
         if (in_array($user, $this->members)) {
@@ -77,6 +104,9 @@ class OrganizationEntity
         $this->members[] = $user;
     }
 
+    /**
+     * @return UserEntity[]
+     */
     public function getMembers(): array
     {
         return $this->members;
@@ -92,6 +122,9 @@ class OrganizationEntity
         $this->approved = false;
     }
 
+    /**
+     * @return bool
+     */
     public function isApproved(): bool
     {
         return $this->approved;
@@ -103,6 +136,9 @@ class OrganizationEntity
         //TODO:
     }
 
+    /**
+     * @return CityEntity
+     */
     public function getHometown()
     {
         return $this->hometown;

@@ -36,6 +36,16 @@ class UserEntity
      */
     private $organizations;
 
+    /**
+     * UserEntity constructor.
+     *
+     * @param string     $username
+     * @param string     $firstName
+     * @param string     $lastName
+     * @param string     $email
+     * @param string     $password
+     * @param CityEntity $city
+     */
     public function __construct(
         string $username,
         string $firstName,
@@ -52,11 +62,19 @@ class UserEntity
         $this->city      = $city;
     }
 
+    /**
+     * @return string
+     */
     public function getName(): string
     {
-        //@TODO
+        return sprintf('%s %s', $this->firstName, $this->lastName);
     }
 
+    /**
+     * @param OrganizationEntity $organization
+     *
+     * @return bool
+     */
     public function addOrganization(OrganizationEntity $organization): bool
     {
         $this->organizations[] = $organization;
@@ -64,11 +82,17 @@ class UserEntity
         return true;
     }
 
+    /**
+     * @return array
+     */
     public function getOrganizations(): array
     {
         return $this->organizations;
     }
 
+    /**
+     * @return CityEntity
+     */
     public function getCity(): CityEntity
     {
         return $this->city;

@@ -79,36 +79,57 @@ class EventEntity
         //@TODO;
     }
 
+    /**
+     * @param UserEntity $attendee
+     */
     public function addAttendee(UserEntity $attendee)
     {
         $this->attendees[] = $attendee;
     }
 
+    /**
+     * @return array
+     */
     public function getAttendees(): array
     {
         return $this->attendees;
     }
 
+    /**
+     * @param UserEntity $notComing
+     */
     public function addNotComing(UserEntity $notComing)
     {
         $this->notComingList[] = $notComing;
     }
 
+    /**
+     * @return array
+     */
     public function getNotComingList(): array
     {
         return $this->notComingList;
     }
 
+    /**
+     * @param UserEntity $maybeComing
+     */
     public function addMaybeComing(UserEntity $maybeComing)
     {
         $this->maybeComingList[] = $maybeComing;
     }
 
+    /**
+     * @return array
+     */
     public function getMaybeComingList(): array
     {
         return $this->maybeComingList;
     }
 
+    /**
+     * @param UserEntity $attendee
+     */
     public function confirmUserAttended(UserEntity $attendee): void
     {
         if (in_array($attendee, $this->confirmedAttendees, true)) {
@@ -117,6 +138,9 @@ class EventEntity
         $this->confirmedAttendees[] = $attendee;
     }
 
+    /**
+     * @return array
+     */
     public function getConfirmedAttendees(): array
     {
         return $this->confirmedAttendees;
