@@ -3,3 +3,6 @@ default:
         organization:
             contexts:
                 - Organization\Behat\OrganizationDomainContext
+        user:
+            contexts:
+                - User\Behat\UserDomainContext
