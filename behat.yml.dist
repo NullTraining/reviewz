@@ -8,3 +8,5 @@ default:
         user:
             contexts:
                 - User\Behat\UserDomainContext
+            filters:
+                tags: "@user"
