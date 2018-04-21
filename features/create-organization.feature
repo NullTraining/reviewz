@@ -1,3 +1,4 @@
+@organization
 Feature:
   As a user
   In order to start new community events

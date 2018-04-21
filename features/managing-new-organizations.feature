@@ -1,3 +1,4 @@
+@organization
 Feature:
   As an admin
   In order to manage content of the site
