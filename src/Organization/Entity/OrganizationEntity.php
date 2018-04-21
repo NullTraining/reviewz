@@ -39,10 +39,13 @@ class OrganizationEntity
         $this->hometown    = $hometown;
     }
 
-    /** @SuppressWarnings("PHPMD.UnusedFormalParameter") */
     public function isOrganizer(UserEntity $user): bool
     {
-        //@TODO;
+        if ($user == $this->founder) {
+            return true;
+        }
+
+        return false;
     }
 
     /** @SuppressWarnings("PHPMD.UnusedFormalParameter") */
