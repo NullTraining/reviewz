@@ -1,5 +1,5 @@
 default:
     suites:
-        default:
+        organization:
             contexts:
-                - App\Behat\DomainContext
+                - Organization\Behat\OrganizationDomainContext

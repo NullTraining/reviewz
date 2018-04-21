@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Behat;
+namespace Organization\Behat;
 
 use Behat\Behat\Context\Context;
-use Behat\Behat\Tester\Exception\PendingException;
 use Geo\Entity\CityEntity;
 use Geo\Entity\CountryEntity;
 use Mockery\MockInterface;
@@ -11,7 +10,7 @@ use Organization\Entity\OrganizationEntity;
 use User\Entity\UserEntity;
 use Webmozart\Assert\Assert;
 
-class DomainContext implements Context
+class OrganizationDomainContext implements Context
 {
     /** @var UserEntity|MockInterface */
     private $user;
@@ -31,7 +30,6 @@ class DomainContext implements Context
      */
     public function newOrganizationWasCreated($orgName)
     {
-
         $this->organization = new OrganizationEntity(
             $orgName,
             '',
@@ -49,7 +47,7 @@ class DomainContext implements Context
         string $cityName,
         string $countryName
     ) {
-        $country = new CountryEntity('TODO:xx', $countryName);
+        $country  = new CountryEntity('TODO:xx', $countryName);
         $homeTown = new CityEntity($cityName, $country);
 
         $this->organization = new OrganizationEntity($orgName, $orgDescription, $this->user, $homeTown);
@@ -82,7 +80,7 @@ class DomainContext implements Context
     /**
      * @When I approve :orgName organization
      */
-    public function iApproveOrganization($arg1)
+    public function iApproveOrganization()
     {
         $this->organization->approve();
     }
