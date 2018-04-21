@@ -58,7 +58,7 @@ class UserEntity
 
     public function getName(): string
     {
-        //@TODO
+        return sprintf('%s %s', $this->firstName, $this->lastName);
     }
 
     public function addOrganization(OrganizationEntity $organization): bool
