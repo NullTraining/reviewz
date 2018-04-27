@@ -25,3 +25,9 @@ Feature:
     And I'am logged in as "Alex Smith"
     When I claim "Something about nothing"
     Then I should have "Something about nothing" claimed
+
+  Scenario: Talks with speaker assigned can not be claimed
+    Given "Something about nothing" has "Jo Johnson" assigned as speaker
+    And I'am logged in as "Alex Smith"
+    When I claim "Something about nothing"
+    Then I should see an error saying there speaker is already assigned

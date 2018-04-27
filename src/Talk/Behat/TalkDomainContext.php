@@ -66,6 +66,14 @@ class TalkDomainContext implements Context
     }
 
     /**
+     * @Given :talkTitle has :speaker assigned as speaker
+     */
+    public function hasAssignedAsSpeaker(UserEntity $speaker)
+    {
+        $this->talk->setSpeaker($speaker);
+    }
+
+    /**
      * @Given :talkTitle has a pending claim by :user
      */
     public function hasPendingClaimBy(UserEntity $user)
@@ -109,6 +117,7 @@ class TalkDomainContext implements Context
 
     /**
      * @Then I should see an error saying there is a pending claim on the talk
+     * @Then I should see an error saying there speaker is already assigned
      */
     public function iShouldSeeAnErrorSayingThereIsPendingClaimOnTheTalk()
     {

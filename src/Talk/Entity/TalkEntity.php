@@ -47,6 +47,10 @@ class TalkEntity
 
     public function claimTalk(UserEntity $speaker)
     {
+        if (null !== $this->speaker) {
+            throw new \DomainException('Talk already has a speaker set');
+        }
+
         foreach ($this->claims as $claim) {
             if (true === $claim->isPending()) {
                 throw new \DomainException('Talk already has a pending claim');
