@@ -25,6 +25,8 @@ class TalkDomainContext implements Context
     private $talk;
     /** @var ClaimEntity */
     private $claim;
+    /** @var \DomainException|null */
+    private $exception;
 
     /**
      * @Given I'am logged in as :name
@@ -64,11 +66,23 @@ class TalkDomainContext implements Context
     }
 
     /**
+     * @Given :talkTitle has a pending claim by :user
+     */
+    public function hasPendingClaimBy(UserEntity $user)
+    {
+        $this->talk->claimTalk($user);
+    }
+
+    /**
      * @When I claim :talkTitle
      */
     public function iClaim()
     {
-        $this->talk->claimTalk($this->user);
+        try {
+            $this->talk->claimTalk($this->user);
+        } catch (\DomainException $exception) {
+            $this->exception = $exception;
+        }
     }
 
     /**
@@ -82,10 +96,34 @@ class TalkDomainContext implements Context
     }
 
     /**
+     * @Then I should see an error saying there is a pending claim on the talk
+     */
+    public function iShouldSeeAnErrorSayingThereIsPendingClaimOnTheTalk()
+    {
+        Assert::notNull($this->exception);
+        Assert::isInstanceOf($this->exception, \DomainException::class);
+    }
+
+    /**
      * @Transform
      */
     public function toDateTime(string $eventDate): \DateTime
     {
         return new \DateTime($eventDate);
+    }
+
+    /**
+     * @Transform
+     */
+    public function createUser(string $name): UserEntity
+    {
+        $city = \Mockery::mock(CityEntity::class);
+
+        switch ($name) {
+            case 'Alex Smith':
+                return new UserEntity('alex.smith', 'Alex', 'Smith', 'alex@example.com', 'passw0rd', $city);
+            case 'Jo Johnson':
+                return new UserEntity('jo.johnson', 'Jo', 'Johnson', 'jo@example.com', 'passw0rd', $city);
+        }
     }
 }

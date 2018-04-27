@@ -28,7 +28,7 @@ class TalkEntity
      */
     private $speaker;
     /**
-     * @var array
+     * @var array|ClaimEntity[]
      */
     private $claims;
 
@@ -42,10 +42,17 @@ class TalkEntity
         $this->title       = $title;
         $this->description = $description;
         $this->speakerName = $speakerName;
+        $this->claims      = [];
     }
 
     public function claimTalk(UserEntity $speaker)
     {
+        foreach ($this->claims as $claim) {
+            if (true === $claim->isPending()) {
+                throw new \DomainException('Talk already has a pending claim');
+            }
+        }
+
         $this->claims[] = new ClaimEntity($this, $speaker);
     }
 
