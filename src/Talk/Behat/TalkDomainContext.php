@@ -74,6 +74,18 @@ class TalkDomainContext implements Context
     }
 
     /**
+     * @Given :talkTitle has a rejected claim by :user
+     */
+    public function hasRejectedClaimBy(UserEntity $user)
+    {
+        foreach ($this->talk->getClaims() as $claim) {
+            if ($claim->getSpeaker() === $user) {
+                $claim->markAsRejected();
+            }
+        }
+    }
+
+    /**
      * @When I claim :talkTitle
      */
     public function iClaim()

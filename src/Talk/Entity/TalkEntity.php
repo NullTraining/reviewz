@@ -56,6 +56,9 @@ class TalkEntity
         $this->claims[] = new ClaimEntity($this, $speaker);
     }
 
+    /**
+     * @return array|ClaimEntity[]
+     */
     public function getClaims(): array
     {
         return $this->claims;
