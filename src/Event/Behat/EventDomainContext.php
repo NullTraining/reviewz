@@ -84,7 +84,8 @@ class EventDomainContext implements Context
     }
 
     /**
-     * @When I RSVP Yes to :eventTitle
+     * @Given I have RSVPed Yes to :eventTitle event
+     * @When  I RSVP Yes to :eventTitle
      * @When I change my :eventTitle RSVP to Yes
      */
     public function iRsvpYesTo()
@@ -95,6 +96,7 @@ class EventDomainContext implements Context
     /**
      * @Given I have RSVPed No to :eventTitle event
      * @When I RSVP No to :eventTitle
+     * @When I change my :eventTitle RSVP to No
      */
     public function iRsvpNoTo()
     {
@@ -118,6 +120,14 @@ class EventDomainContext implements Context
     public function iWillBeOnListOfInterestedMembersForEvent()
     {
         Assert::true(in_array($this->user, $this->event->getAttendees()));
+    }
+
+    /**
+     * @Then I will not be on a list of interested members for :eventTitle event
+     */
+    public function iWillNotBeOnListOfInterestedMembersForEvent()
+    {
+        Assert::false(in_array($this->user, $this->event->getAttendees()));
     }
 
     /**
