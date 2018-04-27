@@ -3,6 +3,7 @@
 namespace Talk\Entity;
 
 use Event\Entity\EventEntity;
+use Organization\Entity\ClaimEntity;
 use Organization\Entity\OrganizationEntity;
 use User\Entity\UserEntity;
 
@@ -26,6 +27,10 @@ class TalkEntity
      * @var UserEntity|null
      */
     private $speaker;
+    /**
+     * @var array
+     */
+    private $claims;
 
     public function __construct(
         EventEntity $meetup,
@@ -37,6 +42,16 @@ class TalkEntity
         $this->title       = $title;
         $this->description = $description;
         $this->speakerName = $speakerName;
+    }
+
+    public function claimTalk(UserEntity $speaker)
+    {
+        $this->claims[] = new ClaimEntity($this, $speaker);
+    }
+
+    public function getClaims(): array
+    {
+        return $this->claims;
     }
 
     public function setSpeaker(UserEntity $speaker)
