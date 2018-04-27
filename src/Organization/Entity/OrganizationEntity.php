@@ -20,6 +20,10 @@ class OrganizationEntity
      * @var \User\Entity\UserEntity
      */
     private $founder;
+
+    /** @var UserEntity[] */
+    private $organizers;
+
     /** @var UserEntity[] */
     private $members;
 
@@ -37,18 +41,21 @@ class OrganizationEntity
 
     public function __construct(string $title, string $description, UserEntity $founder, CityEntity $hometown)
     {
-        $this->title       = $title;
-        $this->description = $description;
-        $this->founder     = $founder;
-        $this->members     = [];
-        $this->hometown    = $hometown;
-        $this->events      = [];
+        $this->title        = $title;
+        $this->description  = $description;
+        $this->founder      = $founder;
+        $this->members      = [];
+        $this->hometown     = $hometown;
+        $this->events       = [];
+        $this->organizers[] = $founder;
     }
 
     public function isOrganizer(UserEntity $user): bool
     {
-        if ($user == $this->founder) {
-            return true;
+        foreach ($this->organizers as $organizer) {
+            if ($organizer == $user) {
+                return true;
+            }
         }
 
         return false;
@@ -81,10 +88,24 @@ class OrganizationEntity
         return $this->founder;
     }
 
+    public function addOrganizer(UserEntity $user): void
+    {
+        if (in_array($user, $this->organizers)) {
+            throw new \DomainException('This user is already an organizer of this organization');
+        }
+        if (in_array($user, $this->members)) {
+            throw new \DomainException('This user is already a member of this organization');
+        }
+        $this->organizers[] = $user;
+    }
+
     public function addMember(UserEntity $user): void
     {
+        if (in_array($user, $this->organizers)) {
+            throw new \DomainException('This user is already an organizer of this organization');
+        }
         if (in_array($user, $this->members)) {
-            throw new \DomainException('This user is allready a member of this organization');
+            throw new \DomainException('This user is already a member of this organization');
         }
         $this->members[] = $user;
     }

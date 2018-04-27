@@ -24,9 +24,9 @@ class UserDomainContext implements Context
     /**
      * @Given I'am logged in as :name
      */
-    public function iamLoggedInAs()
+    public function iamLoggedInAs(UserEntity $user)
     {
-        $this->user = \Mockery::mock(UserEntity::class);
+        $this->user = $user;
     }
 
     /**
@@ -40,6 +40,14 @@ class UserDomainContext implements Context
             \Mockery::mock(UserEntity::class),
             \Mockery::mock(CityEntity::class)
         );
+    }
+
+    /**
+     * @Given :name is an organizer
+     */
+    public function isAnOrganizer()
+    {
+        $this->organization->addOrganizer($this->user);
     }
 
     /**
@@ -103,5 +111,20 @@ class UserDomainContext implements Context
     {
         Assert::notNull($this->exception);
         Assert::isInstanceOf($this->exception, \DomainException::class);
+    }
+
+    /**
+     * @Transform
+     */
+    public function createUser(string $name): UserEntity
+    {
+        $city = \Mockery::mock(CityEntity::class);
+
+        switch ($name) {
+            case 'Alex Smith':
+                return new UserEntity('alex.smith', 'Alex', 'Smith', 'alex@example.com', 'passw0rd', $city);
+            case 'Jo Johnson':
+                return new UserEntity('jo.johnson', 'Jo', 'Johnson', 'jo@example.com', 'passw0rd', $city);
+        }
     }
 }
