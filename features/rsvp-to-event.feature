@@ -18,3 +18,10 @@ Feature:
     Given I'am logged in as "Jo Johnson"
     When I RSVP No to "March 2019 gathering"
     Then I will be on a list of members not coming to "March 2019 gathering" event
+
+  Scenario: Member can change RSVP from No to Yes
+    Given I'am logged in as "Jo Johnson"
+    And I have RSVPed No to "March 2019 gathering" event
+    When I change my "March 2019 gathering" RSVP to Yes
+    Then I will be on a list of interested members for "March 2019 gathering" event
+    And I will not be on a list of members not coming to "March 2019 gathering" event
