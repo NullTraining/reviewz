@@ -14,19 +14,11 @@ use Webmozart\Assert\Assert;
 
 class EventDomainContext implements Context
 {
-    /**
-     * @var UserEntity
-     */
+    /** @var UserEntity|MockInterface */
     private $user;
-
-    /**
-     * @var OrganizationEntity
-     */
+    /** @var OrganizationEntity */
     private $organization;
-
-    /**
-     * @var EventEntity
-     */
+    /** @var EventEntity */
     private $event;
 
     /**
@@ -102,6 +94,14 @@ class EventDomainContext implements Context
     }
 
     /**
+     * @When I RSVP No to :eventTitle
+     */
+    public function iRsvpNoTo()
+    {
+        $this->event->addNotComing($this->user);
+    }
+
+    /**
      * @Then there is new :eventName for organization :orgName
      */
     public function thereIsNewForOrganization($eventName, $orgName)
@@ -118,6 +118,14 @@ class EventDomainContext implements Context
     public function iWillBeOnListOfInterestedMembersForEvent()
     {
         Assert::true(in_array($this->user, $this->event->getAttendees()));
+    }
+
+    /**
+     * @Then I will be on a list of members not coming to :eventTitle event
+     */
+    public function iWillBeOnListOfMembersNotComingToEvent()
+    {
+        Assert::true(in_array($this->user, $this->event->getNotComingList()));
     }
 
     /**
