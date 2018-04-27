@@ -40,4 +40,13 @@ class ClaimEntity
     {
         $this->approved = false;
     }
+
+    public function isPending()
+    {
+        if (null === $this->approved) {
+            return true;
+        }
+
+        return false;
+    }
 }

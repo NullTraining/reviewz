@@ -13,3 +13,9 @@ Feature:
     Given I'am logged in as "Jo Johnson"
     When I claim "Something about nothing"
     Then I should have "Something about nothing" claimed
+
+  Scenario: Talks with pending claims can not be claimed
+    Given "Something about nothing" has a pending claim by "Jo Johnson"
+    And I'am logged in as "Alex Smith"
+    When I claim "Something about nothing"
+    Then I should see an error saying there is a pending claim on the talk
