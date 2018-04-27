@@ -57,7 +57,13 @@ class OrganizationEntity
     /** @SuppressWarnings("PHPMD.UnusedFormalParameter") */
     public function isMember(UserEntity $user): bool
     {
-        //@TODO;
+        foreach ($this->members as $member) {
+            if ($member == $user) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function getTitle(): string
