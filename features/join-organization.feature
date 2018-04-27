@@ -11,3 +11,10 @@ Feature:
     Given I'am logged in as "Jo Johnson"
     When I join "Local meetup" organization
     Then I should be a member of "Local meetup" organization
+
+  Scenario: Existing members can't join organization
+    Given I'am logged in as "Jo Johnson"
+    And I'm a member of "Local meetup" organization
+    When I try to join "Local meetup" organization
+    Then I should see an error saying I'm already a member of the organization
+    

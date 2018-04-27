@@ -4,6 +4,7 @@ namespace User\Behat;
 
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
+use Exception;
 use Geo\Entity\CityEntity;
 use Geo\Entity\CountryEntity;
 use Mockery\MockInterface;
@@ -17,6 +18,8 @@ class UserDomainContext implements Context
     private $user;
     /** @var OrganizationEntity */
     private $organization;
+    /** @var Exception */
+    private $exception;
 
     /**
      * @Given I'am logged in as :name
@@ -57,11 +60,24 @@ class UserDomainContext implements Context
     }
 
     /**
-     * @When I join :orgName organization
+     * @Given I'm a member of :orgName organization
+     * @When  I join :orgName organization
      */
     public function iJoinOrganization()
     {
         $this->organization->addMember($this->user);
+    }
+
+    /**
+     * @When I try to join :orgName organization
+     */
+    public function iTryToJoinOrganization()
+    {
+        try {
+            $this->organization->addMember($this->user);
+        } catch (\DomainException $exception) {
+            $this->exception = $exception;
+        }
     }
 
     /**
@@ -78,5 +94,14 @@ class UserDomainContext implements Context
     public function iShouldBeMemberOfOrganization()
     {
         Assert::true($this->organization->isMember($this->user));
+    }
+
+    /**
+     * @Then I should see an error saying I'm already a member of the organization
+     */
+    public function iShouldSeeAnErrorSayingImAlreadyMemberOfTheOrganization()
+    {
+        Assert::notNull($this->exception);
+        Assert::isInstanceOf($this->exception, \DomainException::class);
     }
 }
