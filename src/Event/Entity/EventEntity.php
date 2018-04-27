@@ -82,6 +82,15 @@ class EventEntity
     public function addAttendee(UserEntity $attendee)
     {
         $this->attendees[] = $attendee;
+
+        if (true === $this->isNotComing($attendee)) {
+            $this->removeNotComing($attendee);
+        }
+    }
+
+    public function isAttending(UserEntity $member): bool
+    {
+        return in_array($member, $this->attendees);
     }
 
     public function getAttendees(): array
@@ -92,6 +101,20 @@ class EventEntity
     public function addNotComing(UserEntity $notComing)
     {
         $this->notComingList[] = $notComing;
+    }
+
+    public function isNotComing(UserEntity $member): bool
+    {
+        return in_array($member, $this->notComingList);
+    }
+
+    private function removeNotComing(UserEntity $member)
+    {
+        foreach ($this->notComingList as $key => $notComing) {
+            if ($notComing == $member) {
+                unset($this->notComingList[$key]);
+            }
+        }
     }
 
     public function getNotComingList(): array
