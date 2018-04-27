@@ -13,3 +13,8 @@ Feature:
     Given I'am logged in as "Jo Johnson"
     When I RSVP Yes to "March 2019 gathering"
     Then I will be on a list of interested members for "March 2019 gathering" event
+
+  Scenario: Member can RSVP No to an event
+    Given I'am logged in as "Jo Johnson"
+    When I RSVP No to "March 2019 gathering"
+    Then I will be on a list of members not coming to "March 2019 gathering" event
