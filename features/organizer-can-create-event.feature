@@ -1,12 +1,13 @@
 @event
 Feature:
-  As a organizer
+  As an Organization organizer
   I can create event
 
   Background:
-    Given there is Organization "My organization"
+    Given there is a 'Local organization' organization
+    And user "Jo Johnson" is organizer of "Local organization" organization
 
   Scenario: Organizer can create event
-    Given I'am organizer
-    When I create "Some event" event for organization "My organization" with date "2018-04-24", description "Event description" in "Katran klub" location
-    Then there is new "Some event" for organization "My organization"
+    Given I'am logged in as "Jo Johnson"
+    When I create a new event with name "Some event" for organization "Local organization" with date "2018-04-24", description "Event description" in venue "Katran klub"
+    Then There is a new event with name "Some event" and venue "Katran klub" for organization "Local organization"
