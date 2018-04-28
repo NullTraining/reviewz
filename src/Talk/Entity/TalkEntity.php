@@ -51,10 +51,8 @@ class TalkEntity
             throw new \DomainException('Talk already has a speaker set');
         }
 
-        foreach ($this->claims as $claim) {
-            if (true === $claim->isPending()) {
-                throw new \DomainException('Talk already has a pending claim');
-            }
+        if ($this->hasPendingClaim()) {
+            throw new \DomainException('Talk already has a pending claim');
         }
 
         $this->claims[] = new ClaimEntity($this, $speaker);
@@ -66,6 +64,17 @@ class TalkEntity
     public function getClaims(): array
     {
         return $this->claims;
+    }
+
+    private function hasPendingClaim(): bool
+    {
+        foreach ($this->claims as $claim) {
+            if (true === $claim->isPending()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function setSpeaker(UserEntity $speaker)
