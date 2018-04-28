@@ -6,12 +6,13 @@ use Geo\Entity\CityEntity;
 use Organization\Entity\OrganizationEntity;
 use PhpSpec\ObjectBehavior;
 use User\Entity\UserEntity;
+use User\Entity\UserId;
 
 class UserEntitySpec extends ObjectBehavior
 {
-    public function let(CityEntity $city)
+    public function let(UserId $id, CityEntity $city)
     {
-        $this->beConstructedWith('alexsmith', 'Alex', 'Smith', 'alex.smith@example.com', 'abc123', $city);
+        $this->beConstructedWith($id, 'alexsmith', 'Alex', 'Smith', 'alex.smith@example.com', 'abc123', $city);
     }
 
     public function it_is_initializable()

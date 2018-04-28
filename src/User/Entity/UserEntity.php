@@ -8,6 +8,10 @@ use Organization\Entity\OrganizationEntity;
 class UserEntity
 {
     /**
+     * @var UserId
+     */
+    private $id;
+    /**
      * @var string
      */
     private $username;
@@ -41,6 +45,7 @@ class UserEntity
     private $organizations;
 
     public function __construct(
+        UserId $id,
         string $username,
         string $firstName,
         string $lastName,
@@ -48,6 +53,7 @@ class UserEntity
         string $password,
         CityEntity $city
     ) {
+        $this->id        = $id;
         $this->username  = $username;
         $this->firstName = $firstName;
         $this->lastName  = $lastName;
