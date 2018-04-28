@@ -8,6 +8,7 @@ use Geo\Entity\CityEntity;
 use Geo\Entity\LocationEntity;
 use Organization\Entity\OrganizationEntity;
 use User\Entity\UserEntity;
+use User\Entity\UserId;
 use Webmozart\Assert\Assert;
 
 class EventDomainContext implements Context
@@ -34,6 +35,7 @@ class EventDomainContext implements Context
     {
         $hometown   = \Mockery::mock(CityEntity::class);
         $this->user = new UserEntity(
+            UserId::create(),
             'username',
             'John',
             'Doe',
