@@ -1,4 +1,7 @@
 {
+    "beberlei/assert": {
+        "version": "v2.9.5"
+    },
     "behat/behat": {
         "version": "v3.4.3"
     },
@@ -275,6 +278,12 @@
             "ref": "aaddfdf43cdecd4cf91f992052d76c2cadc04543"
         }
     },
+    "simple-bus/message-bus": {
+        "version": "v3.0.1"
+    },
+    "simple-bus/symfony-bridge": {
+        "version": "v5.1.2"
+    },
     "squizlabs/php_codesniffer": {
         "version": "3.2.3"
     },
@@ -439,6 +448,9 @@
     },
     "symfony/property-info": {
         "version": "v4.0.6"
+    },
+    "symfony/proxy-manager-bridge": {
+        "version": "v4.0.8"
     },
     "symfony/routing": {
         "version": "4.0",
