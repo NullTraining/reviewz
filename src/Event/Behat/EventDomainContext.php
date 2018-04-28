@@ -73,13 +73,25 @@ class EventDomainContext implements Context
     }
 
     /**
-     * @When I create :eventName event for organization :orgName with date :date, description :desc in :location location
+     * @Given user :user is organizer of :organization organization
      */
-    public function iCreateEventForOrganizationWithDateDescriptionInLocation($eventName, $orgName, $date, $desc, $location)
+    public function userIsOrganizerOfOrganization(UserEntity $user)
     {
-        $dateTime    = new \DateTime($date);
+        $this->organization->addOrganizer($user);
+    }
+
+    /**
+     * @When I create a new event with name :eventName for organization :orgName with date :date, description :desc in venue :venue
+     */
+    public function iCreateNewEventWithNameForOrganizationWithDateDescriptionInVenue(
+        string $eventName,
+        string $orgName,
+        \DateTime $date,
+        string $desc,
+        string $location
+    ) {
         $location    = new LocationEntity($location, \Mockery::mock(CityEntity::class));
-        $this->event = new EventEntity($dateTime, $location, $eventName, $desc);
+        $this->event = new EventEntity($date, $location, $eventName, $desc);
 
         $this->organization->addEvent($this->event);
         Assert::same($orgName, $this->organization->getTitle());
@@ -88,7 +100,7 @@ class EventDomainContext implements Context
     /**
      * @Given I have RSVPed Yes to :eventTitle event
      * @When  I RSVP Yes to :eventTitle
-     * @When I change my :eventTitle RSVP to Yes
+     * @When  I change my :eventTitle RSVP to Yes
      */
     public function iRsvpYesTo()
     {
@@ -97,8 +109,8 @@ class EventDomainContext implements Context
 
     /**
      * @Given I have RSVPed No to :eventTitle event
-     * @When I RSVP No to :eventTitle
-     * @When I change my :eventTitle RSVP to No
+     * @When  I RSVP No to :eventTitle
+     * @When  I change my :eventTitle RSVP to No
      */
     public function iRsvpNoTo()
     {
@@ -106,7 +118,7 @@ class EventDomainContext implements Context
     }
 
     /**
-     * @Then there is new :eventName for organization :orgName
+     * @Then There is a new event with name :eventName and venue :venue for organization :orgName
      */
     public function thereIsNewForOrganization($eventName, $orgName)
     {
@@ -165,9 +177,11 @@ class EventDomainContext implements Context
 
         switch ($name) {
             case 'Alex Smith':
-                return new UserEntity(UserId::create(), 'alex.smith', 'Alex', 'Smith', 'alex@example.com', 'passw0rd', $city);
+                return new UserEntity(UserId::create(), 'alex.smith', 'Alex', 'Smith', 'alex@example.com', 'passw0rd',
+                    $city);
             case 'Jo Johnson':
-                return new UserEntity(UserId::create(), 'jo.johnson', 'Jo', 'Johnson', 'jo@example.com', 'passw0rd', $city);
+                return new UserEntity(UserId::create(), 'jo.johnson', 'Jo', 'Johnson', 'jo@example.com', 'passw0rd',
+                    $city);
         }
     }
 }
