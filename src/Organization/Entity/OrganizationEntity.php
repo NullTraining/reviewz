@@ -90,10 +90,10 @@ class OrganizationEntity
 
     public function addOrganizer(UserEntity $user): void
     {
-        if (in_array($user, $this->organizers)) {
+        if ($this->isOrganizer($user)) {
             throw new \DomainException('This user is already an organizer of this organization');
         }
-        if (in_array($user, $this->members)) {
+        if ($this->isMember($user)) {
             throw new \DomainException('This user is already a member of this organization');
         }
         $this->organizers[] = $user;
@@ -101,10 +101,10 @@ class OrganizationEntity
 
     public function addMember(UserEntity $user): void
     {
-        if (in_array($user, $this->organizers)) {
+        if ($this->isOrganizer($user)) {
             throw new \DomainException('This user is already an organizer of this organization');
         }
-        if (in_array($user, $this->members)) {
+        if ($this->isMember($user)) {
             throw new \DomainException('This user is already a member of this organization');
         }
         $this->members[] = $user;
