@@ -47,7 +47,7 @@ class TalkEntity
 
     public function claimTalk(UserEntity $speaker)
     {
-        if (null !== $this->speaker) {
+        if ($this->hasSpeaker()) {
             throw new \DomainException('Talk already has a speaker set');
         }
 
@@ -75,7 +75,11 @@ class TalkEntity
 
     public function hasSpeaker(): bool
     {
-        //@TODO:
+        if (null === $this->speaker) {
+            return false;
+        }
+
+        return true;
     }
 
     public function getMeetup(): EventEntity
