@@ -41,7 +41,7 @@ class ClaimEntity
         $this->approved = false;
     }
 
-    public function isPending()
+    public function isPending(): bool
     {
         if (null === $this->approved) {
             return true;
