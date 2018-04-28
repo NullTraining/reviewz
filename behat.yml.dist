@@ -10,3 +10,8 @@ default:
                 - User\Behat\UserDomainContext
             filters:
                 tags: "@user"
+        talk:
+            contexts:
+                - Talk\Behat\TalkDomainContext
+            filters:
+                tags: "@talk"
