@@ -13,4 +13,4 @@ Feature:
       | password  | abc123                 |
       | country   | USA                    |
       | city      | New York               |
-    Then I have created an account
+    Then I have created an account with username "alexsmith"

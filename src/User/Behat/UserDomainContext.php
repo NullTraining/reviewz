@@ -7,7 +7,6 @@ use Behat\Gherkin\Node\TableNode;
 use Exception;
 use Geo\Entity\CityEntity;
 use Geo\Entity\CountryEntity;
-use Mockery\MockInterface;
 use Organization\Entity\OrganizationEntity;
 use User\Entity\UserEntity;
 use User\Entity\UserId;
@@ -15,7 +14,7 @@ use Webmozart\Assert\Assert;
 
 class UserDomainContext implements Context
 {
-    /** @var UserEntity|MockInterface */
+    /** @var UserEntity */
     private $user;
     /** @var OrganizationEntity */
     private $organization;
@@ -91,11 +90,12 @@ class UserDomainContext implements Context
     }
 
     /**
-     * @Then I have created an account
+     * @Then I have created an account with username :username
      */
-    public function iHaveCreatedAnAccount()
+    public function iHaveCreatedAnAccountWithUsername(string $username)
     {
         Assert::notNull($this->user);
+        Assert::eq($username, $this->user->getUsername());
     }
 
     /**
