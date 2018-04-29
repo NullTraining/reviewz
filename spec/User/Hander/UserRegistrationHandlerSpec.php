@@ -30,6 +30,7 @@ class UserRegistrationHandlerSpec extends ObjectBehavior
         RegisterUser $command,
         UserRepository $userRepository,
         CityRepository $cityRepository,
+        EventBus $eventBus,
         UserId $userId,
         CityEntity $cityEntity
     ) {
@@ -46,6 +47,9 @@ class UserRegistrationHandlerSpec extends ObjectBehavior
             ->willReturn($cityEntity);
 
         $userRepository->save(Argument::type(UserEntity::class))
+            ->shouldBeCalled();
+
+        $eventBus->handle(Argument::type(UserRegistered::class))
             ->shouldBeCalled();
 
         $this->handle($command);
