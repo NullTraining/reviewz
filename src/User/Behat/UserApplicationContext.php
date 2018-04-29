@@ -2,6 +2,7 @@
 
 namespace User\Behat;
 
+use App\EventBus;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Tests\Geo\Repository\CityInMemoryRepository;
@@ -19,6 +20,8 @@ class UserApplicationContext implements Context
     private $userRepository;
     /** @var UserRegistrationHandler */
     private $handler;
+    /** @var EventBus */
+    private $eventBus;
 
     /**
      * @BeforeScenario
@@ -26,9 +29,11 @@ class UserApplicationContext implements Context
     public function setUpHandler()
     {
         $this->userRepository = new UserInMemoryRepository();
+        $this->eventBus       = new EventBus();
         $this->handler        = new UserRegistrationHandler(
             $this->userRepository,
-            new CityInMemoryRepository()
+            new CityInMemoryRepository(),
+            $this->eventBus
         );
     }
 

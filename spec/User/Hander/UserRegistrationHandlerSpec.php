@@ -2,6 +2,7 @@
 
 namespace spec\User\Hander;
 
+use App\EventBus;
 use Geo\Entity\CityEntity;
 use Geo\Repository\CityRepository;
 use PhpSpec\ObjectBehavior;
@@ -9,14 +10,15 @@ use Prophecy\Argument;
 use User\Command\RegisterUser;
 use User\Entity\UserEntity;
 use User\Entity\UserId;
+use User\Event\UserRegistered;
 use User\Hander\UserRegistrationHandler;
 use User\Repository\UserRepository;
 
 class UserRegistrationHandlerSpec extends ObjectBehavior
 {
-    public function let(UserRepository $userRepository, CityRepository $cityRepository)
+    public function let(UserRepository $userRepository, CityRepository $cityRepository, EventBus $eventBus)
     {
-        $this->beConstructedWith($userRepository, $cityRepository);
+        $this->beConstructedWith($userRepository, $cityRepository, $eventBus);
     }
 
     public function it_is_initializable()
