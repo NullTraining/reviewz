@@ -62,6 +62,11 @@ class UserEntity
         $this->city      = $city;
     }
 
+    public function getUsername(): string
+    {
+        return $this->username;
+    }
+
     public function getName(): string
     {
         return sprintf('%s %s', $this->firstName, $this->lastName);
