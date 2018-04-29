@@ -41,5 +41,7 @@ class UserRegistrationHandler
         );
 
         $this->userRepository->save($user);
+
+        $this->eventBus->handle(new UserRegistered($command->getUserId()));
     }
 }
