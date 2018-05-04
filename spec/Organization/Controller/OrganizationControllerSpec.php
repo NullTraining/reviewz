@@ -39,9 +39,9 @@ class OrganizationControllerSpec extends ObjectBehavior
         OrganizationRepository $organizationRepository,
         OrganizationEntity $organizationEntity
     ) {
-        $organizationRepository->findByTitle('Organization Title')->shouldBeCalled()->willReturn($organizationEntity);
+        $organizationRepository->loadByTitle('Organization Title')->shouldBeCalled()->willReturn($organizationEntity);
 
-        $this->findByTitle('Organization Title')->shouldReturn($organizationEntity);
+        $this->loadByTitle('Organization Title')->shouldReturn($organizationEntity);
     }
 
     public function it_should_add_current_user_to_organization_as_a_member(

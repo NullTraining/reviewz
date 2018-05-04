@@ -16,15 +16,13 @@ class OrganizationInMemoryRepository implements OrganizationRepository
         $this->list[] = $entity;
     }
 
-    public function findByTitle(string $title): ?OrganizationEntity
+    public function loadByTitle(string $title): OrganizationEntity
     {
         foreach ($this->list as $item) {
             if ($item->getTitle() === $title) {
                 return $item;
             }
         }
-
-        return null;
     }
 
     public function load(OrganizationId $id): OrganizationEntity
