@@ -2,11 +2,11 @@
 
 namespace Organization\Repository;
 
-class OrganizationRepository
+use Organization\Entity\OrganizationEntity;
+
+interface OrganizationRepository
 {
-    /** @SuppressWarnings("PHPMD.UnusedFormalParameter") */
-    public function findByTitle(string $title)
-    {
-        //@TODO;
-    }
+    public function save(OrganizationEntity $entity);
+
+    public function findByTitle(string $title): ?OrganizationEntity;
 }
