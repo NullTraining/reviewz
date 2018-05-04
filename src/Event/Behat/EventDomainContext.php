@@ -8,6 +8,7 @@ use Geo\Entity\CityEntity;
 use Geo\Entity\LocationEntity;
 use Mockery\MockInterface;
 use Organization\Entity\OrganizationEntity;
+use Organization\Entity\OrganizationId;
 use User\Entity\UserEntity;
 use User\Entity\UserId;
 use Webmozart\Assert\Assert;
@@ -45,7 +46,7 @@ class EventDomainContext implements Context
             'password',
             $hometown);
 
-        $this->organization = new OrganizationEntity($orgName, 'Org desc', $this->user, $hometown);
+        $this->organization = new OrganizationEntity(OrganizationId::create(), $orgName, 'Org desc', $this->user, $hometown);
     }
 
     /**

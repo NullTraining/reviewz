@@ -8,6 +8,7 @@ use Exception;
 use Geo\Entity\CityEntity;
 use Geo\Entity\CountryEntity;
 use Organization\Entity\OrganizationEntity;
+use Organization\Entity\OrganizationId;
 use User\Entity\UserEntity;
 use User\Entity\UserId;
 use Webmozart\Assert\Assert;
@@ -35,6 +36,7 @@ class UserDomainContext implements Context
     public function thereIsOrganization(string $orgName)
     {
         $this->organization = new OrganizationEntity(
+            OrganizationId::create(),
             $orgName,
             '',
             \Mockery::mock(UserEntity::class),

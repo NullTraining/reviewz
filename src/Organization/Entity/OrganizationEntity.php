@@ -9,6 +9,10 @@ use User\Entity\UserEntity;
 class OrganizationEntity
 {
     /**
+     * @var OrganizationId
+     */
+    private $id;
+    /**
      * @var string
      */
     private $title;
@@ -39,8 +43,14 @@ class OrganizationEntity
      */
     private $events;
 
-    public function __construct(string $title, string $description, UserEntity $founder, CityEntity $hometown)
-    {
+    public function __construct(
+        OrganizationId $id,
+        string $title,
+        string $description,
+        UserEntity $founder,
+        CityEntity $hometown
+    ) {
+        $this->id           = $id;
         $this->title        = $title;
         $this->description  = $description;
         $this->founder      = $founder;
@@ -71,6 +81,11 @@ class OrganizationEntity
         }
 
         return false;
+    }
+
+    public function getId(): OrganizationId
+    {
+        return $this->id;
     }
 
     public function getTitle(): string

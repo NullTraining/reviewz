@@ -7,6 +7,7 @@ use Geo\Entity\CityEntity;
 use Geo\Entity\CountryEntity;
 use Mockery\MockInterface;
 use Organization\Entity\OrganizationEntity;
+use Organization\Entity\OrganizationId;
 use User\Entity\UserEntity;
 use Webmozart\Assert\Assert;
 
@@ -31,6 +32,7 @@ class OrganizationDomainContext implements Context
     public function newOrganizationWasCreated($orgName)
     {
         $this->organization = new OrganizationEntity(
+            OrganizationId::create(),
             $orgName,
             '',
             \Mockery::mock(UserEntity::class),
@@ -50,7 +52,7 @@ class OrganizationDomainContext implements Context
         $country  = new CountryEntity('TODO:xx', $countryName);
         $homeTown = new CityEntity($cityName, $country);
 
-        $this->organization = new OrganizationEntity($orgName, $orgDescription, $this->user, $homeTown);
+        $this->organization = new OrganizationEntity(OrganizationId::create(), $orgName, $orgDescription, $this->user, $homeTown);
     }
 
     /**
