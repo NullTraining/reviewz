@@ -3,6 +3,7 @@
 namespace Tests\Organization\Repository;
 
 use Organization\Entity\OrganizationEntity;
+use Organization\Entity\OrganizationId;
 use Organization\Repository\OrganizationRepository;
 
 class OrganizationInMemoryRepository implements OrganizationRepository
@@ -24,5 +25,14 @@ class OrganizationInMemoryRepository implements OrganizationRepository
         }
 
         return null;
+    }
+
+    public function load(OrganizationId $id): OrganizationEntity
+    {
+        foreach ($this->list as $item) {
+            if ($item->getId() == $id) {
+                return $item;
+            }
+        }
     }
 }
