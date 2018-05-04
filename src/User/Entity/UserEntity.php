@@ -62,6 +62,11 @@ class UserEntity
         $this->city      = $city;
     }
 
+    public function getId(): UserId
+    {
+        return $this->id;
+    }
+
     public function getUsername(): string
     {
         return $this->username;
