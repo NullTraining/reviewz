@@ -73,8 +73,8 @@ class OrganizationController
         return $organization->getMembers();
     }
 
-    public function findByTitle(string $title)
+    public function loadByTitle(string $title): OrganizationEntity
     {
-        return $this->organizationRepository->findByTitle($title);
+        return $this->organizationRepository->loadByTitle($title);
     }
 }

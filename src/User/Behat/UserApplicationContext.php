@@ -91,11 +91,7 @@ class UserApplicationContext implements Context
      */
     public function isAnOrganizer(UserEntity $user)
     {
-        $organization = $this->organizationRepository->findByTitle('Local meetup');
-
-        if (null === $organization) {
-            throw new \Exception();
-        }
+        $organization = $this->organizationRepository->loadByTitle('Local meetup');
 
         $organization->addOrganizer($user);
     }
@@ -105,11 +101,7 @@ class UserApplicationContext implements Context
      */
     public function imMemberOfOrganization(string $orgName)
     {
-        $organization = $this->organizationRepository->findByTitle($orgName);
-
-        if (null === $organization) {
-            throw new \Exception();
-        }
+        $organization = $this->organizationRepository->loadByTitle($orgName);
 
         $organization->addMember($this->currentUser);
     }
@@ -142,11 +134,7 @@ class UserApplicationContext implements Context
      */
     public function iJoinOrganization(string $orgName)
     {
-        $organization = $this->organizationRepository->findByTitle($orgName);
-
-        if (null === $organization) {
-            throw new \Exception();
-        }
+        $organization = $this->organizationRepository->loadByTitle($orgName);
 
         $command = new JoinOrganization($organization->getId(), $this->currentUser->getId());
 
@@ -170,11 +158,7 @@ class UserApplicationContext implements Context
      */
     public function iShouldBeMemberOfOrganization(string $orgName)
     {
-        $organization = $this->organizationRepository->findByTitle($orgName);
-
-        if (null === $organization) {
-            throw new \Exception();
-        }
+        $organization = $this->organizationRepository->loadByTitle($orgName);
 
         Assert::true($organization->isMember($this->currentUser));
     }

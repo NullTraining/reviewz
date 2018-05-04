@@ -9,7 +9,7 @@ interface OrganizationRepository
 {
     public function save(OrganizationEntity $entity);
 
-    public function findByTitle(string $title): ?OrganizationEntity;
+    public function loadByTitle(string $title): OrganizationEntity;
 
     public function load(OrganizationId $id): OrganizationEntity;
 }
