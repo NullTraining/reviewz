@@ -3,6 +3,7 @@
 namespace Tests\User\Repository;
 
 use User\Entity\UserEntity;
+use User\Entity\UserId;
 use User\Repository\UserRepository;
 
 class UserInMemoryRepository implements UserRepository
@@ -24,5 +25,14 @@ class UserInMemoryRepository implements UserRepository
         }
 
         return null;
+    }
+
+    public function load(UserId $id): UserEntity
+    {
+        foreach ($this->list as $item) {
+            if ($item->getId() == $id) {
+                return $item;
+            }
+        }
     }
 }
