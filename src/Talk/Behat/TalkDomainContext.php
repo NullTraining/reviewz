@@ -9,11 +9,15 @@ use Geo\Entity\LocationEntity;
 use Mockery\MockInterface;
 use Organization\Entity\ClaimEntity;
 use Organization\Entity\OrganizationEntity;
+use Organization\Entity\OrganizationId;
 use Talk\Entity\TalkEntity;
 use User\Entity\UserEntity;
 use User\Entity\UserId;
 use Webmozart\Assert\Assert;
 
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
 class TalkDomainContext implements Context
 {
     /** @var UserEntity|MockInterface */
@@ -43,6 +47,7 @@ class TalkDomainContext implements Context
     public function thereIsOrganization(string $orgName)
     {
         $this->organization = new OrganizationEntity(
+            OrganizationId::create(),
             $orgName,
             '',
             \Mockery::mock(UserEntity::class),
