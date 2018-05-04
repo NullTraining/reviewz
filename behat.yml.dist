@@ -19,7 +19,7 @@ default:
             contexts:
                 - User\Behat\UserApplicationContext
             filters:
-                tags: "@user && @application"
+                tags: "@user"
         event:
             contexts:
                 - Event\Behat\EventDomainContext
