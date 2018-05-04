@@ -1,4 +1,4 @@
-@user @application
+@user
 Feature:
   As a user
   In order to use our app
