@@ -4,15 +4,23 @@ namespace Geo\Entity;
 
 class CityEntity
 {
+    /** @var CityId */
+    private $id;
     /** @var string */
     private $name;
     /** @var CountryEntity */
     private $country;
 
-    public function __construct(string $name, CountryEntity $country)
+    public function __construct(CityId $id, string $name, CountryEntity $country)
     {
+        $this->id      = $id;
         $this->name    = $name;
         $this->country = $country;
+    }
+
+    public function getId(): CityId
+    {
+        return $this->id;
     }
 
     public function getName(): string

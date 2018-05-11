@@ -2,13 +2,14 @@
 
 namespace spec\User\Command;
 
+use Geo\Entity\CityId;
 use PhpSpec\ObjectBehavior;
 use User\Command\RegisterUser;
 use User\Entity\UserId;
 
 class RegisterUserSpec extends ObjectBehavior
 {
-    public function let(UserId $userId)
+    public function let(UserId $userId, CityId $cityId)
     {
         $this->beConstructedWith(
             $userId,
@@ -17,7 +18,7 @@ class RegisterUserSpec extends ObjectBehavior
             $email = 'alex@example.com',
             $firstName = 'Alex',
             $lastName = 'Smith',
-            $cityId = 1
+            $cityId
         );
     }
 
