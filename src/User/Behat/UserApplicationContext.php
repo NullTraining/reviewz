@@ -7,6 +7,7 @@ use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Exception;
 use Geo\Entity\CityEntity;
+use Geo\Entity\CityId;
 use Organization\Command\JoinOrganization;
 use Organization\Entity\OrganizationEntity;
 use Organization\Entity\OrganizationId;
@@ -113,7 +114,7 @@ class UserApplicationContext implements Context
     {
         $data = (object) $table->getRowsHash();
 
-        $cityId = 1;
+        $cityId = new CityId('1');
 
         $command = new RegisterUser(
             UserId::create(),

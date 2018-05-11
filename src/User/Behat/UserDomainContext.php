@@ -6,6 +6,7 @@ use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Exception;
 use Geo\Entity\CityEntity;
+use Geo\Entity\CityId;
 use Geo\Entity\CountryEntity;
 use Organization\Entity\OrganizationEntity;
 use Organization\Entity\OrganizationId;
@@ -66,7 +67,7 @@ class UserDomainContext implements Context
             $data->lastName,
             $data->email,
             $data->password,
-            new CityEntity($data->city, new CountryEntity('@TODO', $data->country))
+            new CityEntity(CityId::create(), $data->city, new CountryEntity('@TODO', $data->country))
         );
     }
 

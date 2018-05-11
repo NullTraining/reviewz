@@ -2,6 +2,7 @@
 
 namespace User\Command;
 
+use Geo\Entity\CityId;
 use User\Entity\UserId;
 
 class RegisterUser
@@ -18,7 +19,7 @@ class RegisterUser
     private $firstName;
     /** @var string */
     private $lastName;
-    /** @var int */
+    /** @var CityId */
     private $cityId;
 
     public function __construct(
@@ -28,7 +29,7 @@ class RegisterUser
         string $email,
         string $firstName,
         string $lastName,
-        int $cityId
+        CityId $cityId
     ) {
         $this->userId    = $userId;
         $this->username  = $username;
@@ -69,7 +70,7 @@ class RegisterUser
         return $this->lastName;
     }
 
-    public function getCityId(): int
+    public function getCityId(): CityId
     {
         return $this->cityId;
     }

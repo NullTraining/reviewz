@@ -4,6 +4,7 @@ namespace spec\User\Hander;
 
 use App\EventBus;
 use Geo\Entity\CityEntity;
+use Geo\Entity\CityId;
 use Geo\Repository\CityRepository;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -32,7 +33,8 @@ class UserRegistrationHandlerSpec extends ObjectBehavior
         CityRepository $cityRepository,
         EventBus $eventBus,
         UserId $userId,
-        CityEntity $cityEntity
+        CityEntity $cityEntity,
+        CityId $cityId
     ) {
         $command->getUserId()->shouldBeCalled()->willReturn($userId);
         $command->getUsername()->shouldBeCalled()->willReturn('alex.smith');
@@ -40,9 +42,9 @@ class UserRegistrationHandlerSpec extends ObjectBehavior
         $command->getLastName()->shouldBeCalled()->willReturn('Smith');
         $command->getEmail()->shouldBeCalled()->willReturn('alex@example.com');
         $command->getPassword()->shouldBeCalled()->willReturn('passw0rd');
-        $command->getCityId()->shouldBeCalled()->willReturn(1);
+        $command->getCityId()->shouldBeCalled()->willReturn($cityId);
 
-        $cityRepository->load(1)
+        $cityRepository->load($cityId)
             ->shouldBeCalled()
             ->willReturn($cityEntity);
 

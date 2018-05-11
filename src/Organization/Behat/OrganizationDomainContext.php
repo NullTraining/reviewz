@@ -4,6 +4,7 @@ namespace Organization\Behat;
 
 use Behat\Behat\Context\Context;
 use Geo\Entity\CityEntity;
+use Geo\Entity\CityId;
 use Geo\Entity\CountryEntity;
 use Mockery\MockInterface;
 use Organization\Entity\OrganizationEntity;
@@ -50,7 +51,7 @@ class OrganizationDomainContext implements Context
         string $countryName
     ) {
         $country  = new CountryEntity('TODO:xx', $countryName);
-        $homeTown = new CityEntity($cityName, $country);
+        $homeTown = new CityEntity(CityId::create(), $cityName, $country);
 
         $this->organization = new OrganizationEntity(OrganizationId::create(), $orgName, $orgDescription, $this->user, $homeTown);
     }
