@@ -5,6 +5,9 @@
     </description>
     <exclude-pattern>*.js</exclude-pattern>
     <exclude-pattern>*.css</exclude-pattern>
+    <config name="installed_paths"
+            value="vendor/slevomat/coding-standard/SlevomatCodingStandard"/><!-- relative path from PHPCS source location -->
+    <rule ref="SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly"/>
 
     <rule ref="Generic.Classes.DuplicateClassName"/>
     <rule ref="Generic.CodeAnalysis.EmptyStatement"/>
