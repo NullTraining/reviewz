@@ -8,20 +8,24 @@ default:
         talk:
             contexts:
                 - Talk\Behat\TalkDomainContext
+                - User\Behat\UserFixturesContext
             filters:
                 tags: "@talk"
         user:
             contexts:
                 - User\Behat\UserDomainContext
+                - User\Behat\UserFixturesContext
             filters:
                 tags: "@user"
         user_app:
             contexts:
                 - User\Behat\UserApplicationContext
+                - User\Behat\UserFixturesContext
             filters:
                 tags: "@user"
         event:
             contexts:
                 - Event\Behat\EventDomainContext
+                - User\Behat\UserFixturesContext
             filters:
                 tags: "@event"

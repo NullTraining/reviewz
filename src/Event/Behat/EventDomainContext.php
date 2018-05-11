@@ -168,21 +168,4 @@ class EventDomainContext implements Context
     {
         return new \DateTime($eventDate);
     }
-
-    /**
-     * @Transform
-     */
-    public function createUser(string $name): UserEntity
-    {
-        $city = \Mockery::mock(CityEntity::class);
-
-        switch ($name) {
-            case 'Alex Smith':
-                return new UserEntity(UserId::create(), 'alex.smith', 'Alex', 'Smith', 'alex@example.com', 'passw0rd',
-                    $city);
-            case 'Jo Johnson':
-                return new UserEntity(UserId::create(), 'jo.johnson', 'Jo', 'Johnson', 'jo@example.com', 'passw0rd',
-                    $city);
-        }
-    }
 }

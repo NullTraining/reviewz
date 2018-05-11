@@ -12,7 +12,6 @@ use Organization\Entity\OrganizationEntity;
 use Organization\Entity\OrganizationId;
 use Talk\Entity\TalkEntity;
 use User\Entity\UserEntity;
-use User\Entity\UserId;
 use Webmozart\Assert\Assert;
 
 /**
@@ -137,20 +136,5 @@ class TalkDomainContext implements Context
     public function toDateTime(string $eventDate): \DateTime
     {
         return new \DateTime($eventDate);
-    }
-
-    /**
-     * @Transform
-     */
-    public function createUser(string $name): UserEntity
-    {
-        $city = \Mockery::mock(CityEntity::class);
-
-        switch ($name) {
-            case 'Alex Smith':
-                return new UserEntity(UserId::create(), 'alex.smith', 'Alex', 'Smith', 'alex@example.com', 'passw0rd', $city);
-            case 'Jo Johnson':
-                return new UserEntity(UserId::create(), 'jo.johnson', 'Jo', 'Johnson', 'jo@example.com', 'passw0rd', $city);
-        }
     }
 }
