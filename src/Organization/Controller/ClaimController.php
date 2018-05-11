@@ -4,6 +4,7 @@ namespace Organization\Controller;
 
 use Doctrine\ORM\EntityManager;
 use Organization\Entity\ClaimEntity;
+use Organization\Entity\ClaimId;
 use Organization\Entity\OrganizationEntity;
 use Organization\Repository\ClaimRepository;
 use Talk\Entity\TalkEntity;
@@ -33,7 +34,7 @@ class ClaimController
             throw new \DomainException('Talk can not be claimed');
         }
 
-        $claim = new ClaimEntity($talk, $this->currentUser);
+        $claim = new ClaimEntity(ClaimId::create(), $talk, $this->currentUser);
 
         $this->entityManager->persist($claim);
         $this->entityManager->flush();

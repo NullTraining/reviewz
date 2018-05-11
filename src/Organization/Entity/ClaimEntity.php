@@ -7,6 +7,8 @@ use User\Entity\UserEntity;
 
 class ClaimEntity
 {
+    /** @var ClaimId */
+    private $id;
     /** @var TalkEntity */
     private $talk;
     /** @var UserEntity */
@@ -14,11 +16,16 @@ class ClaimEntity
     /** @var bool */
     private $approved = null;
 
-    public function __construct(TalkEntity $talk, UserEntity $speaker)
+    public function __construct(ClaimId $id, TalkEntity $talk, UserEntity $speaker)
     {
-        // TODO: write logic here
+        $this->id      = $id;
         $this->talk    = $talk;
         $this->speaker = $speaker;
+    }
+
+    public function getId(): ClaimId
+    {
+        return $this->id;
     }
 
     public function getTalk(): TalkEntity
