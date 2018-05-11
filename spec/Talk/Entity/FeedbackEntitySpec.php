@@ -4,6 +4,7 @@ namespace spec\Talk\Entity;
 
 use PhpSpec\ObjectBehavior;
 use Talk\Entity\FeedbackEntity;
+use Talk\Entity\FeedbackId;
 use Talk\Entity\TalkEntity;
 use User\Entity\UserEntity;
 
@@ -14,9 +15,14 @@ class FeedbackEntitySpec extends ObjectBehavior
         $this->shouldHaveType(FeedbackEntity::class);
     }
 
-    public function let(TalkEntity $talk, UserEntity $user)
+    public function let(FeedbackId $id, TalkEntity $talk, UserEntity $user)
     {
-        $this->beConstructedWith($talk, $user, 'Feedback comment', 5);
+        $this->beConstructedWith($id, $talk, $user, 'Feedback comment', 5);
+    }
+
+    public function it_exposes_id(FeedbackId $id)
+    {
+        $this->getId()->shouldReturn($id);
     }
 
     public function it_exposes_talk(TalkEntity $talk)
