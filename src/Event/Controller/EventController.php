@@ -5,6 +5,7 @@ namespace Event\Controller;
 use Doctrine\ORM\EntityManager;
 use DomainException;
 use Event\Entity\EventEntity;
+use Event\Entity\EventId;
 use Geo\Entity\LocationEntity;
 use Organization\Entity\OrganizationEntity;
 use User\Entity\UserEntity;
@@ -28,7 +29,7 @@ class EventController
             throw new DomainException('Only organizers can create an event for an organization');
         }
 
-        $event = new EventEntity($eventDate, $location, $title, $description);
+        $event = new EventEntity(EventId::create(), $eventDate, $location, $title, $description);
 
         $organization->addEvent($event);
         $this->entityManager->persist($organization);

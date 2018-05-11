@@ -4,15 +4,17 @@ namespace spec\Event\Entity;
 
 use DomainException;
 use Event\Entity\EventEntity;
+use Event\Entity\EventId;
 use Geo\Entity\LocationEntity;
 use PhpSpec\ObjectBehavior;
 use User\Entity\UserEntity;
 
 class EventEntitySpec extends ObjectBehavior
 {
-    public function let(\DateTime $eventDate, LocationEntity $location)
+    public function let(EventId $id, \DateTime $eventDate, LocationEntity $location)
     {
         $this->beConstructedWith(
+            $id,
             $eventDate,
             $location,
             $eventTitle = 'Event title',
@@ -23,6 +25,11 @@ class EventEntitySpec extends ObjectBehavior
     public function it_is_initializable()
     {
         $this->shouldHaveType(EventEntity::class);
+    }
+
+    public function it_exposes_id(EventId $id)
+    {
+        $this->getId()->shouldReturn($id);
     }
 
     public function it_exposes_event_details(\DateTime $eventDate, LocationEntity $location)

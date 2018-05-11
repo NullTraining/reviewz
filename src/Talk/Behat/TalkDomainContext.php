@@ -4,6 +4,7 @@ namespace Talk\Behat;
 
 use Behat\Behat\Context\Context;
 use Event\Entity\EventEntity;
+use Event\Entity\EventId;
 use Geo\Entity\CityEntity;
 use Geo\Entity\LocationEntity;
 use Mockery\MockInterface;
@@ -61,7 +62,7 @@ class TalkDomainContext implements Context
      */
     public function isScheduledFor(string $eventTitle, \DateTime $eventDate)
     {
-        $this->event = new EventEntity($eventDate, \Mockery::mock(LocationEntity::class), $eventTitle, '');
+        $this->event = new EventEntity(EventId::create(), $eventDate, \Mockery::mock(LocationEntity::class), $eventTitle, '');
     }
 
     /**

@@ -9,6 +9,8 @@ use User\Entity\UserEntity;
 
 class EventEntity
 {
+    /** @var EventId */
+    private $id;
     /** @var string */
     private $title;
     /** @var string */
@@ -26,20 +28,23 @@ class EventEntity
     /** @var array|UserEntity[] */
     private $confirmedAttendees = [];
 
-    /**
-     * EventEntity constructor.
-     *
-     * @param \DateTime      $eventDate
-     * @param LocationEntity $location
-     * @param string         $title
-     * @param string         $description
-     */
-    public function __construct(\DateTime $eventDate, LocationEntity $location, string $title, string $description)
-    {
+    public function __construct(
+        EventId $id,
+        \DateTime $eventDate,
+        LocationEntity $location,
+        string $title,
+        string $description
+    ) {
+        $this->id          = $id;
         $this->title       = $title;
         $this->description = $description;
         $this->eventDate   = $eventDate;
         $this->location    = $location;
+    }
+
+    public function getId(): EventId
+    {
+        return $this->id;
     }
 
     /**
