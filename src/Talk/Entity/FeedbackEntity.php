@@ -7,6 +7,10 @@ use User\Entity\UserEntity;
 class FeedbackEntity
 {
     /**
+     * @var FeedbackId
+     */
+    private $id;
+    /**
      * @var TalkEntity
      */
     private $talk;
@@ -28,13 +32,19 @@ class FeedbackEntity
      */
     private $createdAt;
 
-    public function __construct(\Talk\Entity\TalkEntity $talk, \User\Entity\UserEntity $user, string $comment, int $rating)
+    public function __construct(FeedbackId $id, \Talk\Entity\TalkEntity $talk, \User\Entity\UserEntity $user, string $comment, int $rating)
     {
+        $this->id        = $id;
         $this->talk      = $talk;
         $this->user      = $user;
         $this->comment   = $comment;
         $this->rating    = $rating;
         $this->createdAt = new \DateTime();
+    }
+
+    public function getId(): FeedbackId
+    {
+        return $this->id;
     }
 
     public function getTalk(): TalkEntity
