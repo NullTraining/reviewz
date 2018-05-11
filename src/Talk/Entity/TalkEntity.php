@@ -31,13 +31,19 @@ class TalkEntity
      * @var array|ClaimEntity[]
      */
     private $claims;
+    /**
+     * @var TalkId
+     */
+    private $id;
 
     public function __construct(
+        TalkId $id,
         EventEntity $meetup,
         string $title,
         string $description,
         string $speakerName
     ) {
+        $this->id          = $id;
         $this->meetup      = $meetup;
         $this->title       = $title;
         $this->description = $description;
@@ -56,6 +62,11 @@ class TalkEntity
         }
 
         $this->claims[] = new ClaimEntity($this, $speaker);
+    }
+
+    public function getId(): TalkId
+    {
+        return $this->id;
     }
 
     /**

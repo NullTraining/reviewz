@@ -5,13 +5,15 @@ namespace spec\Talk\Entity;
 use Event\Entity\EventEntity;
 use PhpSpec\ObjectBehavior;
 use Talk\Entity\TalkEntity;
+use Talk\Entity\TalkId;
 use User\Entity\UserEntity;
 
 class TalkEntitySpec extends ObjectBehavior
 {
-    public function let(EventEntity $meetup)
+    public function let(TalkId $id, EventEntity $meetup)
     {
         $this->beConstructedWith(
+            $id,
             $meetup,
             $title = 'Title of the talk',
             $description = 'Very very long text',
@@ -22,6 +24,11 @@ class TalkEntitySpec extends ObjectBehavior
     public function it_is_initializable()
     {
         $this->shouldHaveType(TalkEntity::class);
+    }
+
+    public function it_exposes_id(TalkId $id)
+    {
+        $this->getId()->shouldReturn($id);
     }
 
     public function it_exposes_meetup_it_belongs_to(EventEntity $meetup)
