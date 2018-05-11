@@ -20,6 +20,8 @@ class EventEntity
     private $eventDate;
     /** @var LocationEntity */
     private $location;
+    /** @var OrganizationEntity */
+    private $organization;
     /** @var array|UserEntity[] */
     private $attendees = [];
     /** @var array|UserEntity[] */
@@ -34,13 +36,15 @@ class EventEntity
         DateTime $eventDate,
         LocationEntity $location,
         string $title,
-        string $description
+        string $description,
+        OrganizationEntity $organization
     ) {
-        $this->id          = $id;
-        $this->title       = $title;
-        $this->description = $description;
-        $this->eventDate   = $eventDate;
-        $this->location    = $location;
+        $this->id           = $id;
+        $this->title        = $title;
+        $this->description  = $description;
+        $this->eventDate    = $eventDate;
+        $this->location     = $location;
+        $this->organization = $organization;
     }
 
     public function getId(): EventId

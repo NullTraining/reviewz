@@ -33,8 +33,6 @@ class EventControllerSpec extends ObjectBehavior
         UserEntity $currentUser
     ) {
         $organization->isOrganizer($currentUser)->willReturn(true);
-        $organization->addEvent(Argument::type(EventEntity::class))->shouldBeCalled();
-        $entityManager->persist($organization)->shouldBeCalled();
         $entityManager->persist(Argument::type(EventEntity::class))->shouldBeCalled();
         $entityManager->flush()->shouldBeCalled();
         $this->create($eventDate, $location, $organization, 'Event title', 'Event description')->shouldReturnAnInstanceOf(EventEntity::class);
@@ -59,7 +57,6 @@ class EventControllerSpec extends ObjectBehavior
     }
 
     public function it_should_throw_exception_when_trying_to_confirm_same_attendee_twice(
-        EntityManager $entityManager,
         EventEntity $event,
         UserEntity $attendee
     ) {

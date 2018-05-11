@@ -7,19 +7,21 @@ use DomainException;
 use Event\Entity\EventEntity;
 use Event\Entity\EventId;
 use Geo\Entity\LocationEntity;
+use Organization\Entity\OrganizationEntity;
 use PhpSpec\ObjectBehavior;
 use User\Entity\UserEntity;
 
 class EventEntitySpec extends ObjectBehavior
 {
-    public function let(EventId $id, DateTime $eventDate, LocationEntity $location)
+    public function let(EventId $id, DateTime $eventDate, LocationEntity $location, OrganizationEntity $organization)
     {
         $this->beConstructedWith(
             $id,
             $eventDate,
             $location,
             $eventTitle = 'Event title',
-            $eventDescription = 'Event description'
+            $eventDescription = 'Event description',
+            $organization
         );
     }
 
