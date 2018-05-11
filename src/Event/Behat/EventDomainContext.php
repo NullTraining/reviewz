@@ -4,6 +4,7 @@ namespace Event\Behat;
 
 use Behat\Behat\Context\Context;
 use Event\Entity\EventEntity;
+use Event\Entity\EventId;
 use Geo\Entity\CityEntity;
 use Geo\Entity\LocationEntity;
 use Geo\Entity\LocationId;
@@ -63,7 +64,7 @@ class EventDomainContext implements Context
      */
     public function isScheduledFor(string $eventTitle, \DateTime $eventDate)
     {
-        $this->event = new EventEntity($eventDate, \Mockery::mock(LocationEntity::class), $eventTitle, '');
+        $this->event = new EventEntity(EventId::create(), $eventDate, \Mockery::mock(LocationEntity::class), $eventTitle, '');
     }
 
     /**
@@ -93,7 +94,7 @@ class EventDomainContext implements Context
         string $location
     ) {
         $location    = new LocationEntity(LocationId::create(), $location, \Mockery::mock(CityEntity::class));
-        $this->event = new EventEntity($date, $location, $eventName, $desc);
+        $this->event = new EventEntity(EventId::create(), $date, $location, $eventName, $desc);
 
         $this->organization->addEvent($this->event);
         Assert::same($orgName, $this->organization->getTitle());
