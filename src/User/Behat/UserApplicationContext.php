@@ -172,35 +172,4 @@ class UserApplicationContext implements Context
         Assert::notNull($this->exception);
         Assert::isInstanceOf($this->exception, \DomainException::class);
     }
-
-    /**
-     * @Transform
-     */
-    public function createUser(string $name): UserEntity
-    {
-        $city = \Mockery::mock(CityEntity::class);
-
-        switch ($name) {
-            case 'Alex Smith':
-                return new UserEntity(
-                    new UserId('52ffc672-5296-4ddd-a3e8-7f47b7decee6'),
-                    'alex.smith',
-                    'Alex',
-                    'Smith',
-                    'alex@example.com',
-                    'passw0rd',
-                    $city
-                );
-            case 'Jo Johnson':
-                return new UserEntity(
-                    new UserId('0e89cbf3-35ea-4f7d-8ac7-4899a5ca0036'),
-                    'jo.johnson',
-                    'Jo',
-                    'Johnson',
-                    'jo@example.com',
-                    'passw0rd',
-                    $city
-                );
-        }
-    }
 }
