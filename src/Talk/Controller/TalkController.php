@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManager;
 use DomainException;
 use Event\Entity\EventEntity;
 use Talk\Entity\TalkEntity;
+use Talk\Entity\TalkId;
 use User\Entity\UserEntity;
 
 class TalkController
@@ -27,7 +28,7 @@ class TalkController
             throw new DomainException('Only organizers can add a talk');
         }
 
-        $talk = new TalkEntity($event, $title, $description, $speakerName);
+        $talk = new TalkEntity(TalkId::create(), $event, $title, $description, $speakerName);
 
         $this->entityManager->persist($talk);
 

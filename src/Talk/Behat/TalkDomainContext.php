@@ -11,6 +11,7 @@ use Organization\Entity\ClaimEntity;
 use Organization\Entity\OrganizationEntity;
 use Organization\Entity\OrganizationId;
 use Talk\Entity\TalkEntity;
+use Talk\Entity\TalkId;
 use User\Entity\UserEntity;
 use User\Entity\UserId;
 use Webmozart\Assert\Assert;
@@ -68,7 +69,7 @@ class TalkDomainContext implements Context
      */
     public function thereIsTalk(string $talkTitle)
     {
-        $this->talk = new TalkEntity($this->event, $talkTitle, 'description', 'speaker name');
+        $this->talk = new TalkEntity(TalkId::create(), $this->event, $talkTitle, 'description', 'speaker name');
     }
 
     /**
