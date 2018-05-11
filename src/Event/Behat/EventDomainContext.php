@@ -6,6 +6,7 @@ use Behat\Behat\Context\Context;
 use Event\Entity\EventEntity;
 use Geo\Entity\CityEntity;
 use Geo\Entity\LocationEntity;
+use Geo\Entity\LocationId;
 use Mockery\MockInterface;
 use Organization\Entity\OrganizationEntity;
 use Organization\Entity\OrganizationId;
@@ -91,7 +92,7 @@ class EventDomainContext implements Context
         string $desc,
         string $location
     ) {
-        $location    = new LocationEntity($location, \Mockery::mock(CityEntity::class));
+        $location    = new LocationEntity(LocationId::create(), $location, \Mockery::mock(CityEntity::class));
         $this->event = new EventEntity($date, $location, $eventName, $desc);
 
         $this->organization->addEvent($this->event);

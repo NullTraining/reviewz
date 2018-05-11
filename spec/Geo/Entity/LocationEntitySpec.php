@@ -4,18 +4,24 @@ namespace spec\Geo\Entity;
 
 use Geo\Entity\CityEntity;
 use Geo\Entity\LocationEntity;
+use Geo\Entity\LocationId;
 use PhpSpec\ObjectBehavior;
 
 class LocationEntitySpec extends ObjectBehavior
 {
-    public function let(CityEntity $city)
+    public function let(LocationId $id, CityEntity $city)
     {
-        $this->beConstructedWith($name = 'Eiffel tower', $city);
+        $this->beConstructedWith($id, $name = 'Eiffel tower', $city);
     }
 
     public function it_is_initializable()
     {
         $this->shouldHaveType(LocationEntity::class);
+    }
+
+    public function it_exposes_id(LocationId $id)
+    {
+        $this->getId()->shouldReturn($id);
     }
 
     public function it_exposes_location_name()
