@@ -2,6 +2,8 @@
 
 namespace App;
 
-class CommandBus extends \SimpleBus\SymfonyBridge\Bus\CommandBus
+use SimpleBus\SymfonyBridge\Bus\CommandBus as BaseCommandBus;
+
+class CommandBus extends BaseCommandBus
 {
 }

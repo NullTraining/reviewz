@@ -2,6 +2,8 @@
 
 namespace App;
 
-class EventBus extends \SimpleBus\SymfonyBridge\Bus\EventBus
+use SimpleBus\SymfonyBridge\Bus\EventBus as BaseEventBus;
+
+class EventBus extends BaseEventBus
 {
 }
