@@ -4,6 +4,7 @@ namespace Talk\Entity;
 
 use Event\Entity\EventEntity;
 use Organization\Entity\ClaimEntity;
+use Organization\Entity\ClaimId;
 use Organization\Entity\OrganizationEntity;
 use User\Entity\UserEntity;
 
@@ -61,7 +62,7 @@ class TalkEntity
             throw new \DomainException('Talk already has a pending claim');
         }
 
-        $this->claims[] = new ClaimEntity($this, $speaker);
+        $this->claims[] = new ClaimEntity(ClaimId::create(), $this, $speaker);
     }
 
     public function getId(): TalkId
