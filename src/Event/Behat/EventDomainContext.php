@@ -48,9 +48,16 @@ class EventDomainContext implements Context
             'Doe',
             'johndoe@dev.dev',
             'password',
-            $hometown);
+            $hometown
+        );
 
-        $this->organization = new OrganizationEntity(OrganizationId::create(), $orgName, 'Org desc', $this->user, $hometown);
+        $this->organization = new OrganizationEntity(
+            OrganizationId::create(),
+            $orgName,
+            'Org desc',
+            $this->user,
+            $hometown
+        );
     }
 
     /**
@@ -66,7 +73,14 @@ class EventDomainContext implements Context
      */
     public function isScheduledFor(string $eventTitle, DateTime $eventDate)
     {
-        $this->event = new EventEntity(EventId::create(), $eventDate, Mockery::mock(LocationEntity::class), $eventTitle, '');
+        $this->event = new EventEntity(
+            EventId::create(),
+            $eventDate,
+            Mockery::mock(LocationEntity::class),
+            $eventTitle,
+            '',
+            $this->organization
+        );
     }
 
     /**
@@ -96,7 +110,7 @@ class EventDomainContext implements Context
         string $location
     ) {
         $location    = new LocationEntity(LocationId::create(), $location, Mockery::mock(CityEntity::class));
-        $this->event = new EventEntity(EventId::create(), $date, $location, $eventName, $desc);
+        $this->event = new EventEntity(EventId::create(), $date, $location, $eventName, $desc, $this->organization);
 
         $this->organization->addEvent($this->event);
         Assert::same($orgName, $this->organization->getTitle());

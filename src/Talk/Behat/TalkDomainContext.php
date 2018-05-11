@@ -64,7 +64,14 @@ class TalkDomainContext implements Context
      */
     public function isScheduledFor(string $eventTitle, DateTime $eventDate)
     {
-        $this->event = new EventEntity(EventId::create(), $eventDate, Mockery::mock(LocationEntity::class), $eventTitle, '');
+        $this->event = new EventEntity(
+            EventId::create(),
+            $eventDate,
+            Mockery::mock(LocationEntity::class),
+            $eventTitle,
+            '',
+            $this->organization
+        );
     }
 
     /**

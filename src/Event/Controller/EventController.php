@@ -30,10 +30,8 @@ class EventController
             throw new DomainException('Only organizers can create an event for an organization');
         }
 
-        $event = new EventEntity(EventId::create(), $eventDate, $location, $title, $description);
+        $event = new EventEntity(EventId::create(), $eventDate, $location, $title, $description, $organization);
 
-        $organization->addEvent($event);
-        $this->entityManager->persist($organization);
         $this->entityManager->persist($event);
         $this->entityManager->flush();
 
