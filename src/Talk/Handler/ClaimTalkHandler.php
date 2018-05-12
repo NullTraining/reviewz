@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Talk\Handler;
 
 use Talk\Commmand\ClaimTalk;
