@@ -12,7 +12,6 @@ use Event\Entity\EventId;
 use Geo\Entity\CityEntity;
 use Geo\Entity\LocationEntity;
 use Mockery;
-use Mockery\MockInterface;
 use Organization\Entity\ClaimEntity;
 use Organization\Entity\OrganizationEntity;
 use Organization\Entity\OrganizationId;
@@ -26,7 +25,7 @@ use Webmozart\Assert\Assert;
  */
 class TalkDomainContext implements Context
 {
-    /** @var UserEntity|MockInterface */
+    /** @var UserEntity */
     private $user;
     /** @var OrganizationEntity */
     private $organization;
@@ -42,9 +41,9 @@ class TalkDomainContext implements Context
     /**
      * @Given I'am logged in as :name
      */
-    public function iamLoggedInAs()
+    public function iamLoggedInAs(UserEntity $user)
     {
-        $this->user = Mockery::mock(UserEntity::class);
+        $this->user = $user;
     }
 
     /**
