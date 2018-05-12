@@ -6,6 +6,7 @@ use Event\Entity\EventEntity;
 use Organization\Entity\ClaimEntity;
 use Organization\Entity\ClaimId;
 use Organization\Entity\OrganizationEntity;
+use Talk\Exception\PendingClaimExistsException;
 use Talk\Exception\SpeakerAlreadySetException;
 use User\Entity\UserEntity;
 
@@ -60,7 +61,7 @@ class TalkEntity
         }
 
         if ($this->hasPendingClaim()) {
-            throw new \DomainException('Talk already has a pending claim');
+            throw PendingClaimExistsException::onTalk($this);
         }
 
         $this->claims[] = new ClaimEntity(ClaimId::create(), $this, $speaker);
