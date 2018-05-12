@@ -4,6 +4,7 @@ default:
             contexts:
                 - Organization\Behat\OrganizationDomainContext
                 - User\Behat\UserFixturesContext
+                - Geo\Behat\GeoFixturesContext
             filters:
                 tags: "@organization"
         talk:
@@ -22,6 +23,7 @@ default:
             contexts:
                 - User\Behat\UserDomainContext
                 - User\Behat\UserFixturesContext
+                - Geo\Behat\GeoFixturesContext
             filters:
                 tags: "@user"
         user_app:
