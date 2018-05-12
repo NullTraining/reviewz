@@ -5,6 +5,12 @@ default:
                 - Organization\Behat\OrganizationDomainContext
             filters:
                 tags: "@organization"
+        organization_app:
+            contexts:
+                - Organization\Behat\OrganizationApplicationContext
+                - User\Behat\UserFixturesContext
+            filters:
+                tags: "@organization && @app"
         talk:
             contexts:
                 - Talk\Behat\TalkDomainContext
