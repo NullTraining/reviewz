@@ -2,11 +2,11 @@
 
 namespace Talk\Entity;
 
-use DomainException;
 use Event\Entity\EventEntity;
 use Organization\Entity\ClaimEntity;
 use Organization\Entity\ClaimId;
 use Organization\Entity\OrganizationEntity;
+use Talk\Exception\SpeakerAlreadySetException;
 use User\Entity\UserEntity;
 
 class TalkEntity
@@ -56,11 +56,11 @@ class TalkEntity
     public function claimTalk(UserEntity $speaker)
     {
         if ($this->hasSpeaker()) {
-            throw new DomainException('Talk already has a speaker set');
+            throw SpeakerAlreadySetException::onTalk($this);
         }
 
         if ($this->hasPendingClaim()) {
-            throw new DomainException('Talk already has a pending claim');
+            throw new \DomainException('Talk already has a pending claim');
         }
 
         $this->claims[] = new ClaimEntity(ClaimId::create(), $this, $speaker);
