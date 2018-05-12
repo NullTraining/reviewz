@@ -2,6 +2,8 @@
 
 namespace Talk\Entity;
 
+use Ramsey\Uuid\Uuid;
+
 class FeedbackId
 {
     /** @var string */
@@ -24,7 +26,7 @@ class FeedbackId
 
     public static function create(): self
     {
-        $value = \Ramsey\Uuid\Uuid::uuid4()->toString();
+        $value = Uuid::uuid4()->toString();
 
         return new self($value);
     }

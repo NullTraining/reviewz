@@ -2,6 +2,8 @@
 
 namespace Geo\Entity;
 
+use Ramsey\Uuid\Uuid;
+
 class CityId
 {
     /** @var string */
@@ -24,7 +26,7 @@ class CityId
 
     public static function create(): self
     {
-        $value = \Ramsey\Uuid\Uuid::uuid4()->toString();
+        $value = Uuid::uuid4()->toString();
 
         return new self($value);
     }

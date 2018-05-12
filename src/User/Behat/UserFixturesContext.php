@@ -4,6 +4,7 @@ namespace User\Behat;
 
 use Behat\Behat\Context\Context;
 use Geo\Entity\CityEntity;
+use Mockery;
 use User\Entity\UserEntity;
 use User\Entity\UserId;
 
@@ -14,7 +15,7 @@ class UserFixturesContext implements Context
      */
     public function createUser(string $name): UserEntity
     {
-        $city = \Mockery::mock(CityEntity::class);
+        $city = Mockery::mock(CityEntity::class);
 
         switch ($name) {
             case 'Alex Smith':

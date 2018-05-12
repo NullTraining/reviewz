@@ -7,6 +7,7 @@ use Geo\Repository\CityRepository;
 use User\Command\RegisterUser;
 use User\Entity\UserEntity;
 use User\Event\UserRegistered;
+use User\Repository\UserRepository;
 
 class UserRegistrationHandler
 {
@@ -19,7 +20,7 @@ class UserRegistrationHandler
     /** @var EventBus */
     private $eventBus;
 
-    public function __construct(\User\Repository\UserRepository $userRepository, CityRepository $cityRepository, EventBus $eventBus)
+    public function __construct(UserRepository $userRepository, CityRepository $cityRepository, EventBus $eventBus)
     {
         $this->userRepository = $userRepository;
         $this->cityRepository = $cityRepository;

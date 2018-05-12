@@ -2,6 +2,7 @@
 
 namespace Talk\Entity;
 
+use DomainException;
 use Event\Entity\EventEntity;
 use Organization\Entity\ClaimEntity;
 use Organization\Entity\ClaimId;
@@ -55,11 +56,11 @@ class TalkEntity
     public function claimTalk(UserEntity $speaker)
     {
         if ($this->hasSpeaker()) {
-            throw new \DomainException('Talk already has a speaker set');
+            throw new DomainException('Talk already has a speaker set');
         }
 
         if ($this->hasPendingClaim()) {
-            throw new \DomainException('Talk already has a pending claim');
+            throw new DomainException('Talk already has a pending claim');
         }
 
         $this->claims[] = new ClaimEntity(ClaimId::create(), $this, $speaker);

@@ -2,6 +2,7 @@
 
 namespace Event\Controller;
 
+use DateTime;
 use Doctrine\ORM\EntityManager;
 use DomainException;
 use Event\Entity\EventEntity;
@@ -23,7 +24,7 @@ class EventController
         $this->currentUser   = $currentUser;
     }
 
-    public function create(\DateTime $eventDate, LocationEntity $location, OrganizationEntity $organization, $title, $description)
+    public function create(DateTime $eventDate, LocationEntity $location, OrganizationEntity $organization, $title, $description)
     {
         if (!$organization->isOrganizer($this->currentUser)) {
             throw new DomainException('Only organizers can create an event for an organization');

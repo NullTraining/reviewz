@@ -2,6 +2,7 @@
 
 namespace spec\Organization\Entity;
 
+use DomainException;
 use Geo\Entity\CityEntity;
 use Organization\Entity\OrganizationEntity;
 use Organization\Entity\OrganizationId;
@@ -49,7 +50,7 @@ class OrganizationEntitySpec extends ObjectBehavior
     public function it_should_not_add_same_member(UserEntity $user)
     {
         $this->addMember($user);
-        $this->shouldThrow(\DomainException::class)->during('addMember', [$user]);
+        $this->shouldThrow(DomainException::class)->during('addMember', [$user]);
     }
 
     public function it_should_approve_organization()

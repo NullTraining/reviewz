@@ -2,6 +2,7 @@
 
 namespace Event\Entity;
 
+use DateTime;
 use DomainException;
 use Geo\Entity\LocationEntity;
 use Organization\Entity\OrganizationEntity;
@@ -30,7 +31,7 @@ class EventEntity
 
     public function __construct(
         EventId $id,
-        \DateTime $eventDate,
+        DateTime $eventDate,
         LocationEntity $location,
         string $title,
         string $description
@@ -66,7 +67,7 @@ class EventEntity
     /**
      * @return \DateTime
      */
-    public function getEventDate(): \DateTime
+    public function getEventDate(): DateTime
     {
         return $this->eventDate;
     }

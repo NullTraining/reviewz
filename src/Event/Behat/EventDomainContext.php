@@ -3,11 +3,13 @@
 namespace Event\Behat;
 
 use Behat\Behat\Context\Context;
+use DateTime;
 use Event\Entity\EventEntity;
 use Event\Entity\EventId;
 use Geo\Entity\CityEntity;
 use Geo\Entity\LocationEntity;
 use Geo\Entity\LocationId;
+use Mockery;
 use Mockery\MockInterface;
 use Organization\Entity\OrganizationEntity;
 use Organization\Entity\OrganizationId;
@@ -29,7 +31,7 @@ class EventDomainContext implements Context
      */
     public function iamLoggedInAs()
     {
-        $this->user = \Mockery::mock(UserEntity::class);
+        $this->user = Mockery::mock(UserEntity::class);
     }
 
     /**
@@ -38,7 +40,7 @@ class EventDomainContext implements Context
      */
     public function thereIsOrganization($orgName)
     {
-        $hometown   = \Mockery::mock(CityEntity::class);
+        $hometown   = Mockery::mock(CityEntity::class);
         $this->user = new UserEntity(
             UserId::create(),
             'username',
@@ -62,9 +64,9 @@ class EventDomainContext implements Context
     /**
      * @Given :eventTitle is scheduled for :eventDate
      */
-    public function isScheduledFor(string $eventTitle, \DateTime $eventDate)
+    public function isScheduledFor(string $eventTitle, DateTime $eventDate)
     {
-        $this->event = new EventEntity(EventId::create(), $eventDate, \Mockery::mock(LocationEntity::class), $eventTitle, '');
+        $this->event = new EventEntity(EventId::create(), $eventDate, Mockery::mock(LocationEntity::class), $eventTitle, '');
     }
 
     /**
@@ -89,11 +91,11 @@ class EventDomainContext implements Context
     public function iCreateNewEventWithNameForOrganizationWithDateDescriptionInVenue(
         string $eventName,
         string $orgName,
-        \DateTime $date,
+        DateTime $date,
         string $desc,
         string $location
     ) {
-        $location    = new LocationEntity(LocationId::create(), $location, \Mockery::mock(CityEntity::class));
+        $location    = new LocationEntity(LocationId::create(), $location, Mockery::mock(CityEntity::class));
         $this->event = new EventEntity(EventId::create(), $date, $location, $eventName, $desc);
 
         $this->organization->addEvent($this->event);
@@ -166,8 +168,8 @@ class EventDomainContext implements Context
     /**
      * @Transform
      */
-    public function toDateTime(string $eventDate): \DateTime
+    public function toDateTime(string $eventDate): DateTime
     {
-        return new \DateTime($eventDate);
+        return new DateTime($eventDate);
     }
 }

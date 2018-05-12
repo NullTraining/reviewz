@@ -4,10 +4,12 @@ namespace User\Behat;
 
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
+use DomainException;
 use Exception;
 use Geo\Entity\CityEntity;
 use Geo\Entity\CityId;
 use Geo\Entity\CountryEntity;
+use Mockery;
 use Organization\Entity\OrganizationEntity;
 use Organization\Entity\OrganizationId;
 use User\Entity\UserEntity;
@@ -40,8 +42,8 @@ class UserDomainContext implements Context
             OrganizationId::create(),
             $orgName,
             '',
-            \Mockery::mock(UserEntity::class),
-            \Mockery::mock(CityEntity::class)
+            Mockery::mock(UserEntity::class),
+            Mockery::mock(CityEntity::class)
         );
     }
 
@@ -87,7 +89,7 @@ class UserDomainContext implements Context
     {
         try {
             $this->organization->addMember($this->user);
-        } catch (\DomainException $exception) {
+        } catch (DomainException $exception) {
             $this->exception = $exception;
         }
     }
@@ -115,6 +117,6 @@ class UserDomainContext implements Context
     public function iShouldSeeAnErrorSayingImAlreadyMemberOfTheOrganization()
     {
         Assert::notNull($this->exception);
-        Assert::isInstanceOf($this->exception, \DomainException::class);
+        Assert::isInstanceOf($this->exception, DomainException::class);
     }
 }
