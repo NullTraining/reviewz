@@ -6,9 +6,11 @@ $finder = PhpCsFixer\Finder::create()
     ->in('tests');
 
 return PhpCsFixer\Config::create()
+    ->setRiskyAllowed(true)
     ->setRules(array(
         '@Symfony' => true,
         'array_syntax' => ['syntax' => 'short'],
+        'declare_strict_types' => true,
         'binary_operator_spaces' => [
             'default' => 'align_single_space_minimal',
         ],
