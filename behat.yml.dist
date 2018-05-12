@@ -3,6 +3,7 @@ default:
         organization:
             contexts:
                 - Organization\Behat\OrganizationDomainContext
+                - User\Behat\UserFixturesContext
             filters:
                 tags: "@organization"
         talk:

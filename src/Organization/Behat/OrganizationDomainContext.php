@@ -9,7 +9,6 @@ use Geo\Entity\CityEntity;
 use Geo\Entity\CityId;
 use Geo\Entity\CountryEntity;
 use Mockery;
-use Mockery\MockInterface;
 use Organization\Entity\OrganizationEntity;
 use Organization\Entity\OrganizationId;
 use User\Entity\UserEntity;
@@ -17,7 +16,7 @@ use Webmozart\Assert\Assert;
 
 class OrganizationDomainContext implements Context
 {
-    /** @var UserEntity|MockInterface */
+    /** @var UserEntity */
     private $user;
     /** @var OrganizationEntity */
     private $organization;
@@ -25,9 +24,9 @@ class OrganizationDomainContext implements Context
     /**
      * @Given I'am logged in as :name
      */
-    public function iamLoggedInAs()
+    public function iamLoggedInAs(UserEntity $user)
     {
-        $this->user = Mockery::mock(UserEntity::class);
+        $this->user = $user;
     }
 
     /**
