@@ -12,4 +12,6 @@ interface EventRepository
     public function save(EventEntity $entity);
 
     public function load(EventId $id): EventEntity;
+
+    public function loadByTitle(string $eventTitle): EventEntity;
 }

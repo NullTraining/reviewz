@@ -26,4 +26,13 @@ class EventInMemoryRepository implements EventRepository
             }
         }
     }
+
+    public function loadByTitle(string $eventTitle): EventEntity
+    {
+        foreach ($this->list as $item) {
+            if ($item->getTitle() === $eventTitle) {
+                return $item;
+            }
+        }
+    }
 }
