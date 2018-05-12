@@ -2,7 +2,9 @@
 
 namespace spec\Event\Controller;
 
+use DateTime;
 use Doctrine\ORM\EntityManager;
+use DomainException;
 use Event\Controller\EventController;
 use Event\Entity\EventEntity;
 use Geo\Entity\LocationEntity;
@@ -24,7 +26,7 @@ class EventControllerSpec extends ObjectBehavior
     }
 
     public function it_can_create_event_for_organization_if_user_is_organization_organizer(
-        \DateTime $eventDate,
+        DateTime $eventDate,
         LocationEntity $location,
         EntityManager $entityManager,
         OrganizationEntity $organization,
@@ -39,13 +41,13 @@ class EventControllerSpec extends ObjectBehavior
     }
 
     public function it_should_throw_exception_when_creating_event_for_organization_if_user_is_not_organization_organizer(
-        \DateTime $eventDate,
+        DateTime $eventDate,
         LocationEntity $location,
         OrganizationEntity $organization,
         UserEntity $currentUser
     ) {
         $organization->isOrganizer($currentUser)->willReturn(false);
-        $this->shouldThrow(\DomainException::class)->duringCreate($eventDate, $location, $organization, 'Event title', 'Event description');
+        $this->shouldThrow(DomainException::class)->duringCreate($eventDate, $location, $organization, 'Event title', 'Event description');
     }
 
     public function it_should_confirm_user_attended_event(EntityManager $entityManager, EventEntity $event, UserEntity $attendee)
@@ -63,8 +65,8 @@ class EventControllerSpec extends ObjectBehavior
     ) {
         $event->confirmUserAttended($attendee)->shouldBeCalled();
 
-        $event->confirmUserAttended($attendee)->shouldBeCalled()->willThrow(\DomainException::class);
+        $event->confirmUserAttended($attendee)->shouldBeCalled()->willThrow(DomainException::class);
 
-        $this->shouldThrow(\DomainException::class)->during('confirmUserAttendedEvent', [$event, $attendee]);
+        $this->shouldThrow(DomainException::class)->during('confirmUserAttendedEvent', [$event, $attendee]);
     }
 }

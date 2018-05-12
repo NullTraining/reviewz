@@ -2,6 +2,7 @@
 
 namespace spec\Event\Entity;
 
+use DateTime;
 use DomainException;
 use Event\Entity\EventEntity;
 use Event\Entity\EventId;
@@ -11,7 +12,7 @@ use User\Entity\UserEntity;
 
 class EventEntitySpec extends ObjectBehavior
 {
-    public function let(EventId $id, \DateTime $eventDate, LocationEntity $location)
+    public function let(EventId $id, DateTime $eventDate, LocationEntity $location)
     {
         $this->beConstructedWith(
             $id,
@@ -32,7 +33,7 @@ class EventEntitySpec extends ObjectBehavior
         $this->getId()->shouldReturn($id);
     }
 
-    public function it_exposes_event_details(\DateTime $eventDate, LocationEntity $location)
+    public function it_exposes_event_details(DateTime $eventDate, LocationEntity $location)
     {
         $this->getEventDate()->shouldReturn($eventDate);
         $this->getTitle()->shouldReturn('Event title');

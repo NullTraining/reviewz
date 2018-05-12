@@ -2,6 +2,7 @@
 
 namespace Organization\Entity;
 
+use DomainException;
 use Event\Entity\EventEntity;
 use Geo\Entity\CityEntity;
 use User\Entity\UserEntity;
@@ -106,10 +107,10 @@ class OrganizationEntity
     public function addOrganizer(UserEntity $user): void
     {
         if ($this->isOrganizer($user)) {
-            throw new \DomainException('This user is already an organizer of this organization');
+            throw new DomainException('This user is already an organizer of this organization');
         }
         if ($this->isMember($user)) {
-            throw new \DomainException('This user is already a member of this organization');
+            throw new DomainException('This user is already a member of this organization');
         }
         $this->organizers[] = $user;
     }
@@ -117,10 +118,10 @@ class OrganizationEntity
     public function addMember(UserEntity $user): void
     {
         if ($this->isOrganizer($user)) {
-            throw new \DomainException('This user is already an organizer of this organization');
+            throw new DomainException('This user is already an organizer of this organization');
         }
         if ($this->isMember($user)) {
-            throw new \DomainException('This user is already a member of this organization');
+            throw new DomainException('This user is already a member of this organization');
         }
         $this->members[] = $user;
     }

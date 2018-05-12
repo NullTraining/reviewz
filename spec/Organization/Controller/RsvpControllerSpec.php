@@ -3,6 +3,7 @@
 namespace spec\Organization\Controller;
 
 use Doctrine\ORM\EntityManager;
+use DomainException;
 use Event\Entity\EventEntity;
 use Organization\Controller\RsvpController;
 use Organization\Entity\OrganizationEntity;
@@ -47,7 +48,7 @@ class RsvpControllerSpec extends ObjectBehavior
         $meetup->getOrganization()->shouldBeCalled()->willReturn($organization);
         $organization->isMember($currentUser)->shouldBeCalled()->willReturn(false);
 
-        $this->shouldThrow(\DomainException::class)->duringRsvpYes($meetup);
+        $this->shouldThrow(DomainException::class)->duringRsvpYes($meetup);
     }
 
     public function it_will_add_member_to_not_coming_list_when_they_rsvp_no(
@@ -76,7 +77,7 @@ class RsvpControllerSpec extends ObjectBehavior
         $meetup->getOrganization()->shouldBeCalled()->willReturn($organization);
         $organization->isMember($currentUser)->shouldBeCalled()->willReturn(false);
 
-        $this->shouldThrow(\DomainException::class)->duringRsvpNo($meetup);
+        $this->shouldThrow(DomainException::class)->duringRsvpNo($meetup);
     }
 
     public function it_will_add_member_to_maybe_coming_list_when_they_rsvp_maybe(
@@ -105,6 +106,6 @@ class RsvpControllerSpec extends ObjectBehavior
         $meetup->getOrganization()->shouldBeCalled()->willReturn($organization);
         $organization->isMember($currentUser)->shouldBeCalled()->willReturn(false);
 
-        $this->shouldThrow(\DomainException::class)->duringRsvpMaybe($meetup);
+        $this->shouldThrow(DomainException::class)->duringRsvpMaybe($meetup);
     }
 }

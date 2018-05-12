@@ -6,6 +6,7 @@ use Behat\Behat\Context\Context;
 use Geo\Entity\CityEntity;
 use Geo\Entity\CityId;
 use Geo\Entity\CountryEntity;
+use Mockery;
 use Mockery\MockInterface;
 use Organization\Entity\OrganizationEntity;
 use Organization\Entity\OrganizationId;
@@ -24,7 +25,7 @@ class OrganizationDomainContext implements Context
      */
     public function iamLoggedInAs()
     {
-        $this->user = \Mockery::mock(UserEntity::class);
+        $this->user = Mockery::mock(UserEntity::class);
     }
 
     /**
@@ -36,8 +37,8 @@ class OrganizationDomainContext implements Context
             OrganizationId::create(),
             $orgName,
             '',
-            \Mockery::mock(UserEntity::class),
-            \Mockery::mock(CityEntity::class)
+            Mockery::mock(UserEntity::class),
+            Mockery::mock(CityEntity::class)
         );
     }
 

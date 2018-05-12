@@ -3,10 +3,13 @@
 namespace Talk\Behat;
 
 use Behat\Behat\Context\Context;
+use DateTime;
+use DomainException;
 use Event\Entity\EventEntity;
 use Event\Entity\EventId;
 use Geo\Entity\CityEntity;
 use Geo\Entity\LocationEntity;
+use Mockery;
 use Mockery\MockInterface;
 use Organization\Entity\ClaimEntity;
 use Organization\Entity\OrganizationEntity;
@@ -39,7 +42,7 @@ class TalkDomainContext implements Context
      */
     public function iamLoggedInAs()
     {
-        $this->user = \Mockery::mock(UserEntity::class);
+        $this->user = Mockery::mock(UserEntity::class);
     }
 
     /**
@@ -51,17 +54,17 @@ class TalkDomainContext implements Context
             OrganizationId::create(),
             $orgName,
             '',
-            \Mockery::mock(UserEntity::class),
-            \Mockery::mock(CityEntity::class)
+            Mockery::mock(UserEntity::class),
+            Mockery::mock(CityEntity::class)
         );
     }
 
     /**
      * @Given :eventTitle is scheduled for :eventDate
      */
-    public function isScheduledFor(string $eventTitle, \DateTime $eventDate)
+    public function isScheduledFor(string $eventTitle, DateTime $eventDate)
     {
-        $this->event = new EventEntity(EventId::create(), $eventDate, \Mockery::mock(LocationEntity::class), $eventTitle, '');
+        $this->event = new EventEntity(EventId::create(), $eventDate, Mockery::mock(LocationEntity::class), $eventTitle, '');
     }
 
     /**
@@ -107,7 +110,7 @@ class TalkDomainContext implements Context
     {
         try {
             $this->talk->claimTalk($this->user);
-        } catch (\DomainException $exception) {
+        } catch (DomainException $exception) {
             $this->exception = $exception;
         }
     }
@@ -129,14 +132,14 @@ class TalkDomainContext implements Context
     public function iShouldSeeAnErrorSayingThereIsPendingClaimOnTheTalk()
     {
         Assert::notNull($this->exception);
-        Assert::isInstanceOf($this->exception, \DomainException::class);
+        Assert::isInstanceOf($this->exception, DomainException::class);
     }
 
     /**
      * @Transform
      */
-    public function toDateTime(string $eventDate): \DateTime
+    public function toDateTime(string $eventDate): DateTime
     {
-        return new \DateTime($eventDate);
+        return new DateTime($eventDate);
     }
 }

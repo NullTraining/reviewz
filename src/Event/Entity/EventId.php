@@ -2,6 +2,8 @@
 
 namespace Event\Entity;
 
+use Ramsey\Uuid\Uuid;
+
 class EventId
 {
     /** @var string */
@@ -24,7 +26,7 @@ class EventId
 
     public static function create(): self
     {
-        $value = \Ramsey\Uuid\Uuid::uuid4()->toString();
+        $value = Uuid::uuid4()->toString();
 
         return new self($value);
     }

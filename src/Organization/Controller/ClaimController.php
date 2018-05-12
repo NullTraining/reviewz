@@ -3,6 +3,8 @@
 namespace Organization\Controller;
 
 use Doctrine\ORM\EntityManager;
+use DomainException;
+use Exception;
 use Organization\Entity\ClaimEntity;
 use Organization\Entity\ClaimId;
 use Organization\Entity\OrganizationEntity;
@@ -31,7 +33,7 @@ class ClaimController
     public function claim(TalkEntity $talk)
     {
         if (true === $talk->hasSpeaker()) {
-            throw new \DomainException('Talk can not be claimed');
+            throw new DomainException('Talk can not be claimed');
         }
 
         $claim = new ClaimEntity(ClaimId::create(), $talk, $this->currentUser);
@@ -53,7 +55,7 @@ class ClaimController
         $organization = $talk->getOrganization();
 
         if (false === $organization->isOrganizer($this->currentUser)) {
-            throw new \Exception('NOT ALLOWED');
+            throw new Exception('NOT ALLOWED');
         }
 
         $claim->markAsApproved();

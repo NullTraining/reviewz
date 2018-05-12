@@ -2,6 +2,7 @@
 
 namespace spec\Talk\Entity;
 
+use DateTime;
 use PhpSpec\ObjectBehavior;
 use Talk\Entity\FeedbackEntity;
 use Talk\Entity\FeedbackId;
@@ -47,6 +48,6 @@ class FeedbackEntitySpec extends ObjectBehavior
 
     public function it_exposes_createdAt()
     {
-        $this->getCreatedAt()->shouldReturnAnInstanceOf(\DateTime::class);
+        $this->getCreatedAt()->shouldReturnAnInstanceOf(DateTime::class);
     }
 }

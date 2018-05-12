@@ -3,6 +3,7 @@
 namespace spec\Talk\Controller;
 
 use Doctrine\ORM\EntityManager;
+use DomainException;
 use Event\Entity\EventEntity;
 use Organization\Entity\OrganizationEntity;
 use PhpSpec\ObjectBehavior;
@@ -58,6 +59,6 @@ class TalkControllerSpec extends ObjectBehavior
         $event->getOrganization()->shouldBeCalled()->willReturn($organization);
         $organization->isOrganizer($currentUser)->shouldBeCalled()->willReturn(false);
 
-        $this->shouldThrow(\DomainException::class)->duringCreate($event, $title, $description, $speakerName);
+        $this->shouldThrow(DomainException::class)->duringCreate($event, $title, $description, $speakerName);
     }
 }

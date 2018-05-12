@@ -3,6 +3,8 @@
 namespace spec\Organization\Controller;
 
 use Doctrine\ORM\EntityManager;
+use DomainException;
+use Exception;
 use Organization\Controller\ClaimController;
 use Organization\Entity\ClaimEntity;
 use Organization\Entity\OrganizationEntity;
@@ -40,7 +42,7 @@ class ClaimControllerSpec extends ObjectBehavior
     {
         $talk->hasSpeaker()->shouldBeCalled()->willReturn(true);
 
-        $this->shouldThrow(\DomainException::class)->duringClaim($talk);
+        $this->shouldThrow(DomainException::class)->duringClaim($talk);
     }
 
     public function it_shows_all_pending_claims_to_organizer(
@@ -98,7 +100,7 @@ class ClaimControllerSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn(false);
 
-        $this->shouldThrow(\Exception::class)->during('approvePendingClaim', [$pendingClaim]);
+        $this->shouldThrow(Exception::class)->during('approvePendingClaim', [$pendingClaim]);
     }
 
     public function it_allows_organizer_to_reject_pending_claim(EntityManager $entityManager, ClaimEntity $pendingClaim)
