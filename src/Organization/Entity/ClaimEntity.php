@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Organization\Entity;
 
 use Talk\Entity\TalkEntity;

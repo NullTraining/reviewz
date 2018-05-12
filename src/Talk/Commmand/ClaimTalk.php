@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Talk\Commmand;
 
 use Talk\Entity\TalkId;

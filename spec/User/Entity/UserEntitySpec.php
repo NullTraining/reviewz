@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\User\Entity;
 
 use Geo\Entity\CityEntity;

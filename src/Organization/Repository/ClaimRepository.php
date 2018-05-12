@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Organization\Repository;
 
 use Organization\Entity\OrganizationEntity;

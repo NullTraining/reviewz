@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Organization\Handler;
 
 use Organization\Command\JoinOrganization;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Talk\Controller;
 
 use Doctrine\ORM\EntityManager;
