@@ -11,6 +11,12 @@ default:
                 - User\Behat\UserFixturesContext
             filters:
                 tags: "@talk"
+        talk_app:
+            contexts:
+                - Talk\Behat\TalkApplicationContext
+                - User\Behat\UserFixturesContext
+            filters:
+                tags: "@talk"
         user:
             contexts:
                 - User\Behat\UserDomainContext
