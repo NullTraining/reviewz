@@ -11,6 +11,5 @@ Feature:
       | lastName  | Smith                  |
       | email     | alex.smith@example.com |
       | password  | abc123                 |
-      | country   | USA                    |
-      | city      | New York               |
+      | city      | New York,US            |
     Then I have created an account with username "alexsmith"
