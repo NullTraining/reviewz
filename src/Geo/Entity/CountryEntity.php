@@ -6,18 +6,18 @@ namespace Geo\Entity;
 
 class CountryEntity
 {
-    /** @var string */
+    /** @var CountryCode */
     private $countryCode;
     /** @var string */
     private $countryName;
 
-    public function __construct(string $countryCode, string $countryName)
+    public function __construct(CountryCode $countryCode, string $countryName)
     {
         $this->countryCode = $countryCode;
         $this->countryName = $countryName;
     }
 
-    public function getCountryCode(): string
+    public function getCountryCode(): CountryCode
     {
         return $this->countryCode;
     }
