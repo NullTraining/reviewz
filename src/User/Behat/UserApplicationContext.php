@@ -9,8 +9,9 @@ use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use DomainException;
 use Exception;
+use Geo\Behat\GeoFixturesContext;
 use Geo\Entity\CityEntity;
-use Geo\Entity\CityId;
+use Geo\Repository\CityRepository;
 use Mockery;
 use Organization\Command\JoinOrganization;
 use Organization\Entity\OrganizationEntity;
@@ -36,6 +37,8 @@ class UserApplicationContext implements Context
     private $userRepository;
     /** @var OrganizationRepository */
     private $organizationRepository;
+    /** @var CityRepository */
+    private $cityRepository;
     /** @var UserRegistrationHandler */
     private $handler;
     /** @var JoinOrganizationHandler */
@@ -54,10 +57,11 @@ class UserApplicationContext implements Context
     {
         $this->userRepository         = new UserInMemoryRepository();
         $this->organizationRepository = new OrganizationInMemoryRepository();
+        $this->cityRepository         = new CityInMemoryRepository();
         $this->eventBus               = new EventBus();
         $this->handler                = new UserRegistrationHandler(
             $this->userRepository,
-            new CityInMemoryRepository(),
+            $this->cityRepository,
             $this->eventBus
         );
         $this->joinOrganizationHandler = new JoinOrganizationHandler(
@@ -118,7 +122,9 @@ class UserApplicationContext implements Context
     {
         $data = (object) $table->getRowsHash();
 
-        $cityId = new CityId('1');
+        $city = GeoFixturesContext::toCity($data->city);
+
+        $this->cityRepository->save($city);
 
         $command = new RegisterUser(
             UserId::create(),
@@ -127,7 +133,7 @@ class UserApplicationContext implements Context
             $data->email,
             $data->firstName,
             $data->lastName,
-            $cityId
+            $city->getId()
         );
 
         $this->handler->handle($command);

@@ -6,7 +6,6 @@ namespace Tests\Geo\Repository;
 
 use Geo\Entity\CityEntity;
 use Geo\Entity\CityId;
-use Geo\Entity\CountryEntity;
 use Geo\Repository\CityRepository;
 
 class CityInMemoryRepository implements CityRepository
@@ -21,8 +20,10 @@ class CityInMemoryRepository implements CityRepository
 
     public function load(CityId $id): CityEntity
     {
-        if ('1' === $id->getValue()) {
-            return new CityEntity($id, 'New York', new CountryEntity('US', 'USA'));
+        foreach ($this->list as $item) {
+            if ($item->getId() == $id) {
+                return $item;
+            }
         }
     }
 }
