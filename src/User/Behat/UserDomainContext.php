@@ -8,9 +8,8 @@ use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use DomainException;
 use Exception;
+use Geo\Behat\GeoFixturesContext;
 use Geo\Entity\CityEntity;
-use Geo\Entity\CityId;
-use Geo\Entity\CountryEntity;
 use Mockery;
 use Organization\Entity\OrganizationEntity;
 use Organization\Entity\OrganizationId;
@@ -64,6 +63,8 @@ class UserDomainContext implements Context
     {
         $data = (object) $table->getRowsHash();
 
+        $city = GeoFixturesContext::toCity($data->city);
+
         $this->user = new UserEntity(
             UserId::create(),
             $data->username,
@@ -71,7 +72,7 @@ class UserDomainContext implements Context
             $data->lastName,
             $data->email,
             $data->password,
-            new CityEntity(CityId::create(), $data->city, new CountryEntity('@TODO', $data->country))
+            $city
         );
     }
 

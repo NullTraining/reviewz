@@ -6,8 +6,6 @@ namespace Organization\Behat;
 
 use Behat\Behat\Context\Context;
 use Geo\Entity\CityEntity;
-use Geo\Entity\CityId;
-use Geo\Entity\CountryEntity;
 use Mockery;
 use Organization\Entity\OrganizationEntity;
 use Organization\Entity\OrganizationId;
@@ -44,17 +42,13 @@ class OrganizationDomainContext implements Context
     }
 
     /**
-     * @When I create :orgName organization with description :orgDescription in :cityName, :countryName
+     * @When I create :orgName organization with description :orgDescription in :city
      */
     public function iCreateOrganizationWithDescriptionIn(
         string $orgName,
         string $orgDescription,
-        string $cityName,
-        string $countryName
+        CityEntity $homeTown
     ) {
-        $country  = new CountryEntity('TODO:xx', $countryName);
-        $homeTown = new CityEntity(CityId::create(), $cityName, $country);
-
         $this->organization = new OrganizationEntity(OrganizationId::create(), $orgName, $orgDescription, $this->user, $homeTown);
     }
 
