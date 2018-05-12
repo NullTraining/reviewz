@@ -9,6 +9,7 @@ Feature:
     And "March 2019 gathering" is scheduled for "2019-03-07"
     And "Jo Johnson" is a member of "New York Developer Ninjas" organization
 
+  @app
   Scenario: Member can RSVP Yes to an event
     Given I am logged in as "Jo Johnson"
     When I RSVP Yes to "March 2019 gathering"

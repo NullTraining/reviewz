@@ -48,3 +48,9 @@ default:
                 - Event\Behat\EventDomainContext
             filters:
                 tags: "@event"
+        event_app:
+            contexts:
+                - Event\Behat\EventApplicationContext
+                - User\Behat\UserFixturesContext
+            filters:
+                tags: "@event && @app"
