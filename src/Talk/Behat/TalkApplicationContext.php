@@ -229,7 +229,8 @@ class TalkApplicationContext implements Context
             $eventDate,
             Mockery::mock(LocationEntity::class),
             $title,
-            ''
+            '',
+            Mockery::mock(OrganizationEntity::class)
         );
     }
 }

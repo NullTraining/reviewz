@@ -6,5 +6,6 @@ parameters:
 	    - '#Parameter \#5 \$hometown of class Organization\\Entity\\OrganizationEntity constructor expects Geo\\Entity\\CityEntity, Mockery\\MockInterface given.#'
 	    - '#Parameter \#7 \$city of class User\\Entity\\UserEntity constructor expects Geo\\Entity\\CityEntity, Mockery\\MockInterface given.#'
 	    - '#Parameter \#3 \$city of class Geo\\Entity\\LocationEntity constructor expects Geo\\Entity\\CityEntity, Mockery\\MockInterface given.#'
+	    - '#Parameter \#6 \$organization of class Event\\Entity\\EventEntity constructor expects Organization\\Entity\\OrganizationEntity, Mockery\\MockInterface given.#'
 
 
