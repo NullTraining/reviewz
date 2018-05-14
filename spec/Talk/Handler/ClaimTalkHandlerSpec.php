@@ -49,6 +49,8 @@ class ClaimTalkHandlerSpec extends ObjectBehavior
         $talk->claimTalk($claimer)
             ->shouldBeCalled();
 
+        $talkRepository->save($talk)->shouldBeCalled();
+
         $this->handle($command);
     }
 }
