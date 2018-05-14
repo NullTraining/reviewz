@@ -27,5 +27,7 @@ class ClaimTalkHandler
         $claimer = $this->userRepository->load($command->getUserId());
 
         $talk->claimTalk($claimer);
+
+        $this->talkRepository->save($talk);
     }
 }
