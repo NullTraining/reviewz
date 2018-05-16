@@ -18,6 +18,7 @@ default:
             contexts:
                 - Talk\Behat\TalkApplicationContext
                 - User\Behat\UserFixturesContext
+                - Organization\Behat\OrganizationFixturesContext
             filters:
                 tags: "@talk"
         user:

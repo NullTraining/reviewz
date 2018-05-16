@@ -10,11 +10,9 @@ use Event\Entity\EventEntity;
 use Event\Entity\EventId;
 use Event\Repository\EventRepository;
 use Exception;
-use Geo\Entity\CityEntity;
 use Geo\Entity\LocationEntity;
 use Mockery;
 use Organization\Entity\OrganizationEntity;
-use Organization\Entity\OrganizationId;
 use Organization\Repository\OrganizationRepository;
 use Talk\Commmand\ClaimTalk;
 use Talk\Entity\TalkEntity;
@@ -195,20 +193,6 @@ class TalkApplicationContext implements Context
     public function toDateTime(string $eventDate): DateTime
     {
         return new DateTime($eventDate);
-    }
-
-    /**
-     * @Transform
-     */
-    public function toOrganization(string $orgName): OrganizationEntity
-    {
-        return new OrganizationEntity(
-            OrganizationId::create(),
-            $orgName,
-            'Desc',
-            Mockery::mock(UserEntity::class),
-            Mockery::mock(CityEntity::class)
-        );
     }
 
     /**
