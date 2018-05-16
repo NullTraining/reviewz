@@ -6,9 +6,11 @@ namespace Event\Behat;
 
 use Behat\Behat\Context\Context;
 use DateTime;
+use Event\Command\RsvpNo;
 use Event\Command\RsvpYes;
 use Event\Entity\EventEntity;
 use Event\Entity\EventId;
+use Event\Handler\RsvpNoHandler;
 use Event\Handler\RsvpYesHandler;
 use Event\Repository\EventRepository;
 use Geo\Entity\CityEntity;
@@ -43,6 +45,8 @@ class EventApplicationContext implements Context
     private $eventRepository;
     /** @var RsvpYesHandler */
     private $rsvpYesCommandHandler;
+    /** @var RsvpNoHandler */
+    private $rsvpNoCommandHandler;
 
     /**
      * @BeforeScenario
@@ -53,6 +57,11 @@ class EventApplicationContext implements Context
         $this->userRepository         = new UserInMemoryRepository();
         $this->eventRepository        = new EventInMemoryRepository();
         $this->rsvpYesCommandHandler  = new RsvpYesHandler(
+            $this->eventRepository,
+            $this->userRepository
+        );
+
+        $this->rsvpNoCommandHandler = new RsvpNoHandler(
             $this->eventRepository,
             $this->userRepository
         );
@@ -122,6 +131,28 @@ class EventApplicationContext implements Context
         $event = $this->eventRepository->loadByTitle($eventTitle);
 
         Assert::true($event->isAttending($this->currentUser));
+    }
+
+    /**
+     * @When I RSVP No to :eventTitle
+     */
+    public function iRsvpNoTo(string $eventTitle)
+    {
+        $event   = $this->eventRepository->loadByTitle($eventTitle);
+        $userId  = $this->currentUser->getId();
+        $eventId = $event->getId();
+
+        $command = new RsvpNo($eventId, $userId);
+        $this->rsvpNoCommandHandler->handle($command);
+    }
+
+    /**
+     * @Then I will be on a list of members not coming to :eventTitle event
+     */
+    public function iWillBeOnListOfMembersNotComingToEvent(string $eventTitle)
+    {
+        $event = $this->eventRepository->loadByTitle($eventTitle);
+        Assert::true(in_array($this->currentUser, $event->getNotComingList()));
     }
 
     /**
