@@ -13,9 +13,7 @@ use Geo\Entity\LocationEntity;
 use Geo\Entity\LocationId;
 use Mockery;
 use Organization\Entity\OrganizationEntity;
-use Organization\Entity\OrganizationId;
 use User\Entity\UserEntity;
-use User\Entity\UserId;
 use Webmozart\Assert\Assert;
 
 class EventDomainContext implements Context
@@ -39,26 +37,9 @@ class EventDomainContext implements Context
      * @Given there is a :orgName organization
      * @Given there is Organization :orgName
      */
-    public function thereIsOrganization($orgName)
+    public function thereIsOrganization(OrganizationEntity $organization)
     {
-        $hometown   = Mockery::mock(CityEntity::class);
-        $this->user = new UserEntity(
-            UserId::create(),
-            'username',
-            'John',
-            'Doe',
-            'johndoe@dev.dev',
-            'password',
-            $hometown
-        );
-
-        $this->organization = new OrganizationEntity(
-            OrganizationId::create(),
-            $orgName,
-            'Org desc',
-            $this->user,
-            $hometown
-        );
+        $this->organization = $organization;
     }
 
     /**

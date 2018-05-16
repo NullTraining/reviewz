@@ -11,6 +11,7 @@ default:
             contexts:
                 - Talk\Behat\TalkDomainContext
                 - User\Behat\UserFixturesContext
+                - Organization\Behat\OrganizationFixturesContext
             filters:
                 tags: "@talk"
         talk_app:
@@ -24,17 +25,20 @@ default:
                 - User\Behat\UserDomainContext
                 - User\Behat\UserFixturesContext
                 - Geo\Behat\GeoFixturesContext
+                - Organization\Behat\OrganizationFixturesContext
             filters:
                 tags: "@user"
         user_app:
             contexts:
                 - User\Behat\UserApplicationContext
                 - User\Behat\UserFixturesContext
+                - Organization\Behat\OrganizationFixturesContext
             filters:
                 tags: "@user"
         event:
             contexts:
                 - Event\Behat\EventDomainContext
                 - User\Behat\UserFixturesContext
+                - Organization\Behat\OrganizationFixturesContext
             filters:
                 tags: "@event"

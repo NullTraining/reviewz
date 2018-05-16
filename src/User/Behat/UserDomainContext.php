@@ -9,10 +9,7 @@ use Behat\Gherkin\Node\TableNode;
 use DomainException;
 use Exception;
 use Geo\Behat\GeoFixturesContext;
-use Geo\Entity\CityEntity;
-use Mockery;
 use Organization\Entity\OrganizationEntity;
-use Organization\Entity\OrganizationId;
 use User\Entity\UserEntity;
 use User\Entity\UserId;
 use Webmozart\Assert\Assert;
@@ -37,15 +34,9 @@ class UserDomainContext implements Context
     /**
      * @Given there is a :orgName organization
      */
-    public function thereIsOrganization(string $orgName)
+    public function thereIsOrganization(OrganizationEntity $organization)
     {
-        $this->organization = new OrganizationEntity(
-            OrganizationId::create(),
-            $orgName,
-            '',
-            Mockery::mock(UserEntity::class),
-            Mockery::mock(CityEntity::class)
-        );
+        $this->organization = $organization;
     }
 
     /**
