@@ -111,7 +111,9 @@ class EventApplicationContext implements Context
     }
 
     /**
-     * @When I RSVP Yes to :eventTitle
+     * @Given I have RSVPed Yes to :eventTitle event
+     * @When  I RSVP Yes to :eventTitle
+     * @When  I change my :eventTitle RSVP to Yes
      */
     public function iRsvpYesTo(string $eventTitle)
     {
@@ -134,7 +136,9 @@ class EventApplicationContext implements Context
     }
 
     /**
-     * @When I RSVP No to :eventTitle
+     * @Given I have RSVPed No to :eventTitle event
+     * @When  I RSVP No to :eventTitle
+     * @When  I change my :eventTitle RSVP to No
      */
     public function iRsvpNoTo(string $eventTitle)
     {
@@ -153,6 +157,15 @@ class EventApplicationContext implements Context
     {
         $event = $this->eventRepository->loadByTitle($eventTitle);
         Assert::true(in_array($this->currentUser, $event->getNotComingList()));
+    }
+
+    /**
+     * @Then I will not be on a list of members not coming to :eventTitle event
+     */
+    public function iWillNotBeOnListOfMembersNotComingToEvent(string $eventTitle)
+    {
+        $event = $this->eventRepository->loadByTitle($eventTitle);
+        Assert::false(in_array($this->currentUser, $event->getNotComingList()));
     }
 
     /**
