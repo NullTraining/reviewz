@@ -15,6 +15,7 @@ use Event\Handler\RsvpYesHandler;
 use Event\Repository\EventRepository;
 use Geo\Entity\CityEntity;
 use Geo\Entity\LocationEntity;
+use Geo\Entity\LocationId;
 use Mockery;
 use Organization\Entity\OrganizationEntity;
 use Organization\Entity\OrganizationId;
@@ -166,6 +167,63 @@ class EventApplicationContext implements Context
     {
         $event = $this->eventRepository->loadByTitle($eventTitle);
         Assert::false(in_array($this->currentUser, $event->getNotComingList()));
+    }
+
+    /**
+     * @Then I will not be on a list of interested members for :eventTitle event
+     */
+    public function iWillNotBeOnListOfInterestedMembersForEvent(string $eventTitle)
+    {
+        $event = $this->eventRepository->loadByTitle($eventTitle);
+        Assert::false(in_array($this->currentUser, $event->getAttendees()));
+    }
+
+    /**
+     * @Given user :user is organizer of :organizationName organization
+     */
+    public function userIsOrganizerOfOrganization(UserEntity $user, string $organizationName)
+    {
+        $organization = $this->organizationRepository->loadByTitle($organizationName);
+        $organization->addOrganizer($user);
+    }
+
+    /**
+     * @When I create a new event with name :eventName for organization :orgName with date :date, description :desc in venue :venue
+     */
+    public function iCreateNewEventWithNameForOrganizationWithDateDescriptionInVenue(
+        string $eventName,
+        string $orgName,
+        DateTime $date,
+        string $desc,
+        string $location
+    ) {
+        $organization = $this->organizationRepository->loadByTitle($orgName);
+
+        $location = new LocationEntity(
+            LocationId::create(),
+            $location, Mockery::mock(CityEntity::class)
+        );
+
+        $event = new EventEntity(EventId::create(), $date, $location, $eventName, $desc, $organization);
+        $this->eventRepository->save($event);
+
+        $organization->addEvent($event);
+
+        Assert::same($orgName, $organization->getTitle());
+    }
+
+    /**
+     * @Then There is a new event with name :eventName and venue :venue for organization :orgName
+     */
+    public function thereIsNewForOrganization(string $eventName, string $orgName)
+    {
+        $event        = $this->eventRepository->loadByTitle($eventName);
+        $organization = $this->organizationRepository->loadByTitle($orgName);
+
+        Assert::same($orgName, $organization->getTitle());
+        Assert::true(in_array($event, $organization->getEvents()));
+        Assert::same($eventName, $organization->getEvents()[0]->getTitle());
+        Assert::same($event, $organization->getEvents()[0]);
     }
 
     /**
