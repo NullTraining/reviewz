@@ -10,12 +10,9 @@ use Behat\Gherkin\Node\TableNode;
 use DomainException;
 use Exception;
 use Geo\Behat\GeoFixturesContext;
-use Geo\Entity\CityEntity;
 use Geo\Repository\CityRepository;
-use Mockery;
 use Organization\Command\JoinOrganization;
 use Organization\Entity\OrganizationEntity;
-use Organization\Entity\OrganizationId;
 use Organization\Handler\JoinOrganizationHandler;
 use Organization\Repository\OrganizationRepository;
 use Tests\Geo\Repository\CityInMemoryRepository;
@@ -82,16 +79,8 @@ class UserApplicationContext implements Context
     /**
      * @Given there is a :orgName organization
      */
-    public function thereIsOrganization(string $orgName)
+    public function thereIsOrganization(OrganizationEntity $organization)
     {
-        $organization = new OrganizationEntity(
-            OrganizationId::create(),
-            $orgName,
-            '',
-            Mockery::mock(UserEntity::class),
-            Mockery::mock(CityEntity::class)
-        );
-
         $this->organizationRepository->save($organization);
     }
 

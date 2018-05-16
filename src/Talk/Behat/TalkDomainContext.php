@@ -9,12 +9,10 @@ use DateTime;
 use DomainException;
 use Event\Entity\EventEntity;
 use Event\Entity\EventId;
-use Geo\Entity\CityEntity;
 use Geo\Entity\LocationEntity;
 use Mockery;
 use Organization\Entity\ClaimEntity;
 use Organization\Entity\OrganizationEntity;
-use Organization\Entity\OrganizationId;
 use Talk\Entity\TalkEntity;
 use Talk\Entity\TalkId;
 use User\Entity\UserEntity;
@@ -49,15 +47,9 @@ class TalkDomainContext implements Context
     /**
      * @Given there is a :orgName organization
      */
-    public function thereIsOrganization(string $orgName)
+    public function thereIsOrganization(OrganizationEntity $organization)
     {
-        $this->organization = new OrganizationEntity(
-            OrganizationId::create(),
-            $orgName,
-            '',
-            Mockery::mock(UserEntity::class),
-            Mockery::mock(CityEntity::class)
-        );
+        $this->organization = $organization;
     }
 
     /**
