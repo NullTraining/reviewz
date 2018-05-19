@@ -37,12 +37,13 @@ class EventEntitySpec extends ObjectBehavior
         $this->getId()->shouldReturn($id);
     }
 
-    public function it_exposes_event_details(DateTime $eventDate, LocationEntity $location)
+    public function it_exposes_event_details(DateTime $eventDate, LocationEntity $location, OrganizationEntity $organization)
     {
         $this->getEventDate()->shouldReturn($eventDate);
         $this->getTitle()->shouldReturn('Event title');
         $this->getDescription()->shouldReturn('Event description');
         $this->getLocation()->shouldReturn($location);
+        $this->getOrganization()->shouldReturn($organization);
     }
 
     public function it_will_add_attendee_to_event(UserEntity $attendee)

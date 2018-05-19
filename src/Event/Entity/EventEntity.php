@@ -88,7 +88,7 @@ class EventEntity
 
     public function getOrganization(): OrganizationEntity
     {
-        //@TODO;
+        return $this->organization;
     }
 
     public function addAttendee(UserEntity $attendee)

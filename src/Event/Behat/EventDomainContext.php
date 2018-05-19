@@ -9,13 +9,21 @@ use DateTime;
 use Event\Entity\EventEntity;
 use Event\Entity\EventId;
 use Geo\Entity\CityEntity;
+use Geo\Entity\CityId;
+use Geo\Entity\CountryCode;
+use Geo\Entity\CountryEntity;
+use Geo\Entity\CountryList;
 use Geo\Entity\LocationEntity;
 use Geo\Entity\LocationId;
 use Mockery;
 use Organization\Entity\OrganizationEntity;
+use Organization\Entity\OrganizationId;
 use User\Entity\UserEntity;
 use Webmozart\Assert\Assert;
 
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
 class EventDomainContext implements Context
 {
     /** @var UserEntity */
@@ -82,20 +90,16 @@ class EventDomainContext implements Context
     }
 
     /**
-     * @When I create a new event with name :eventName for organization :orgName with date :date, description :desc in venue :venue
+     * @When I create a new event with title :eventName for organization :orgName with date :date, description :desc in venue :venue
      */
     public function iCreateNewEventWithNameForOrganizationWithDateDescriptionInVenue(
         string $eventName,
-        string $orgName,
+        OrganizationEntity $orgName,
         DateTime $date,
         string $desc,
-        string $location
+        LocationEntity $location
     ) {
-        $location    = new LocationEntity(LocationId::create(), $location, Mockery::mock(CityEntity::class));
-        $this->event = new EventEntity(EventId::create(), $date, $location, $eventName, $desc, $this->organization);
-
-        $this->organization->addEvent($this->event);
-        Assert::same($orgName, $this->organization->getTitle());
+        $this->event = new EventEntity(EventId::create(), $date, $location, $eventName, $desc, $orgName);
     }
 
     /**
@@ -119,14 +123,20 @@ class EventDomainContext implements Context
     }
 
     /**
-     * @Then There is a new event with name :eventName and venue :venue for organization :orgName
+     * @Then the new event has title :eventTitle, venue :venue, date :date, description :description and organization :organization
      */
-    public function thereIsNewForOrganization($eventName, $orgName)
-    {
-        Assert::same($orgName, $this->organization->getTitle());
-        Assert::true(in_array($this->event, $this->organization->getEvents()));
-        Assert::same($eventName, $this->organization->getEvents()[0]->getTitle());
-        Assert::same($this->event, $this->organization->getEvents()[0]);
+    public function thereIsNewEventWithDetails(
+        $eventTitle,
+        LocationEntity $venue,
+        DateTime $date,
+        $description,
+        OrganizationEntity $organizationName
+    ) {
+        Assert::same($eventTitle, $this->event->getTitle());
+        Assert::eq($venue, $this->event->getLocation());
+        Assert::eq($date, $this->event->getEventDate());
+        Assert::same($description, $this->event->getDescription());
+        Assert::eq($organizationName, $this->event->getOrganization());
     }
 
     /**
@@ -167,5 +177,59 @@ class EventDomainContext implements Context
     public function toDateTime(string $eventDate): DateTime
     {
         return new DateTime($eventDate);
+    }
+
+    /**
+     * @Transform
+     */
+    public function venueStringToLocation(string $venueString): LocationEntity
+    {
+        list($venueName, $cityName, $countryName) = explode(', ', $venueString);
+
+        $locationId = new LocationId('e9018215-76e7-4aeb-88f0-90f69074ef8d');
+
+        $cityId = new CityId('7a907344-b792-4a98-ae02-40c3109a6142');
+
+        $countryCode = new CountryCode(
+            CountryList::getCodeForCountryName($countryName)
+        );
+
+        $country = new CountryEntity($countryCode, $countryName);
+
+        $city = new CityEntity($cityId, $cityName, $country);
+
+        return new LocationEntity(
+            $locationId,
+            $venueName,
+            $city
+        );
+    }
+
+    /**
+     * @Transform
+     */
+    public function createOrganization(string $orgName): OrganizationEntity
+    {
+        $founder = Mockery::mock(UserEntity::class);
+        $city    = Mockery::mock(CityEntity::class);
+
+        switch ($orgName) {
+            case 'Local meetup':
+                return new OrganizationEntity(
+                    new OrganizationId('1d535d47-a72c-4294-bbe7-6ee2d5b6e3fb'),
+                    $orgName,
+                    'We are a small group of ...',
+                    $founder,
+                    $city
+                );
+            case 'Local organization':
+                return new OrganizationEntity(
+                    new OrganizationId('e4370f7a-99b4-430c-a3b7-db0c8381fbc8'),
+                    $orgName,
+                    'Organizing local events ...',
+                    $founder,
+                    $city
+                );
+        }
     }
 }
