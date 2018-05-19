@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Organization\Entity;
 
 use DomainException;
-use Event\Entity\EventEntity;
 use Geo\Entity\CityEntity;
 use User\Entity\UserEntity;
 
@@ -41,11 +40,6 @@ class OrganizationEntity
      */
     private $hometown;
 
-    /**
-     * @var EventEntity[]
-     */
-    private $events;
-
     public function __construct(
         OrganizationId $id,
         string $title,
@@ -59,7 +53,6 @@ class OrganizationEntity
         $this->founder      = $founder;
         $this->members      = [];
         $this->hometown     = $hometown;
-        $this->events       = [];
         $this->organizers[] = $founder;
     }
 
@@ -148,19 +141,8 @@ class OrganizationEntity
         return $this->approved;
     }
 
-    /** @SuppressWarnings("PHPMD.UnusedFormalParameter") */
-    public function addEvent(EventEntity $event)
-    {
-        $this->events[] = $event;
-    }
-
     public function getHometown()
     {
         return $this->hometown;
-    }
-
-    public function getEvents(): array
-    {
-        return $this->events;
     }
 }
