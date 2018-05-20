@@ -34,7 +34,7 @@ class EventDomainContext implements Context
     private $event;
 
     /**
-     * @Given I'am logged in as :name
+     * @Given I am logged in as :name
      */
     public function iamLoggedInAs(UserEntity $user)
     {
@@ -51,7 +51,7 @@ class EventDomainContext implements Context
     }
 
     /**
-     * @Given I'am organizer
+     * @Given I am organizer
      */
     public function iamOrganizer()
     {

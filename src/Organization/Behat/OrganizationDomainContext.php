@@ -20,7 +20,7 @@ class OrganizationDomainContext implements Context
     private $organization;
 
     /**
-     * @Given I'am logged in as :name
+     * @Given I am logged in as :name
      */
     public function iamLoggedInAs(UserEntity $user)
     {
