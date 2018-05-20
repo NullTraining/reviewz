@@ -1,3 +1,13 @@
 formatter.name: progress
 extensions:
   Cjm\PhpSpec\Extension\TypeHintedMethodsExtension: ~
+  LeanPHP\PhpSpec\CodeCoverage\CodeCoverageExtension:
+    blacklist:
+      - src/*/Behat
+    format:
+      - text
+      - html
+      - clover
+    output:
+      html: coverage
+      clover: coverage.xml
