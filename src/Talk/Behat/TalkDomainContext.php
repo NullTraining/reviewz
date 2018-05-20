@@ -37,7 +37,7 @@ class TalkDomainContext implements Context
     private $exception;
 
     /**
-     * @Given I'am logged in as :name
+     * @Given I am logged in as :name
      */
     public function iamLoggedInAs(UserEntity $user)
     {
