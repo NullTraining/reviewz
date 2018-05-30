@@ -38,8 +38,6 @@ class EventApplicationContext implements Context
     private $organizationRepository;
     /** @var UserRepository */
     private $userRepository;
-    /** @var EventEntity */
-    private $event;
     /** @var UserEntity */
     private $currentUser;
     /** @var EventRepository */
@@ -81,7 +79,7 @@ class EventApplicationContext implements Context
      */
     public function isScheduledFor(string $eventTitle, DateTime $eventDate)
     {
-        $this->event = new EventEntity(
+        $event = new EventEntity(
             EventId::create(),
             $eventDate,
             Mockery::mock(LocationEntity::class),
@@ -90,7 +88,7 @@ class EventApplicationContext implements Context
             Mockery::mock(OrganizationEntity::class)
         );
 
-        $this->eventRepository->save($this->event);
+        $this->eventRepository->save($event);
     }
 
     /**
