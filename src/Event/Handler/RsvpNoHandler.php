@@ -39,5 +39,6 @@ class RsvpNoHandler
         $attendee = $this->userRepository->load($command->getUserId());
 
         $event->addNotComing($attendee);
+        $this->eventRepository->save($event);
     }
 }

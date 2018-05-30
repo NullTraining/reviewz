@@ -35,5 +35,6 @@ class RsvpYesHandler
         $attendee = $this->userRepository->load($command->getUserId());
 
         $event->addAttendee($attendee);
+        $this->eventRepository->save($event);
     }
 }
