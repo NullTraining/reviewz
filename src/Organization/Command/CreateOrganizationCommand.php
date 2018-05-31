@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Organization\Command;
 
 use Geo\Entity\CityId;
