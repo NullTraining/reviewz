@@ -42,6 +42,28 @@ class OrganizationDomainContext implements Context
     }
 
     /**
+     * @Given there is a :orgName organization created by :name
+     */
+    public function thereIsOrganizationCreatedBy(string $orgName, UserEntity $user)
+    {
+        $this->organization = new OrganizationEntity(
+            OrganizationId::create(),
+            $orgName,
+            '',
+            $user,
+            Mockery::mock(CityEntity::class)
+        );
+    }
+
+    /**
+     * @Given :name is member of :orgName organization
+     */
+    public function isMemberOfOrganization(UserEntity $user)
+    {
+        $this->organization->addMember($user);
+    }
+
+    /**
      * @When I create :orgName organization with description :orgDescription in :city
      */
     public function iCreateOrganizationWithDescriptionIn(
@@ -66,6 +88,14 @@ class OrganizationDomainContext implements Context
     public function iRejectOrganization()
     {
         $this->organization->disapprove();
+    }
+
+    /**
+     * @When I promote :name to organizer of :orgName
+     */
+    public function iPromoteToOrganizerOf(UserEntity $user)
+    {
+        $this->organization->promoteToOrganizer($user);
     }
 
     /**
@@ -106,5 +136,13 @@ class OrganizationDomainContext implements Context
     public function organizationIsRejected()
     {
         Assert::false($this->organization->isApproved());
+    }
+
+    /**
+     * @Then :name is organizer of :orgName
+     */
+    public function isOrganizerOf(UserEntity $user)
+    {
+        Assert::true($this->organization->isOrganizer($user));
     }
 }
