@@ -99,6 +99,11 @@ class OrganizationEntity
         return $this->founder;
     }
 
+    public function promoteToOrganizer(UserEntity $user): void
+    {
+        $this->organizers[] = $user;
+    }
+
     public function addOrganizer(UserEntity $user): void
     {
         if ($this->isOrganizer($user)) {

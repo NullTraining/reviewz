@@ -5,14 +5,19 @@ declare(strict_types=1);
 namespace Organization\Behat;
 
 use Behat\Behat\Context\Context;
+use Behat\Behat\Tester\Exception\PendingException;
 use Geo\Behat\GeoFixturesContext;
 use Geo\Entity\CityEntity;
 use Organization\Command\ApproveOrganizationCommand;
 use Organization\Command\CreateOrganizationCommand;
+use Organization\Command\JoinOrganization;
+use Organization\Command\PromoteOrganizerCommand;
 use Organization\Command\RejectOrganizationCommand;
 use Organization\Entity\OrganizationId;
 use Organization\Handler\ApproveOrganizationHandler;
 use Organization\Handler\CreateOrganizationHandler;
+use Organization\Handler\JoinOrganizationHandler;
+use Organization\Handler\PromoteOrganizerHandler;
 use Organization\Handler\RejectOrganizationHandler;
 use Tests\Geo\Repository\CityInMemoryRepository;
 use Tests\Organization\Repository\OrganizationInMemoryRepository;
@@ -40,6 +45,10 @@ class OrganizationApplicationContext implements Context
     private $approveOrganizationHandler;
     /** @var RejectOrganizationHandler */
     private $rejectOrganizationHandler;
+    /** @var JoinOrganizationHandler */
+    private $joinOrganizationHandler;
+    /** @var PromoteOrganizerHandler */
+    private $promoteOrganizerHandler;
 
     /**
      * @BeforeScenario
@@ -56,6 +65,16 @@ class OrganizationApplicationContext implements Context
         );
         $this->approveOrganizationHandler = new ApproveOrganizationHandler($this->organizationRepository);
         $this->rejectOrganizationHandler  = new RejectOrganizationHandler($this->organizationRepository);
+
+        $this->joinOrganizationHandler = new JoinOrganizationHandler(
+            $this->organizationRepository,
+            $this->userRepository
+        );
+
+        $this->promoteOrganizerHandler = new PromoteOrganizerHandler(
+            $this->organizationRepository,
+            $this->userRepository
+        );
     }
 
     /**
@@ -87,6 +106,41 @@ class OrganizationApplicationContext implements Context
         );
 
         $this->createOrganizationHandler->handle($command);
+    }
+
+    /**
+     * @Given there is a :orgName organization created by :name
+     */
+    public function thereIsOrganizationCreatedBy(string $orgName, UserEntity $founder)
+    {
+        //throw new PendingException();
+        $homeTown = GeoFixturesContext::toCity('New York,US');
+        $this->cityRepository->save($homeTown);
+
+        $this->userRepository->save($founder);
+
+        $command = new CreateOrganizationCommand(
+            new OrganizationId('org-id'),
+            $orgName,
+            'Organization description',
+            $founder->getId(),
+            $homeTown->getId()
+        );
+
+        $this->createOrganizationHandler->handle($command);
+    }
+
+    /**
+     * @Given :name is member of :orgName organization
+     */
+    public function isMemberOfOrganization(UserEntity $user, string $orgName)
+    {
+        $this->userRepository->save($user);
+
+        $organization = $this->organizationRepository->loadByTitle($orgName);
+        $command      = new JoinOrganization($organization->getId(), $user->getId());
+
+        $this->joinOrganizationHandler->handle($command);
     }
 
     /**
@@ -135,6 +189,16 @@ class OrganizationApplicationContext implements Context
     }
 
     /**
+     * @When I promote :name to organizer of :orgName
+     */
+    public function iPromoteToOrganizerOf(UserEntity $user, string $orgName)
+    {
+        $organization     = $this->organizationRepository->loadByTitle($orgName);
+        $promoteOrganizer = new PromoteOrganizerCommand($organization->getId(), $user->getId());
+        $this->promoteOrganizerHandler->handle($promoteOrganizer);
+    }
+
+    /**
      * @Then there is new :orgName organization
      */
     public function thereIsNewOrganization($orgName)
@@ -180,5 +244,14 @@ class OrganizationApplicationContext implements Context
         $organization = $this->organizationRepository->loadByTitle($orgName);
 
         Assert::false($organization->isApproved());
+    }
+
+    /**
+     * @Then :name is organizer of :orgName
+     */
+    public function isOrganizerOf(UserEntity $user, string $orgName)
+    {
+        $organization = $this->organizationRepository->loadByTitle($orgName);
+        Assert::true($organization->isOrganizer($user));
     }
 }
