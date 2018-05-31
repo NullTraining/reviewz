@@ -13,7 +13,7 @@ default:
                 - User\Behat\UserFixturesContext
                 - Geo\Behat\GeoFixturesContext
             filters:
-                tags: "@organization && @app"
+                tags: "@organization"
         talk:
             contexts:
                 - Talk\Behat\TalkDomainContext
