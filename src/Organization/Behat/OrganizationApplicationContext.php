@@ -79,4 +79,14 @@ class OrganizationApplicationContext implements Context
     {
         Assert::eq($orgName, $this->organizationRepository->load(new OrganizationId('org-id'))->getTitle());
     }
+
+    /**
+     * @Then :name is founder of :orgName organization
+     */
+    public function isFounderOfOrganization(UserEntity $organizer, string $orgName)
+    {
+        $organization = $this->organizationRepository->loadByTitle($orgName);
+
+        Assert::eq($organizer, $organization->getFounder());
+    }
 }
