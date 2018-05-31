@@ -9,9 +9,11 @@ use Geo\Behat\GeoFixturesContext;
 use Geo\Entity\CityEntity;
 use Organization\Command\ApproveOrganizationCommand;
 use Organization\Command\CreateOrganizationCommand;
+use Organization\Command\RejectOrganizationCommand;
 use Organization\Entity\OrganizationId;
 use Organization\Handler\ApproveOrganizationHandler;
 use Organization\Handler\CreateOrganizationHandler;
+use Organization\Handler\RejectOrganizationHandler;
 use Tests\Geo\Repository\CityInMemoryRepository;
 use Tests\Organization\Repository\OrganizationInMemoryRepository;
 use Tests\User\Repository\UserInMemoryRepository;
@@ -36,6 +38,8 @@ class OrganizationApplicationContext implements Context
     private $createOrganizationHandler;
     /** @var ApproveOrganizationHandler */
     private $approveOrganizationHandler;
+    /** @var RejectOrganizationHandler */
+    private $rejectOrganizationHandler;
 
     /**
      * @BeforeScenario
@@ -51,6 +55,7 @@ class OrganizationApplicationContext implements Context
             $this->cityRepository
         );
         $this->approveOrganizationHandler = new ApproveOrganizationHandler($this->organizationRepository);
+        $this->rejectOrganizationHandler  = new RejectOrganizationHandler($this->organizationRepository);
     }
 
     /**
@@ -118,6 +123,18 @@ class OrganizationApplicationContext implements Context
     }
 
     /**
+     * @When I reject :orgName organization
+     */
+    public function iRejectOrganization(string $orgName)
+    {
+        $organization = $this->organizationRepository->loadByTitle($orgName);
+
+        $command = new RejectOrganizationCommand($organization->getId());
+
+        $this->rejectOrganizationHandler->handle($command);
+    }
+
+    /**
      * @Then there is new :orgName organization
      */
     public function thereIsNewOrganization($orgName)
@@ -153,5 +170,15 @@ class OrganizationApplicationContext implements Context
         $organization = $this->organizationRepository->loadByTitle($orgName);
 
         Assert::true($organization->isApproved());
+    }
+
+    /**
+     * @Then :orgName organization is rejected
+     */
+    public function organizationIsRejected(string $orgName)
+    {
+        $organization = $this->organizationRepository->loadByTitle($orgName);
+
+        Assert::false($organization->isApproved());
     }
 }
