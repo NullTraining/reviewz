@@ -25,15 +25,22 @@ class OrganizationApplicationContext implements Context
     private $cityRepository;
     /** @var UserInMemoryRepository */
     private $userRepository;
+    /** @var CreateOrganizationHandler */
+    private $createOrganizationHandler;
 
     /**
      * @BeforeScenario
      */
     public function beforeScenario()
     {
-        $this->organizationRepository = new OrganizationInMemoryRepository();
-        $this->userRepository         = new UserInMemoryRepository();
-        $this->cityRepository         = new CityInMemoryRepository();
+        $this->organizationRepository    = new OrganizationInMemoryRepository();
+        $this->userRepository            = new UserInMemoryRepository();
+        $this->cityRepository            = new CityInMemoryRepository();
+        $this->createOrganizationHandler = new CreateOrganizationHandler(
+            $this->organizationRepository,
+            $this->userRepository,
+            $this->cityRepository
+        );
     }
 
     /**
@@ -63,13 +70,7 @@ class OrganizationApplicationContext implements Context
             $homeTown->getId() //TODO
         );
 
-        $handler = new CreateOrganizationHandler(
-            $this->organizationRepository,
-            $this->userRepository,
-            $this->cityRepository
-        );
-
-        $handler->handle($command);
+        $this->createOrganizationHandler->handle($command);
     }
 
     /**
