@@ -57,10 +57,10 @@ class TalkApplicationContext implements Context
     public function beforeScenario()
     {
         $this->organizationRepository = new OrganizationInMemoryRepository();
-        $this->eventRepository        = new EventInMemoryRepository();
-        $this->talkRepository         = new TalkInMemoryRepository();
-        $this->userRepository         = new UserInMemoryRepository();
-        $this->commandHandler         = new ClaimTalkHandler(
+        $this->eventRepository = new EventInMemoryRepository();
+        $this->talkRepository = new TalkInMemoryRepository();
+        $this->userRepository = new UserInMemoryRepository();
+        $this->commandHandler = new ClaimTalkHandler(
             $this->talkRepository,
             $this->userRepository
         );
@@ -142,6 +142,22 @@ class TalkApplicationContext implements Context
     }
 
     /**
+     * @Given :name is organizer of :orgName organization
+     */
+    public function isOrganizerOfOrganization(UserEntity $user)
+    {
+        $this->organization->addOrganizer($user);
+    }
+
+    /**
+     * @Given there is a claim by :name on :talkTitle talk
+     */
+    public function thereIsClaimByOnTalk(UserEntity $claimer)
+    {
+        $this->talk->claimTalk($claimer);
+    }
+
+    /**
      * @When I claim :talkTitle
      */
     public function iClaim(string $talkTitle)
@@ -149,7 +165,7 @@ class TalkApplicationContext implements Context
         $talk = $this->talkRepository->loadByTitle($talkTitle);
 
         $claimerId = $this->currentUser->getId();
-        $talkId    = $talk->getId();
+        $talkId = $talk->getId();
 
         $command = new ClaimTalk($talkId, $claimerId);
         try {
@@ -157,6 +173,14 @@ class TalkApplicationContext implements Context
         } catch (Exception $exception) {
             $this->exception = $exception;
         }
+    }
+
+    /**
+     * @When I look at :talkTitle talk
+     */
+    public function iLookAtTalk()
+    {
+        //Nothing to do on app level
     }
 
     /**
@@ -186,11 +210,19 @@ class TalkApplicationContext implements Context
     {
         Assert::isInstanceOf($this->exception, SpeakerAlreadySetException::class);
     }
+    
+    /**
+     * @Then I should see :name having a pending claim
+     */
+    public function iShouldSeeHavingPendingClaim(UserEntity $claimer)
+    {
+        Assert::eq($claimer, $this->talk->getClaims()[0]->getSpeaker());
+    }
 
     /**
      * @Transform
      */
-    public function toDateTime(string $eventDate): DateTime
+    public function toDateTime(string $eventDate) : DateTime
     {
         return new DateTime($eventDate);
     }
@@ -198,7 +230,7 @@ class TalkApplicationContext implements Context
     /**
      * @Transform
      */
-    public function createTalk(string $title): TalkEntity
+    public function createTalk(string $title) : TalkEntity
     {
         $event = $this->event;
 
@@ -208,7 +240,7 @@ class TalkApplicationContext implements Context
         }
     }
 
-    public function createEvent(string $title, DateTime $eventDate): EventEntity
+    public function createEvent(string $title, DateTime $eventDate) : EventEntity
     {
         return new EventEntity(
             EventId::create(),
