@@ -5,16 +5,23 @@ declare(strict_types=1);
 namespace Organization\Behat;
 
 use Behat\Behat\Context\Context;
+use Geo\Behat\GeoFixturesContext;
 use Geo\Entity\CityEntity;
+use Organization\Command\ApproveOrganizationCommand;
 use Organization\Command\CreateOrganizationCommand;
 use Organization\Entity\OrganizationId;
+use Organization\Handler\ApproveOrganizationHandler;
 use Organization\Handler\CreateOrganizationHandler;
 use Tests\Geo\Repository\CityInMemoryRepository;
 use Tests\Organization\Repository\OrganizationInMemoryRepository;
 use Tests\User\Repository\UserInMemoryRepository;
+use User\Behat\UserFixturesContext;
 use User\Entity\UserEntity;
 use Webmozart\Assert\Assert;
 
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
 class OrganizationApplicationContext implements Context
 {
     /** @var UserEntity */
@@ -27,6 +34,8 @@ class OrganizationApplicationContext implements Context
     private $userRepository;
     /** @var CreateOrganizationHandler */
     private $createOrganizationHandler;
+    /** @var ApproveOrganizationHandler */
+    private $approveOrganizationHandler;
 
     /**
      * @BeforeScenario
@@ -41,6 +50,7 @@ class OrganizationApplicationContext implements Context
             $this->userRepository,
             $this->cityRepository
         );
+        $this->approveOrganizationHandler = new ApproveOrganizationHandler($this->organizationRepository);
     }
 
     /**
@@ -50,6 +60,28 @@ class OrganizationApplicationContext implements Context
     {
         $this->currentUser = $currentUser;
         $this->userRepository->save($this->currentUser);
+    }
+
+    /**
+     * @Given new :orgName organization was created
+     */
+    public function newOrganizationWasCreated(string $orgName)
+    {
+        $homeTown = GeoFixturesContext::toCity('New York,US');
+        $this->cityRepository->save($homeTown);
+
+        $founder = UserFixturesContext::createUser('Alex Smith');
+        $this->userRepository->save($founder);
+
+        $command = new CreateOrganizationCommand(
+            new OrganizationId('org-id'),
+            $orgName,
+            'Organization description',
+            $founder->getId(),
+            $homeTown->getId()
+        );
+
+        $this->createOrganizationHandler->handle($command);
     }
 
     /**
@@ -71,6 +103,18 @@ class OrganizationApplicationContext implements Context
         );
 
         $this->createOrganizationHandler->handle($command);
+    }
+
+    /**
+     * @When I approve :orgName organization
+     */
+    public function iApproveOrganization(string $orgName)
+    {
+        $organization = $this->organizationRepository->loadByTitle($orgName);
+
+        $command = new ApproveOrganizationCommand($organization->getId());
+
+        $this->approveOrganizationHandler->handle($command);
     }
 
     /**
@@ -99,5 +143,15 @@ class OrganizationApplicationContext implements Context
         $organization = $this->organizationRepository->loadByTitle($orgName);
 
         Assert::true($organization->isOrganizer($organizer));
+    }
+
+    /**
+     * @Then :orgName organization is approved
+     */
+    public function organizationIsApproved(string $orgName)
+    {
+        $organization = $this->organizationRepository->loadByTitle($orgName);
+
+        Assert::true($organization->isApproved());
     }
 }
