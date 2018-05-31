@@ -89,4 +89,14 @@ class OrganizationApplicationContext implements Context
 
         Assert::eq($organizer, $organization->getFounder());
     }
+
+    /**
+     * @Then :name is organizer of :orgName organization
+     */
+    public function isOrganizerOfOrganization(UserEntity $organizer, string $orgName)
+    {
+        $organization = $this->organizationRepository->loadByTitle($orgName);
+
+        Assert::true($organization->isOrganizer($organizer));
+    }
 }
