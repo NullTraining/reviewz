@@ -10,6 +10,7 @@ Feature:
     When I approve "Local meetup" organization
     Then "Local meetup" organization is approved
 
+  @app
   Scenario: Reject new organization
     Given new "Local meetup" organization was created
     When I reject "Local meetup" organization
