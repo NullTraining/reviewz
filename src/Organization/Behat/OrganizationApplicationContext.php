@@ -6,8 +6,6 @@ namespace Organization\Behat;
 
 use Behat\Behat\Context\Context;
 use Geo\Entity\CityEntity;
-use Geo\Entity\CityId;
-use Geo\Entity\CountryEntity;
 use Organization\Command\CreateOrganizationCommand;
 use Organization\Entity\OrganizationId;
 use Organization\Handler\CreateOrganizationHandler;
@@ -48,22 +46,21 @@ class OrganizationApplicationContext implements Context
     }
 
     /**
-     * @When I create :orgName organization with description :orgDescription in :cityName, :countryName
+     * @When I create :orgName organization with description :orgDescription in :city
      */
     public function iCreateOrganizationWithDescriptionIn(
         string $orgName,
         string $orgDescription,
-        string $cityName,
-        string $countryName
+        CityEntity $homeTown
     ) {
-        $city = new CityEntity(new CityId('1'), $cityName, new CountryEntity('code', $countryName));
+        $this->cityRepository->save($homeTown);
 
         $command = new CreateOrganizationCommand(
             new OrganizationId('org-id'),
             $orgName,
             $orgDescription,
             $this->currentUser->getId(),
-            $city->getId() //TODO
+            $homeTown->getId() //TODO
         );
 
         $handler = new CreateOrganizationHandler(
