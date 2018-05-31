@@ -144,9 +144,10 @@ class TalkApplicationContext implements Context
     /**
      * @Given :name is organizer of :orgName organization
      */
-    public function isOrganizerOfOrganization(UserEntity $user)
+    public function isOrganizerOfOrganization(UserEntity $user,string $orgName)
     {
-        $this->organization->addOrganizer($user);
+        $organization = $this->organizationRepository->loadByTitle($orgName);
+        $addOrganizer = new AddOrganizer($organization->getId(), $user->getId());
     }
 
     /**
@@ -210,7 +211,7 @@ class TalkApplicationContext implements Context
     {
         Assert::isInstanceOf($this->exception, SpeakerAlreadySetException::class);
     }
-    
+
     /**
      * @Then I should see :name having a pending claim
      */
