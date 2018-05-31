@@ -15,7 +15,7 @@ class UserFixturesContext implements Context
     /**
      * @Transform
      */
-    public function createUser(string $name): UserEntity
+    public static function createUser(string $name): UserEntity
     {
         $city = Mockery::mock(CityEntity::class);
 
