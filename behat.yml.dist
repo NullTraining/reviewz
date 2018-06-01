@@ -46,7 +46,5 @@ default:
         event:
             contexts:
                 - Event\Behat\EventDomainContext
-                - User\Behat\UserFixturesContext
-                - Organization\Behat\OrganizationFixturesContext
             filters:
                 tags: "@event"
