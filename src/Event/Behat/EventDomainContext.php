@@ -19,6 +19,7 @@ use Mockery;
 use Organization\Entity\OrganizationEntity;
 use Organization\Entity\OrganizationId;
 use User\Entity\UserEntity;
+use User\Entity\UserId;
 use Webmozart\Assert\Assert;
 
 /**
@@ -32,6 +33,8 @@ class EventDomainContext implements Context
     private $organization;
     /** @var EventEntity */
     private $event;
+    /** @var UserEntity[] */
+    private $expectedAttendees;
 
     /**
      * @Given I am logged in as :name
@@ -83,6 +86,7 @@ class EventDomainContext implements Context
 
     /**
      * @Given user :user is organizer of :organization organization
+     * @And user :user is organizer of :organization organization
      */
     public function userIsOrganizerOfOrganization(UserEntity $user)
     {
@@ -123,6 +127,14 @@ class EventDomainContext implements Context
     }
 
     /**
+     * @Given user :user RSVPed Yes to event :eventTitle
+     */
+    public function userRsvpedYes(UserEntity $user)
+    {
+        $this->event->addAttendee($user);
+    }
+
+    /**
      * @Then the new event has title :eventTitle, venue :venue, date :date, description :description and organization :organization
      */
     public function thereIsNewEventWithDetails(
@@ -158,7 +170,7 @@ class EventDomainContext implements Context
     /**
      * @Then I will be on a list of members not coming to :eventTitle event
      */
-    public function iWillBeOnListOfMembersNotComingToEvent()
+    public function iWillBeOnListOfMembersNotComingToEvent(): void
     {
         Assert::true(in_array($this->user, $this->event->getNotComingList()));
     }
@@ -166,9 +178,41 @@ class EventDomainContext implements Context
     /**
      * @Then I will not be on a list of members not coming to :arg1 event
      */
-    public function iWillNotBeOnListOfMembersNotComingToEvent()
+    public function iWillNotBeOnListOfMembersNotComingToEvent(): void
     {
         Assert::false(in_array($this->user, $this->event->getNotComingList()));
+    }
+
+    /**
+     * @When I look at expected attendees list
+     */
+    public function iLookAtExpectedAttendeesList(): void
+    {
+        $this->expectedAttendees = $this->event->getAttendees();
+    }
+
+    /**
+     * @Then I should see user :userName in the expected attendees list
+     */
+    public function iSeeUserInExpectedAttendeesList(UserEntity $user): void
+    {
+        Assert::true(in_array($user, $this->expectedAttendees));
+    }
+
+    /**
+     * @When I mark user :userName as attended
+     */
+    public function iMarkUserAsAttended(UserEntity $user)
+    {
+        $this->event->confirmUserAttended($user);
+    }
+
+    /**
+     * @Then user :userName is marked as attended
+     */
+    public function userIsMarkedAsAttended(UserEntity $user)
+    {
+        Assert::true(in_array($user, $this->event->getConfirmedAttendees()));
     }
 
     /**
@@ -228,6 +272,37 @@ class EventDomainContext implements Context
                     $orgName,
                     'Organizing local events ...',
                     $founder,
+                    $city
+                );
+        }
+    }
+
+    /**
+     * @Transform
+     */
+    public static function createUser(string $name): UserEntity
+    {
+        $city = Mockery::mock(CityEntity::class);
+
+        switch ($name) {
+            case 'Alex Smith':
+                return new UserEntity(
+                    new UserId('867dd58e-125d-4dc2-9d04-198ecf87a41c'),
+                    'alex.smith',
+                    'Alex',
+                    'Smith',
+                    'alex@example.com',
+                    'passw0rd',
+                    $city
+                );
+            case 'Jo Johnson':
+                return new UserEntity(
+                    new UserId('dbafde7d-9a83-48b3-a320-ba13511ba8d2'),
+                    'jo.johnson',
+                    'Jo',
+                    'Johnson',
+                    'jo@example.com',
+                    'passw0rd',
                     $city
                 );
         }
