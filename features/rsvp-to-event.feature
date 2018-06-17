@@ -5,9 +5,9 @@ Feature:
   I need to RSVP
 
   Background:
-    Given there is a "Local meetup" organization
+    Given there is a "New York Developer Ninjas" organization
     And "March 2019 gathering" is scheduled for "2019-03-07"
-    And "Jo Johnson" is a member of "Local meetup" organization
+    And "Jo Johnson" is a member of "New York Developer Ninjas" organization
 
   Scenario: Member can RSVP Yes to an event
     Given I am logged in as "Jo Johnson"
