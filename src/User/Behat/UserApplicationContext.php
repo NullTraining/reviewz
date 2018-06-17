@@ -89,7 +89,7 @@ class UserApplicationContext implements Context
      */
     public function isAnOrganizer(UserEntity $user)
     {
-        $organization = $this->organizationRepository->loadByTitle('Local meetup');
+        $organization = $this->organizationRepository->loadByTitle('New York Developer Ninjas');
 
         $organization->addOrganizer($user);
     }

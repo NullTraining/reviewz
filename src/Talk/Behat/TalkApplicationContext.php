@@ -203,7 +203,7 @@ class TalkApplicationContext implements Context
         $event = $this->event;
 
         switch ($title) {
-            case 'Something about nothing':
+            case 'Joys of Programming':
                 return new TalkEntity(new TalkId('default-talk-id'), $event, $title, 'description', 'speaker name');
         }
     }

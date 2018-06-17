@@ -214,11 +214,11 @@ class EventDomainContext implements Context
         $city    = Mockery::mock(CityEntity::class);
 
         switch ($orgName) {
-            case 'Local meetup':
+            case 'New York Developer Ninjas':
                 return new OrganizationEntity(
                     new OrganizationId('1d535d47-a72c-4294-bbe7-6ee2d5b6e3fb'),
                     $orgName,
-                    'We are a small group of ...',
+                    'Community of people doing ...',
                     $founder,
                     $city
                 );

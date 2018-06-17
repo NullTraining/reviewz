@@ -5,13 +5,13 @@ Feature:
   I need to approve/reject new organizations
 
   Scenario: Approve new organization
-    Given new "Local meetup" organization was created
-    When I approve "Local meetup" organization
-    Then "Local meetup" organization is approved
+    Given new "New York Developer Ninjas" organization was created
+    When I approve "New York Developer Ninjas" organization
+    Then "New York Developer Ninjas" organization is approved
 
   Scenario: Reject new organization
-    Given new "Local meetup" organization was created
-    When I reject "Local meetup" organization
-    Then "Local meetup" organization is rejected
+    Given new "New York Developer Ninjas" organization was created
+    When I reject "New York Developer Ninjas" organization
+    Then "New York Developer Ninjas" organization is rejected
 
 

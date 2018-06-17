@@ -4,10 +4,10 @@ Feature:
   I can create event
 
   Background:
-    Given there is a 'Local organization' organization
-    And user "Jo Johnson" is organizer of "Local organization" organization
+    Given there is a 'New York Developer Ninjas' organization
+    And user "Alex Smith" is organizer of "New York Developer Ninjas" organization
 
   Scenario: Organizer can create event
     Given I am logged in as "Jo Johnson"
-    When I create a new event with title "Some event" for organization "Local organization" with date "2018-04-24", description "Event description" in venue "Katran klub, Zagreb, Croatia"
-    Then the new event has title "Some event", venue "Katran klub, Zagreb, Croatia", date "2018-04-24", description "Event description" and organization "Local organization"
+    When I create a new event with title "Spring Drink-up" for organization "New York Developer Ninjas" with date "2018-04-24", description "During our spring break, we'll organize drink-ups only." in venue "Bar Goto, New York, United States"
+    Then the new event has title "Spring Drink-up", venue "Bar Goto, New York, United States", date "2018-04-24", description "During our spring break, we'll organize drink-ups only." and organization "New York Developer Ninjas"
