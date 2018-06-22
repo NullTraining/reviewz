@@ -19,11 +19,11 @@
     </target>
 
     <target name="phpspec" description="Run phpspec">
-        <exec command="./vendor/bin/phpspec run" passthru="true" checkreturn="true"/>
+        <exec command="./vendor/bin/phpspec run --ansi" passthru="true" checkreturn="true"/>
     </target>
 
     <target name="behat" description="Run behat">
-        <exec command="./vendor/bin/behat" passthru="true" checkreturn="true"/>
+        <exec command="./vendor/bin/behat --colors" passthru="true" checkreturn="true"/>
     </target>
 
     <target name="phpunit" description="Run phpunit">
@@ -31,7 +31,8 @@
     </target>
 
     <target name="phpstan" description="Run phpstan">
-        <exec command="./vendor/bin/phpstan --memory-limit=-1 analyse -l 7 -c phpstan.neon src tests" passthru="true" checkreturn="true"/>
+        <exec command="./vendor/bin/phpstan --ansi --memory-limit=-1 analyse -l 7 -c phpstan.neon src tests"
+              passthru="true" checkreturn="true"/>
     </target>
 
     <target name="php-cs-fixer-check" description="Run php-cs-fixer check">
