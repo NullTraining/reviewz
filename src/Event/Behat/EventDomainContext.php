@@ -184,7 +184,7 @@ class EventDomainContext implements Context
     }
 
     /**
-     * @When I look at expected attendees list
+     * @When I look at expected attendees list for :eventTitle event
      */
     public function iLookAtExpectedAttendeesList(): void
     {
@@ -200,7 +200,7 @@ class EventDomainContext implements Context
     }
 
     /**
-     * @When I mark user :userName as attended
+     * @When I mark user :userName as attended :eventTitle event
      */
     public function iMarkUserAsAttended(UserEntity $user)
     {
@@ -208,7 +208,7 @@ class EventDomainContext implements Context
     }
 
     /**
-     * @Then user :userName is marked as attended
+     * @Then user :userName is marked as attended :eventTitle event
      */
     public function userIsMarkedAsAttended(UserEntity $user)
     {
