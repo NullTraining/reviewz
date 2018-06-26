@@ -162,4 +162,13 @@ class OrganizationDomainContext implements Context
         Assert::notNull($this->exception);
         Assert::isInstanceOf($this->exception, DomainException::class);
     }
+
+    /**
+     * @Then I will get an error saying that user needs to be a member in order to be promoted
+     */
+    public function iWillGetAnErrorSayingThatUserNeedsToBeMemberInOrderToBePromoted()
+    {
+        Assert::notNull($this->exception);
+        Assert::isInstanceOf($this->exception, DomainException::class);
+    }
 }
