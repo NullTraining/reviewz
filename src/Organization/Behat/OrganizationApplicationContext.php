@@ -6,6 +6,7 @@ namespace Organization\Behat;
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Tester\Exception\PendingException;
+use DomainException;
 use Geo\Behat\GeoFixturesContext;
 use Geo\Entity\CityEntity;
 use Organization\Command\ApproveOrganizationCommand;
@@ -22,6 +23,7 @@ use Organization\Handler\RejectOrganizationHandler;
 use Tests\Geo\Repository\CityInMemoryRepository;
 use Tests\Organization\Repository\OrganizationInMemoryRepository;
 use Tests\User\Repository\UserInMemoryRepository;
+use Throwable;
 use User\Behat\UserFixturesContext;
 use User\Entity\UserEntity;
 use Webmozart\Assert\Assert;
@@ -49,6 +51,8 @@ class OrganizationApplicationContext implements Context
     private $joinOrganizationHandler;
     /** @var PromoteOrganizerHandler */
     private $promoteOrganizerHandler;
+    /** @var \Throwable */
+    private $exception;
 
     /**
      * @BeforeScenario
@@ -195,7 +199,12 @@ class OrganizationApplicationContext implements Context
     {
         $organization     = $this->organizationRepository->loadByTitle($orgName);
         $promoteOrganizer = new PromoteOrganizerCommand($organization->getId(), $user->getId());
-        $this->promoteOrganizerHandler->handle($promoteOrganizer);
+
+        try {
+            $this->promoteOrganizerHandler->handle($promoteOrganizer);
+        } catch (Throwable $exception) {
+            $this->exception = $exception;
+        }
     }
 
     /**
@@ -253,5 +262,14 @@ class OrganizationApplicationContext implements Context
     {
         $organization = $this->organizationRepository->loadByTitle($orgName);
         Assert::true($organization->isOrganizer($user));
+    }
+
+    /**
+     * @Then I will get an error saying that user is already an organizer
+     */
+    public function iWillGetAnErrorSayingThatUserIsAlreadyAnOrganizer()
+    {
+        Assert::notNull($this->exception);
+        Assert::isInstanceOf($this->exception, DomainException::class);
     }
 }

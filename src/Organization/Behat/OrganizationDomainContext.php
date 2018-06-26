@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Organization\Behat;
 
 use Behat\Behat\Context\Context;
+use DomainException;
 use Geo\Entity\CityEntity;
 use Mockery;
 use Organization\Entity\OrganizationEntity;
 use Organization\Entity\OrganizationId;
+use Throwable;
 use User\Entity\UserEntity;
 use Webmozart\Assert\Assert;
 
@@ -18,6 +20,8 @@ class OrganizationDomainContext implements Context
     private $user;
     /** @var OrganizationEntity */
     private $organization;
+    /** @var \Throwable */
+    private $exception;
 
     /**
      * @Given I am logged in as :name
@@ -95,7 +99,11 @@ class OrganizationDomainContext implements Context
      */
     public function iPromoteToOrganizerOf(UserEntity $user)
     {
-        $this->organization->promoteToOrganizer($user);
+        try {
+            $this->organization->promoteToOrganizer($user);
+        } catch (Throwable $exception) {
+            $this->exception = $exception;
+        }
     }
 
     /**
@@ -144,5 +152,14 @@ class OrganizationDomainContext implements Context
     public function isOrganizerOf(UserEntity $user)
     {
         Assert::true($this->organization->isOrganizer($user));
+    }
+
+    /**
+     * @Then I will get an error saying that user is already an organizer
+     */
+    public function iWillGetAnErrorSayingThatUserIsAlreadyAnOrganizer()
+    {
+        Assert::notNull($this->exception);
+        Assert::isInstanceOf($this->exception, DomainException::class);
     }
 }
