@@ -6,10 +6,12 @@ namespace Event\Behat;
 
 use Behat\Behat\Context\Context;
 use DateTime;
+use Event\Command\MarkUserAsAttended;
 use Event\Command\RsvpNo;
 use Event\Command\RsvpYes;
 use Event\Entity\EventEntity;
 use Event\Entity\EventId;
+use Event\Handler\MemberAttendanceHandler;
 use Event\Handler\RsvpNoHandler;
 use Event\Handler\RsvpYesHandler;
 use Event\Repository\EventRepository;
@@ -46,6 +48,10 @@ class EventApplicationContext implements Context
     private $rsvpYesCommandHandler;
     /** @var RsvpNoHandler */
     private $rsvpNoCommandHandler;
+    /** @var MemberAttendanceHandler */
+    private $memberAttendanceHandler;
+    /** @var array */
+    private $expectedAttendees;
 
     /**
      * @BeforeScenario
@@ -61,6 +67,11 @@ class EventApplicationContext implements Context
         );
 
         $this->rsvpNoCommandHandler = new RsvpNoHandler(
+            $this->eventRepository,
+            $this->userRepository
+        );
+
+        $this->memberAttendanceHandler = new MemberAttendanceHandler(
             $this->eventRepository,
             $this->userRepository
         );
@@ -101,7 +112,7 @@ class EventApplicationContext implements Context
     }
 
     /**
-     * @Given I'am logged in as :name
+     * @Given I am logged in as :name
      */
     public function iamLoggedInAs(UserEntity $user)
     {
@@ -150,6 +161,39 @@ class EventApplicationContext implements Context
     }
 
     /**
+     * @Given user :user RSVPed Yes to event :eventTitle
+     */
+    public function userRsvpedYes(UserEntity $user, string $eventTitle)
+    {
+        $this->userRepository->save($user);
+        $event = $this->eventRepository->loadByTitle($eventTitle);
+
+        $command = new RsvpYes($event->getId(), $user->getId());
+        $this->rsvpYesCommandHandler->handle($command);
+    }
+
+    /**
+     * @When I mark user :userName as attended :eventTitle event
+     */
+    public function iMarkUserAsAttended(UserEntity $user, string $eventTitle)
+    {
+        $event = $this->eventRepository->loadByTitle($eventTitle);
+
+        $command = new MarkUserAsAttended($event->getId(), $user->getId());
+        $this->memberAttendanceHandler->handle($command);
+    }
+
+    /**
+     * @When I look at expected attendees list for :eventTitle event
+     */
+    public function iLookAtExpectedAttendeesListForEvent(string  $eventTitle)
+    {
+        $event = $this->eventRepository->loadByTitle($eventTitle);
+
+        $this->expectedAttendees = $event->getAttendees();
+    }
+
+    /**
      * @Then I will be on a list of members not coming to :eventTitle event
      */
     public function iWillBeOnListOfMembersNotComingToEvent(string $eventTitle)
@@ -186,7 +230,7 @@ class EventApplicationContext implements Context
     }
 
     /**
-     * @When I create a new event with name :eventName for organization :orgName with date :date, description :desc in venue :venue
+     * @When I create a new event with title :eventName for organization :orgName with date :date, description :desc in venue :venue
      */
     public function iCreateNewEventWithNameForOrganizationWithDateDescriptionInVenue(
         string $eventName,
@@ -204,10 +248,6 @@ class EventApplicationContext implements Context
 
         $event = new EventEntity(EventId::create(), $date, $location, $eventName, $desc, $organization);
         $this->eventRepository->save($event);
-
-        $organization->addEvent($event);
-
-        Assert::same($orgName, $organization->getTitle());
     }
 
     /**
@@ -218,10 +258,43 @@ class EventApplicationContext implements Context
         $event        = $this->eventRepository->loadByTitle($eventName);
         $organization = $this->organizationRepository->loadByTitle($orgName);
 
-        Assert::same($orgName, $organization->getTitle());
-        Assert::true(in_array($event, $organization->getEvents()));
-        Assert::same($eventName, $organization->getEvents()[0]->getTitle());
-        Assert::same($event, $organization->getEvents()[0]);
+        Assert::notNull($event);
+        Assert::eq($organization, $event->getOrganization());
+    }
+
+    /**
+     * @Then the new event has title :eventTitle, venue :venueName, date :date, description :description and organization :organizationName
+     */
+    public function thereIsNewEventWithDetails(
+        $eventTitle,
+        DateTime $date,
+        $description,
+        string $organizationName
+    ) {
+        $event        = $this->eventRepository->loadByTitle($eventTitle);
+        $organization = $this->organizationRepository->loadByTitle($organizationName);
+
+        Assert::notNull($event);
+        Assert::eq($organization, $event->getOrganization());
+        Assert::eq($date, $event->getEventDate());
+        Assert::eq($description, $event->getDescription());
+    }
+
+    /**
+     * @Then I should see user :userName in the expected attendees list
+     */
+    public function iSeeUserInExpectedAttendeesList(UserEntity $user): void
+    {
+        Assert::true(in_array($user, $this->expectedAttendees));
+    }
+
+    /**
+     * @Then user :userName is marked as attended :eventTitle event
+     */
+    public function userIsMarkedAsAttended(UserEntity $user, string $eventTitle)
+    {
+        $event = $this->eventRepository->loadByTitle($eventTitle);
+        Assert::true(in_array($user, $event->getConfirmedAttendees()));
     }
 
     /**
