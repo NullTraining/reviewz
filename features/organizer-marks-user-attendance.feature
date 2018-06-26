@@ -12,15 +12,15 @@ Feature:
 
   Scenario: Organizers have expected attendance list
     Given I am logged in as "Alex Smith"
-    When I look at expected attendees list
+    When I look at expected attendees list for "March 2019 gathering" event
     Then I should see user "Jo Johnson" in the expected attendees list
 
   Scenario: Mark member as attended
     Given I am logged in as "Alex Smith"
-    When I mark user "Jo Johnson" as attended
-    Then user "Jo Johnson" is marked as attended
+    When I mark user "Jo Johnson" as attended "March 2019 gathering" event
+    Then user "Jo Johnson" is marked as attended "March 2019 gathering" event
 
   Scenario: Marked member will not show in expected attendance list
     Given I am logged in as "Alex Smith"
-    When I mark user "Jo Johnson" as attended
-    Then user "Jo Johnson" is marked as attended
+    When I mark user "Jo Johnson" as attended "March 2019 gathering" event
+    Then user "Jo Johnson" is marked as attended "March 2019 gathering" event
