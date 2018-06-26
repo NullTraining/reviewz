@@ -197,6 +197,7 @@ class OrganizationApplicationContext implements Context
      */
     public function iPromoteToOrganizerOf(UserEntity $user, string $orgName)
     {
+        $this->userRepository->save($user);
         $organization     = $this->organizationRepository->loadByTitle($orgName);
         $promoteOrganizer = new PromoteOrganizerCommand($organization->getId(), $user->getId());
 
@@ -268,6 +269,15 @@ class OrganizationApplicationContext implements Context
      * @Then I will get an error saying that user is already an organizer
      */
     public function iWillGetAnErrorSayingThatUserIsAlreadyAnOrganizer()
+    {
+        Assert::notNull($this->exception);
+        Assert::isInstanceOf($this->exception, DomainException::class);
+    }
+
+    /**
+     * @Then I will get an error saying that user needs to be a member in order to be promoted
+     */
+    public function iWillGetAnErrorSayingThatUserNeedsToBeMemberInOrderToBePromoted()
     {
         Assert::notNull($this->exception);
         Assert::isInstanceOf($this->exception, DomainException::class);

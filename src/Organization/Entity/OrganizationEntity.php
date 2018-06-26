@@ -104,6 +104,9 @@ class OrganizationEntity
         if ($this->isOrganizer($user)) {
             throw new DomainException('This user is already an organizer of this organization');
         }
+        if (false === $this->isMember($user)) {
+            throw new DomainException('In order to promote member to organizer, user needs to be a member first!');
+        }
         $this->organizers[] = $user;
     }
 

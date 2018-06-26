@@ -16,3 +16,8 @@ Feature:
     Given I am logged in as "Alex Smith"
     When I promote "Alex Smith" to organizer of "Local organization"
     Then I will get an error saying that user is already an organizer
+
+  Scenario: In order to promote user, they have to be a member of organization
+    Given I am logged in as "Alex Smith"
+    When I promote "Jo Johnson" to organizer of "Local organization"
+    Then I will get an error saying that user needs to be a member in order to be promoted
