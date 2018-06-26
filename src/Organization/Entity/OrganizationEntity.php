@@ -101,6 +101,9 @@ class OrganizationEntity
 
     public function promoteToOrganizer(UserEntity $user): void
     {
+        if ($this->isOrganizer($user)) {
+            throw new DomainException('This user is already an organizer of this organization');
+        }
         $this->organizers[] = $user;
     }
 
