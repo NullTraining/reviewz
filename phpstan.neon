@@ -2,5 +2,13 @@ parameters:
 	bootstrap: tests/bootstrap.php
 	ignoreErrors:
 	    - '#Parameter \#[\d] \$([a-z]*) of class .* constructor expects .*, Mockery\\MockInterface given.#'
+	symfony:
+		container_xml_path: %rootDir%/../../../var/cache/dev/appDevDebugProjectContainer.xml
 
+includes:
+	- vendor/phpstan/phpstan-phpunit/extension.neon
+	- vendor/phpstan/phpstan-phpunit/rules.neon
+	- vendor/phpstan/phpstan-webmozart-assert/extension.neon
+	- vendor/phpstan/phpstan-symfony/extension.neon
+	- vendor/phpstan/phpstan-doctrine/extension.neon
 
