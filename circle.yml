@@ -29,6 +29,10 @@ jobs:
           command: ./vendor/bin/behat --strict --no-interaction
 
       - run:
+          name: Just run bin/console so there would be a dev container for phpstan to use
+          command: ./bin/console --env=dev
+
+      - run:
           name: PHPStan
           command: ./vendor/bin/phing phpstan
 
