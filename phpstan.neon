@@ -1,10 +1,6 @@
 parameters:
 	bootstrap: tests/bootstrap.php
 	ignoreErrors:
-	    - '#Parameter \#3 \$location of class Event\\Entity\\EventEntity constructor expects Geo\\Entity\\LocationEntity, Mockery\\MockInterface given.#'
-	    - '#Parameter \#4 \$founder of class Organization\\Entity\\OrganizationEntity constructor expects User\\Entity\\UserEntity, Mockery\\MockInterface|User\\Entity\\UserEntity given.#'
-	    - '#Parameter \#5 \$hometown of class Organization\\Entity\\OrganizationEntity constructor expects Geo\\Entity\\CityEntity, Mockery\\MockInterface given.#'
-	    - '#Parameter \#7 \$city of class User\\Entity\\UserEntity constructor expects Geo\\Entity\\CityEntity, Mockery\\MockInterface given.#'
-	    - '#Parameter \#6 \$organization of class Event\\Entity\\EventEntity constructor expects Organization\\Entity\\OrganizationEntity, Mockery\\MockInterface given.#'
+	    - '#Parameter \#[\d] \$([a-z]*) of class .* constructor expects .*, Mockery\\MockInterface given.#'
 
 
