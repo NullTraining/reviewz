@@ -30,14 +30,6 @@ class OrganizationFixturesContext implements Context
                     $founder,
                     $city
                 );
-            case 'Local organization':
-                return new OrganizationEntity(
-                    new OrganizationId('e4370f7a-99b4-430c-a3b7-db0c8381fbc8'),
-                    $orgName,
-                    'Organizing local events ...',
-                    $founder,
-                    $city
-                );
         }
     }
 }
