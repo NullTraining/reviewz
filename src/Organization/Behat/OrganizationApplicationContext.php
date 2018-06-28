@@ -6,7 +6,6 @@ namespace Organization\Behat;
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Tester\Exception\PendingException;
-use DomainException;
 use Geo\Behat\GeoFixturesContext;
 use Geo\Entity\CityEntity;
 use Organization\Command\ApproveOrganizationCommand;
@@ -15,6 +14,8 @@ use Organization\Command\JoinOrganization;
 use Organization\Command\PromoteOrganizerCommand;
 use Organization\Command\RejectOrganizationCommand;
 use Organization\Entity\OrganizationId;
+use Organization\Exception\AlreadyAnOrganizerException;
+use Organization\Exception\CantPromoteUserThatIsNotMemberOfOrganizationException;
 use Organization\Handler\ApproveOrganizationHandler;
 use Organization\Handler\CreateOrganizationHandler;
 use Organization\Handler\JoinOrganizationHandler;
@@ -271,7 +272,7 @@ class OrganizationApplicationContext implements Context
     public function iWillGetAnErrorSayingThatUserIsAlreadyAnOrganizer()
     {
         Assert::notNull($this->exception);
-        Assert::isInstanceOf($this->exception, DomainException::class);
+        Assert::isInstanceOf($this->exception, AlreadyAnOrganizerException::class);
     }
 
     /**
@@ -280,6 +281,6 @@ class OrganizationApplicationContext implements Context
     public function iWillGetAnErrorSayingThatUserNeedsToBeMemberInOrderToBePromoted()
     {
         Assert::notNull($this->exception);
-        Assert::isInstanceOf($this->exception, DomainException::class);
+        Assert::isInstanceOf($this->exception, CantPromoteUserThatIsNotMemberOfOrganizationException::class);
     }
 }

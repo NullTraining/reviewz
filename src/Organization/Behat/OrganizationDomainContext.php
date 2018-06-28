@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Organization\Behat;
 
 use Behat\Behat\Context\Context;
-use DomainException;
 use Geo\Entity\CityEntity;
 use Mockery;
 use Organization\Entity\OrganizationEntity;
 use Organization\Entity\OrganizationId;
+use Organization\Exception\AlreadyAnOrganizerException;
+use Organization\Exception\CantPromoteUserThatIsNotMemberOfOrganizationException;
 use Throwable;
 use User\Entity\UserEntity;
 use Webmozart\Assert\Assert;
@@ -160,7 +161,7 @@ class OrganizationDomainContext implements Context
     public function iWillGetAnErrorSayingThatUserIsAlreadyAnOrganizer()
     {
         Assert::notNull($this->exception);
-        Assert::isInstanceOf($this->exception, DomainException::class);
+        Assert::isInstanceOf($this->exception, AlreadyAnOrganizerException::class);
     }
 
     /**
@@ -169,6 +170,6 @@ class OrganizationDomainContext implements Context
     public function iWillGetAnErrorSayingThatUserNeedsToBeMemberInOrderToBePromoted()
     {
         Assert::notNull($this->exception);
-        Assert::isInstanceOf($this->exception, DomainException::class);
+        Assert::isInstanceOf($this->exception, CantPromoteUserThatIsNotMemberOfOrganizationException::class);
     }
 }
