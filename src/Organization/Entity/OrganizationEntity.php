@@ -115,7 +115,7 @@ class OrganizationEntity
     public function addOrganizer(UserEntity $user): void
     {
         if ($this->isOrganizer($user)) {
-            throw new DomainException('This user is already an organizer of this organization');
+            throw AlreadyAnOrganizerException::create($user, $this);
         }
         if ($this->isMember($user)) {
             throw new DomainException('This user is already a member of this organization');
@@ -126,7 +126,7 @@ class OrganizationEntity
     public function addMember(UserEntity $user): void
     {
         if ($this->isOrganizer($user)) {
-            throw new DomainException('This user is already an organizer of this organization');
+            throw AlreadyAnOrganizerException::create($user, $this);
         }
         if ($this->isMember($user)) {
             throw new DomainException('This user is already a member of this organization');
