@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Organization\Entity;
 
-use DomainException;
 use Geo\Entity\CityEntity;
 use Organization\Exception\AlreadyAnOrganizerException;
+use Organization\Exception\AlreadyMemberException;
 use Organization\Exception\CantPromoteUserThatIsNotMemberOfOrganizationException;
 use User\Entity\UserEntity;
 
@@ -118,7 +118,7 @@ class OrganizationEntity
             throw AlreadyAnOrganizerException::create($user, $this);
         }
         if ($this->isMember($user)) {
-            throw new DomainException('This user is already a member of this organization');
+            throw AlreadyMemberException::create($user, $this);
         }
         $this->organizers[] = $user;
     }
@@ -129,7 +129,7 @@ class OrganizationEntity
             throw AlreadyAnOrganizerException::create($user, $this);
         }
         if ($this->isMember($user)) {
-            throw new DomainException('This user is already a member of this organization');
+            throw AlreadyMemberException::create($user, $this);
         }
         $this->members[] = $user;
     }

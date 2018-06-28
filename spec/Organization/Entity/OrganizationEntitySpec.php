@@ -51,6 +51,7 @@ class OrganizationEntitySpec extends ObjectBehavior
 
     public function it_should_not_add_same_member(UserEntity $user)
     {
+        $user->getUsername()->shouldBeCalled()->willReturn('username');
         $this->addMember($user);
         $this->shouldThrow(DomainException::class)->during('addMember', [$user]);
     }
