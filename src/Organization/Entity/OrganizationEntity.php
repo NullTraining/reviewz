@@ -6,6 +6,8 @@ namespace Organization\Entity;
 
 use DomainException;
 use Geo\Entity\CityEntity;
+use Organization\Exception\AlreadyAnOrganizerException;
+use Organization\Exception\CantPromoteUserThatIsNotMemberOfOrganizationException;
 use User\Entity\UserEntity;
 
 class OrganizationEntity
@@ -102,10 +104,10 @@ class OrganizationEntity
     public function promoteToOrganizer(UserEntity $user): void
     {
         if ($this->isOrganizer($user)) {
-            throw new DomainException('This user is already an organizer of this organization');
+            throw AlreadyAnOrganizerException::create($user, $this);
         }
         if (false === $this->isMember($user)) {
-            throw new DomainException('In order to promote member to organizer, user needs to be a member first!');
+            throw CantPromoteUserThatIsNotMemberOfOrganizationException::create($user, $this);
         }
         $this->organizers[] = $user;
     }
