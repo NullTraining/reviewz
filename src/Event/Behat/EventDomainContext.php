@@ -135,6 +135,14 @@ class EventDomainContext implements Context
     }
 
     /**
+     * @Given user :user RSVPed No to event :eventTitle
+     */
+    public function userRsvpedNo(UserEntity $user)
+    {
+        $this->event->addNotComing($user);
+    }
+
+    /**
      * @Then the new event has title :eventTitle, venue :venue, date :date, description :description and organization :organization
      */
     public function thereIsNewEventWithDetails(

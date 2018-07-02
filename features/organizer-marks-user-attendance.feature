@@ -1,6 +1,6 @@
 @event
 Feature:
-  As a organizer
+  As an organizer
   In order to track event attendance
   I need to mark member as attended during meetup
 
@@ -23,4 +23,10 @@ Feature:
   Scenario: Marked member will not show in expected attendance list
     Given I am logged in as "Alex Smith"
     When I mark user "Jo Johnson" as attended "March 2019 gathering" event
+    Then user "Jo Johnson" is marked as attended "March 2019 gathering" event
+
+  Scenario: Confirm Event Attendance for Users who came to the Event, but have RSVPed No
+    Given I am logged in as "Alex Smith"
+    And user "Jo Johnson" RSVPed No to event "March 2019 gathering"
+    And I mark user "Jo Johnson" as attended "March 2019 gathering" event
     Then user "Jo Johnson" is marked as attended "March 2019 gathering" event

@@ -173,6 +173,18 @@ class EventApplicationContext implements Context
     }
 
     /**
+     * @Given user :user RSVPed No to event :eventTitle
+     */
+    public function userRsvpedNo(UserEntity $user, string $eventTitle)
+    {
+        $this->userRepository->save($user);
+        $event = $this->eventRepository->loadByTitle($eventTitle);
+
+        $command = new RsvpNo($event->getId(), $user->getId());
+        $this->rsvpNoCommandHandler->handle($command);
+    }
+
+    /**
      * @When I mark user :userName as attended :eventTitle event
      */
     public function iMarkUserAsAttended(UserEntity $user, string $eventTitle)
