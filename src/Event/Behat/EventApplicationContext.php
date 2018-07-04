@@ -21,6 +21,7 @@ use Geo\Entity\LocationId;
 use Mockery;
 use Organization\Entity\OrganizationEntity;
 use Organization\Entity\OrganizationId;
+use Organization\Exception\UserNotOrganizerException;
 use Organization\Repository\OrganizationRepository;
 use Tests\Event\Repository\EventInMemoryRepository;
 use Tests\Organization\Repository\OrganizationInMemoryRepository;
@@ -243,6 +244,8 @@ class EventApplicationContext implements Context
 
     /**
      * @When I create a new event with title :eventName for organization :orgName with date :date, description :desc in venue :venue
+     *
+     * @throws \Organization\Exception\UserNotOrganizerException
      */
     public function iCreateNewEventWithNameForOrganizationWithDateDescriptionInVenue(
         string $eventName,
@@ -252,6 +255,10 @@ class EventApplicationContext implements Context
         string $location
     ) {
         $organization = $this->organizationRepository->loadByTitle($orgName);
+
+        if (!$organization->isOrganizer($this->currentUser)) {
+            throw UserNotOrganizerException::user($this->currentUser, $organization);
+        }
 
         $location = new LocationEntity(
             LocationId::create(),
