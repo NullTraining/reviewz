@@ -18,6 +18,9 @@ use User\Entity\UserEntity;
 use User\Entity\UserId;
 use User\Repository\UserRepository;
 
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
 class CreateEventHandler
 {
     private $eventRepository;
