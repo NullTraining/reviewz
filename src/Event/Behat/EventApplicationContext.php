@@ -6,24 +6,32 @@ namespace Event\Behat;
 
 use Behat\Behat\Context\Context;
 use DateTime;
+use Event\Command\CreateEvent;
 use Event\Command\MarkUserAsAttended;
 use Event\Command\RsvpNo;
 use Event\Command\RsvpYes;
 use Event\Entity\EventEntity;
 use Event\Entity\EventId;
+use Event\Handler\CreateEventHandler;
 use Event\Handler\MemberAttendanceHandler;
 use Event\Handler\RsvpNoHandler;
 use Event\Handler\RsvpYesHandler;
 use Event\Repository\EventRepository;
 use Geo\Entity\CityEntity;
+use Geo\Entity\CityId;
+use Geo\Entity\CountryCode;
+use Geo\Entity\CountryEntity;
+use Geo\Entity\CountryList;
 use Geo\Entity\LocationEntity;
 use Geo\Entity\LocationId;
+use Geo\Repository\LocationRepository;
 use Mockery;
 use Organization\Entity\OrganizationEntity;
 use Organization\Entity\OrganizationId;
 use Organization\Exception\UserNotOrganizerException;
 use Organization\Repository\OrganizationRepository;
 use Tests\Event\Repository\EventInMemoryRepository;
+use Tests\Location\Repository\LocationInMemoryRepository;
 use Tests\Organization\Repository\OrganizationInMemoryRepository;
 use Tests\User\Repository\UserInMemoryRepository;
 use User\Entity\UserEntity;
@@ -53,6 +61,12 @@ class EventApplicationContext implements Context
     private $memberAttendanceHandler;
     /** @var array */
     private $expectedAttendees;
+    /** @var CreateEventHandler */
+    private $createEventHandler;
+    /** @var LocationRepository */
+    private $locationRepository;
+    /** @var UserNotOrganizerException */
+    private $error;
 
     /**
      * @BeforeScenario
@@ -62,6 +76,7 @@ class EventApplicationContext implements Context
         $this->organizationRepository = new OrganizationInMemoryRepository();
         $this->userRepository         = new UserInMemoryRepository();
         $this->eventRepository        = new EventInMemoryRepository();
+        $this->locationRepository     = new LocationInMemoryRepository();
         $this->rsvpYesCommandHandler  = new RsvpYesHandler(
             $this->eventRepository,
             $this->userRepository
@@ -74,6 +89,13 @@ class EventApplicationContext implements Context
 
         $this->memberAttendanceHandler = new MemberAttendanceHandler(
             $this->eventRepository,
+            $this->userRepository
+        );
+
+        $this->createEventHandler = new CreateEventHandler(
+            $this->eventRepository,
+            $this->organizationRepository,
+            $this->locationRepository,
             $this->userRepository
         );
     }
@@ -105,6 +127,7 @@ class EventApplicationContext implements Context
 
     /**
      * @Given :user is a member of :orgName organization
+     * @And :user is a member of :orgName organization
      */
     public function isMemberOfOrganization(UserEntity $user, string $orgName)
     {
@@ -245,28 +268,35 @@ class EventApplicationContext implements Context
     /**
      * @When I create a new event with title :eventName for organization :orgName with date :date, description :desc in venue :venue
      *
-     * @throws \Organization\Exception\UserNotOrganizerException
+     * @When I try to create a new event with title :eventName for organization :orgName with date :date, description :desc in venue :venue
+     *
+     * @throws UserNotOrganizerException
      */
     public function iCreateNewEventWithNameForOrganizationWithDateDescriptionInVenue(
-        string $eventName,
-        string $orgName,
+        string $eventTitle,
+        string $organizationName,
         DateTime $date,
-        string $desc,
-        string $location
+        string $eventDescription,
+        LocationEntity $venue
     ) {
-        $organization = $this->organizationRepository->loadByTitle($orgName);
+        $organization = $this->organizationRepository->loadByTitle($organizationName);
 
-        if (!$organization->isOrganizer($this->currentUser)) {
-            throw UserNotOrganizerException::user($this->currentUser, $organization);
+        $eventId          = EventId::create();
+        $organizationId   = $organization->getId();
+        $eventOrganizerId = $this->currentUser->getId();
+
+        $this->locationRepository->save($venue);
+
+        $locationId = $venue->getId();
+
+        $createEventCommand = new CreateEvent($eventId, $date, $locationId, $eventTitle, $eventDescription,
+            $organizationId, $eventOrganizerId);
+
+        try {
+            $this->createEventHandler->handle($createEventCommand);
+        } catch (UserNotOrganizerException $ex) {
+            $this->error = $ex;
         }
-
-        $location = new LocationEntity(
-            LocationId::create(),
-            $location, Mockery::mock(CityEntity::class)
-        );
-
-        $event = new EventEntity(EventId::create(), $date, $location, $eventName, $desc, $organization);
-        $this->eventRepository->save($event);
     }
 
     /**
@@ -317,6 +347,16 @@ class EventApplicationContext implements Context
     }
 
     /**
+     * @Then I should see an error saying I can't create an event
+     */
+    public function iShouldSeeAnErrorSayingIcantCreateAnEvent()
+    {
+        $user = $this->currentUser->getUsername();
+
+        Assert::contains($this->error->getMessage(), sprintf('User %s is not a valid', $user));
+    }
+
+    /**
      * @Transform
      */
     public function toOrganization(string $orgName): OrganizationEntity
@@ -336,5 +376,31 @@ class EventApplicationContext implements Context
     public function toDateTime(string $eventDate): DateTime
     {
         return new DateTime($eventDate);
+    }
+
+    /**
+     * @Transform
+     */
+    public function venueStringToLocation(string $venueString): LocationEntity
+    {
+        list($venueName, $cityName, $countryName) = explode(', ', $venueString);
+
+        $locationId = new LocationId('e9018215-76e7-4aeb-88f0-90f69074ef8d');
+
+        $cityId = new CityId('7a907344-b792-4a98-ae02-40c3109a6142');
+
+        $countryCode = new CountryCode(
+            CountryList::getCodeForCountryName($countryName)
+        );
+
+        $country = new CountryEntity($countryCode, $countryName);
+
+        $city = new CityEntity($cityId, $cityName, $country);
+
+        return new LocationEntity(
+            $locationId,
+            $venueName,
+            $city
+        );
     }
 }
