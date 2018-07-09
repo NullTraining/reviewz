@@ -18,6 +18,7 @@ use Geo\Entity\LocationId;
 use Mockery;
 use Organization\Entity\OrganizationEntity;
 use Organization\Entity\OrganizationId;
+use Organization\Exception\UserNotOrganizerException;
 use User\Entity\UserEntity;
 use User\Entity\UserId;
 use Webmozart\Assert\Assert;
@@ -35,6 +36,8 @@ class EventDomainContext implements Context
     private $event;
     /** @var UserEntity[] */
     private $expectedAttendees;
+    /** @var UserNotOrganizerException */
+    private $error;
 
     /**
      * @Given I am logged in as :name
@@ -78,6 +81,7 @@ class EventDomainContext implements Context
 
     /**
      * @Given :user is a member of :orgName organization
+     * @And :user is a member of :orgName organization
      */
     public function isMemberOfOrganization(UserEntity $user)
     {
@@ -95,6 +99,8 @@ class EventDomainContext implements Context
 
     /**
      * @When I create a new event with title :eventName for organization :orgName with date :date, description :desc in venue :venue
+     *
+     * @When I try to create a new event with title :eventName for organization :orgName with date :date, description :desc in venue :venue
      */
     public function iCreateNewEventWithNameForOrganizationWithDateDescriptionInVenue(
         string $eventName,
@@ -103,7 +109,21 @@ class EventDomainContext implements Context
         string $desc,
         LocationEntity $location
     ) {
+        if (!$this->organization->isOrganizer($this->user)) {
+            $this->error = UserNotOrganizerException::user($this->user, $this->organization);
+        }
+
         $this->event = new EventEntity(EventId::create(), $date, $location, $eventName, $desc, $orgName);
+    }
+
+    /**
+     * @Then I should see an error saying I can't create an event
+     */
+    public function iShouldSeeAnErrorSayingIcantCreateAnEvent()
+    {
+        $user = $this->user->getUsername();
+
+        Assert::contains($this->error->getMessage(), sprintf('User %s is not a valid', $user));
     }
 
     /**
