@@ -113,6 +113,9 @@
     "jean85/pretty-package-versions": {
         "version": "1.1"
     },
+    "leanphp/phpspec-code-coverage": {
+        "version": "v4.2.2"
+    },
     "mockery/mockery": {
         "version": "1.0"
     },
