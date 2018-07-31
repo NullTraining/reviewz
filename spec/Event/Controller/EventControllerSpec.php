@@ -68,4 +68,30 @@ class EventControllerSpec extends ObjectBehavior
 
         $this->shouldThrow(DomainException::class)->during('confirmUserAttendedEvent', [$event, $attendee]);
     }
+
+    public function it_should_add_user_to_list_of_attendees(EntityManager $entityManager, EventEntity $event, UserEntity $user)
+    {
+        $entityManager->persist($event)->shouldBeCalled();
+        $entityManager->flush()->shouldBeCalled();
+
+        $event->addAttendee($user)->shouldBeCalled();
+
+        $this->addAttendeeToEvent($user, $event);
+    }
+
+    public function it_should_expose_list_of_attendees_for_event(EventEntity $event, UserEntity $user)
+    {
+        $this->addAttendeeToEvent($user, $event);
+
+        $event->getAttendees()->shouldBeCalled()->willReturn([$user]);
+        $this->listEventAttendees($event)->shouldContain($user);
+    }
+
+    public function it_should_throw_exception_when_adding_same_attendee_twice(EventEntity $event, UserEntity $user)
+    {
+        $event->addAttendee($user)->shouldBeCalled();
+        $event->addAttendee($user)->shouldBeCalled()->willThrow(\DomainException::class);
+
+        $this->shouldThrow(\DomainException::class)->during('addAttendeeToEvent', [$user, $event]);
+    }
 }

@@ -51,4 +51,21 @@ class EventController
             throw $ex;
         }
     }
+
+    public function addAttendeeToEvent(UserEntity $user, EventEntity $event): void
+    {
+        try {
+            $event->addAttendee($user);
+
+            $this->entityManager->persist($event);
+            $this->entityManager->flush();
+        } catch (DomainException $ex) {
+            throw $ex;
+        }
+    }
+
+    public function listEventAttendees(EventEntity $event): array
+    {
+        return $event->getAttendees();
+    }
 }
