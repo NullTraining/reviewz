@@ -104,6 +104,22 @@ class TalkDomainContext implements Context
     }
 
     /**
+     * @Given :name is organizer of :orgName organization
+     */
+    public function isOrganizerOfOrganization(UserEntity $user)
+    {
+        $this->organization->addOrganizer($user);
+    }
+
+    /**
+     * @Given there is a claim by :name on :talkTitle talk
+     */
+    public function thereIsClaimByOnTalk(UserEntity $claimer)
+    {
+        $this->talk->claimTalk($claimer);
+    }
+
+    /**
      * @When I claim :talkTitle
      */
     public function iClaim()
@@ -113,6 +129,14 @@ class TalkDomainContext implements Context
         } catch (DomainException $exception) {
             $this->exception = $exception;
         }
+    }
+
+    /**
+     * @When I look at :talkTitle talk
+     */
+    public function iLookAtTalk()
+    {
+        //Nothing to do on domain level
     }
 
     /**
@@ -133,6 +157,14 @@ class TalkDomainContext implements Context
     {
         Assert::notNull($this->exception);
         Assert::isInstanceOf($this->exception, DomainException::class);
+    }
+
+    /**
+     * @Then I should see :name having a pending claim
+     */
+    public function iShouldSeeHavingPendingClaim(UserEntity $claimer)
+    {
+        Assert::eq($claimer, $this->talk->getClaims()[0]->getSpeaker());
     }
 
     /**
